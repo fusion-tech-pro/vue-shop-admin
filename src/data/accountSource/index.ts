@@ -16,7 +16,7 @@ class AccountSource {
     return User.fromUserDto(response);
   }
 
-  async getMe() {
+  async getMe(): Promise<User> {
     await sleep(0.2);
     const response: UserResponse = {
       id: 1,
