@@ -12,25 +12,25 @@
   }
 }
 
-@mixin media-xs {
+@mixin media-sm {
   @include media-query-width($breakpoint-xs-max) {
     @content;
   }
 }
 
-@mixin media-sm {
+@mixin media-lg {
   @include media-query-width($breakpoint-sm-max) {
     @content;
   }
 }
 
-@mixin media-lg {
+@mixin media-xl {
   @include media-query-width($breakpoint-lg-max) {
     @content;
   }
 }
 
-@mixin media-xl {
+@mixin media-xl-max {
   @include media-query-width($breakpoint-xl-max) {
     @content;
   }

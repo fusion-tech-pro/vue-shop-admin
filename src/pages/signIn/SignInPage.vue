@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="form-container q-pa-lg">
+    <div class="form-container form-container__test q-pa-lg">
       <SignInForm :loading="userStore.loading" @form-submit="onLogin" />
     </div>
   </div>
@@ -34,7 +34,7 @@ async function onLogin(values: SignInFormState) {
   background-color: $surface;
   width: 100%;
 
-  @include media-xs {
+  @include media-sm {
     max-width: 420px;
     background-color: unset;
   }
@@ -45,7 +45,7 @@ async function onLogin(values: SignInFormState) {
   min-height: 100px;
   width: 100%;
   box-shadow: none;
-  @include media-xs {
+  @include media-sm {
     box-shadow: $shadow-4;
     border-radius: $generic-border-radius;
   }
