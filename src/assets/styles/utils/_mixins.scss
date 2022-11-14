@@ -1,0 +1,37 @@
+@mixin media-query-width($media: $width-xs, $direction: min) {
+  $extrema: null;
+
+  @if $direction == max {
+    $extrema: max;
+  }
+  @if $direction == min {
+    $extrema: min;
+  }
+  @media only screen and (#{$extrema}-width: ($media - 1px)) {
+    @content;
+  }
+}
+
+@mixin media-xs {
+  @include media-query-width($breakpoint-xs-max) {
+    @content;
+  }
+}
+
+@mixin media-sm {
+  @include media-query-width($breakpoint-sm-max) {
+    @content;
+  }
+}
+
+@mixin media-lg {
+  @include media-query-width($breakpoint-lg-max) {
+    @content;
+  }
+}
+
+@mixin media-xl {
+  @include media-query-width($breakpoint-xl-max) {
+    @content;
+  }
+}
