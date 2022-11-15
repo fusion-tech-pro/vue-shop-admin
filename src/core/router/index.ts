@@ -1,6 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import { authenticatedGuard, unauthenticatedGuard } from "./guards";
+import {
+  authenticatedGuard,
+  unauthenticatedGuard,
+  logoutGuard,
+} from "./guards";
 
 const SignInPage = () => import("@/pages/signIn/SignInPage.vue");
 
@@ -8,6 +12,7 @@ const HomeView = () => import("@/pages/home/HomePage.vue");
 const DashboardPage = () => import("@/pages/dashboard/DashboardPage.vue");
 const UsersPage = () => import("@/pages/users/UsersPage.vue");
 const ProductsPage = () => import("@/pages/products/ProductsPage.vue");
+const EmptyView = () => import("@/pages/empty/EmptyView.vue");
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,6 +46,12 @@ const router = createRouter({
       name: "sign-in",
       component: SignInPage,
       beforeEnter: [unauthenticatedGuard],
+    },
+    {
+      path: "/logout",
+      name: "logout",
+      component: EmptyView,
+      beforeEnter: [logoutGuard],
     },
   ],
 });
