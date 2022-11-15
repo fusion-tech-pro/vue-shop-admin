@@ -29,8 +29,9 @@ export const useUserStore = defineStore("user", {
       try {
         this.loading = true;
         this.error = null;
-        const user = await accountSource.login(username, password);
+        const { user, token } = await accountSource.login(username, password);
         this.user = user;
+        tokenSource.setAccessToken(token);
       } catch (err) {
         console.error("Error is: ", err);
         this.error = `${err}`;
@@ -41,10 +42,13 @@ export const useUserStore = defineStore("user", {
 
     async initializeUser() {
       try {
-        // const user = await accountSource.getMe();
-        // this.user = user;
-        this.error = null;
-        this.user = null;
+        if (tokenSource.accessToken) {
+          const user = await accountSource.getMe();
+          this.user = user;
+        } else {
+          this.error = null;
+          this.user = null;
+        }
       } catch (err) {
         console.error("Error:", err);
         tokenSource.clearStorage();
