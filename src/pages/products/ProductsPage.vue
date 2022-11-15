@@ -40,11 +40,11 @@
       text-color="primary"
       label="Add Product"
       flat
-      @click="filterModal = true"
+      @click="isAddProductModal = true"
     />
   </div>
 
-  <q-dialog v-model="filterModal">
+  <!-- <q-dialog v-model="isAddProductModal">
     <q-card>
       <q-card-section class="row items-center q-pb-none">
         <div class="text-h6">Close icon</div>
@@ -54,20 +54,29 @@
 
       <q-card-section> Filter modal </q-card-section>
     </q-card>
-  </q-dialog>
+  </q-dialog> -->
+
+  <AddProductModal
+    :opened="isAddProductModal"
+    @close="isAddProductModal = false"
+  />
+  <ProductsTable />
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import AddProductModal from "./components/AddProductModal.vue";
+import ProductsTable from "./components/ProductsTable.vue";
 
 export default defineComponent({
+  components: { AddProductModal, ProductsTable },
   data() {
     return {
       searchProductText: "",
       searchGroupText: "",
       searchCategoryText: "",
       isFiltersOpen: false,
-      filterModal: ref(false),
+      isAddProductModal: ref(false),
     };
   },
   watch: {
@@ -88,7 +97,6 @@ export default defineComponent({
       }
       // TODO add filtering product with name's
     },
-    open() {},
   },
 });
 </script>
