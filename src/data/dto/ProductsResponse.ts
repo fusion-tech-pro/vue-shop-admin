@@ -1,8 +1,4 @@
 export interface ProductsResponse {
-  products: Product[];
-}
-
-export type Product = {
   image?: string;
   name: string;
   group?: string;
@@ -13,4 +9,4 @@ export type Product = {
   status?: string;
   updated_at: string;
   created_at: string;
-};
+}
