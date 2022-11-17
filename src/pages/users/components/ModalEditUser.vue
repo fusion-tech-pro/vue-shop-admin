@@ -1,7 +1,46 @@
 <script lang="ts">
 export default {
   props: {
+    readonly: Boolean,
     show: Boolean,
+    rowModal: {
+      type: Object,
+      default() {
+        return { name: "", email: "" };
+      },
+    },
+  },
+  emits: ["close", "addUser"],
+
+  beforeUpdate() {
+    this.name = this.$props.rowModal.name;
+    this.email = this.$props.rowModal.email;
+  },
+
+  data() {
+    return {
+      name: this.$props.rowModal.name,
+      email: this.$props.rowModal.email,
+      selected: "",
+      prefix: "",
+    };
+  },
+
+  methods: {
+    update() {
+      if (this.hasValidInput()) {
+        this.$emit("addUser", this.name, this.email);
+        this.$emit("close");
+      }
+    },
+    hasValidInput() {
+      return this.name.trim() && this.isValidEmail() !== "Invalid email";
+    },
+    isValidEmail() {
+      const emailPattern =
+        /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
+      return emailPattern.test(this.email) || "Invalid email";
+    },
   },
 };
 </script>
@@ -16,16 +55,29 @@ export default {
           </div>
 
           <div class="modal-body">
-            <slot name="body">default body</slot>
+            <label
+              >Name:
+              <q-input
+                autofocus
+                v-model="name"
+                :rules="[(val: String) => !!val || 'Field is required']"
+            /></label>
           </div>
 
           <div class="modal-footer">
-            <slot name="footer">
-              default footer
-              <button class="modal-default-button" @click="$emit('close')">
-                OK
-              </button>
-            </slot>
+            <label
+              >Email:
+              <q-input
+                :readonly="readonly"
+                v-model="email"
+                :rules="[(val) => !!val || 'Email is missing', isValidEmail]"
+            /></label>
+          </div>
+          <div>
+            <button class="modal-default-button" @click="$emit('close')">
+              Cancel
+            </button>
+            <button class="modal-default-button" @click="update">OK</button>
           </div>
         </div>
       </div>
@@ -70,8 +122,13 @@ export default {
   margin: 20px 0;
 }
 
+.modal-footer {
+  margin: 0 0 20px 0;
+}
+
 .modal-default-button {
-  float: right;
+  float: center;
+  margin-right: 10px;
 }
 
 /*
