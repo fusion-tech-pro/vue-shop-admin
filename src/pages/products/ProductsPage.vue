@@ -6,18 +6,17 @@
       label="Type your query and press enter"
       type="text"
       class="q-mb-sm"
-      v-model.trim="this.searchProductText"
-      v-on:keyup.enter="this.handleSearchProducts"
+      v-model.trim="searchProductText"
     />
     <q-btn
       color="white"
       text-color="primary"
       label="Filter"
       flat
-      @click="this.handleFilterClick"
+      @click="handleFilterClick"
     />
     <div
-      v-if="this.isFiltersOpen"
+      v-if="isFiltersOpen"
       class="q-pt-md q-mt-md products-page__filters-wrapper"
     >
       <q-input
@@ -25,14 +24,14 @@
         label="Filter by Group"
         type="text"
         class="q-mb-sm"
-        v-model.trim="this.searchGroupText"
+        v-model.trim="searchGroupText"
       />
       <q-input
         outlined
-        label="Filter by Category"
+        label="Filter by Shop"
         type="text"
         class="q-mb-sm"
-        v-model.trim="this.searchCategoryText"
+        v-model.trim="searchShopText"
       />
     </div>
     <q-btn
@@ -44,58 +43,71 @@
     />
   </div>
 
-  <!-- <q-dialog v-model="isAddProductModal">
-    <q-card>
-      <q-card-section class="row items-center q-pb-none">
-        <div class="text-h6">Close icon</div>
-        <q-space />
-        <q-btn icon="close" flat round dense v-close-popup />
-      </q-card-section>
-
-      <q-card-section> Filter modal </q-card-section>
-    </q-card>
-  </q-dialog> -->
+  <ProductsTable :productsRow="filteredProducts" />
 
   <AddProductModal
     :opened="isAddProductModal"
-    @close="isAddProductModal = false"
+    @change-visibility="setModalVisibleStatus"
   />
-  <ProductsTable />
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import type { Product } from "@/core/models/Product";
+import { useProductsStore } from "@/stores/products";
+import { defineComponent } from "vue";
 import AddProductModal from "./components/AddProductModal.vue";
 import ProductsTable from "./components/ProductsTable.vue";
 
 export default defineComponent({
   components: { AddProductModal, ProductsTable },
+
+  setup() {
+    const productsStore = useProductsStore();
+    productsStore.fetchProducts();
+    return { productsStore };
+  },
+
   data() {
     return {
       searchProductText: "",
       searchGroupText: "",
-      searchCategoryText: "",
+      searchShopText: "",
       isFiltersOpen: false,
-      isAddProductModal: ref(false),
+      isAddProductModal: false,
+      products: [] as Product[],
     };
-  },
-  watch: {
-    searchGroupText() {
-      // TODO add filtering products by groups
-    },
-    searchCategoryText() {
-      // TODO add filtering products by category
-    },
   },
   methods: {
     handleFilterClick() {
       this.isFiltersOpen = !this.isFiltersOpen;
     },
-    handleSearchProducts() {
-      if (this.searchProductText.length < 1) {
-        return;
+    setModalVisibleStatus(status: boolean) {
+      this.isAddProductModal = status;
+    },
+  },
+  computed: {
+    filteredProducts() {
+      if (this.searchGroupText.length > 0) {
+        return this.productsStore?.products?.filter((product) =>
+          product.name
+            .toLowerCase()
+            .includes(this.searchGroupText.toLowerCase())
+        ) as Array<Product>;
+      } else if (this.searchShopText.length > 0) {
+        return this.productsStore?.products?.filter((product) =>
+          product.shop
+            ?.toLowerCase()
+            .includes(this.searchShopText.toLowerCase())
+        ) as Array<Product>;
+      } else if (this.searchProductText.length > 1) {
+        return this.productsStore?.products?.filter((product) =>
+          product.name
+            .toLowerCase()
+            .includes(this.searchProductText.toLowerCase())
+        ) as Array<Product>;
+      } else {
+        return this.productsStore.products as Array<Product>;
       }
-      // TODO add filtering product with name's
     },
   },
 });
