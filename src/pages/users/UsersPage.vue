@@ -23,6 +23,7 @@ export default {
       row: { name: "", email: "" },
       headerModal: "",
       indexOfEdit: 0,
+      // myAvatar: null,
     };
   },
   computed: {
@@ -127,8 +128,12 @@ export default {
 
       <template v-slot:body-cell-avatar="props">
         <q-td :props="props">
-          <q-avatar size="middle">
+          <q-avatar>
+            <!-- <q-file standout v-model="myAvatar" accept=".jpg,.png"> -->
+            <!-- <template v-slot:append> -->
             <img :src="props.row.avatar ? props.row.avatar : imageAlt" />
+            <!-- </template> -->
+            <!-- </q-file> -->
           </q-avatar>
         </q-td>
       </template>
