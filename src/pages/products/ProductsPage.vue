@@ -74,7 +74,6 @@ export default defineComponent({
       searchShopText: "",
       isFiltersOpen: false,
       isAddProductModal: false,
-      products: [] as Product[],
     };
   },
   methods: {
