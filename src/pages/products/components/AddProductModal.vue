@@ -1,5 +1,5 @@
 <template>
-  <q-dialog :v-model="opened">
+  <q-dialog v-model="isOpenValue">
     <q-card>
       <q-card-section class="row items-center q-pb-none">
         <div class="text-h6">Close icon</div>
@@ -10,7 +10,7 @@
           round
           dense
           v-close-popup
-          @click="$emit('close')"
+          @click="$emit('changeVisibility', false)"
         />
       </q-card-section>
 
@@ -20,13 +20,28 @@
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   props: {
     opened: {
       required: true,
       type: Boolean,
     },
   },
-  emits: ["close"],
-};
+  emits: {
+    changeVisibility(value: boolean) {
+      return true;
+    },
+  },
+  computed: {
+    isOpenValue: {
+      set(value: boolean) {
+        this.$emit("changeVisibility", value);
+      },
+      get() {
+        return this.opened;
+      },
+    },
+  },
+});
 </script>
