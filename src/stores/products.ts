@@ -27,5 +27,16 @@ export const useProductsStore = defineStore("products", {
         this.products = null;
       }
     },
+    addNewProduct(data: Product) {
+      // Need change to call API request when it will be done
+      try {
+        const newArr = this.products as Product[];
+        newArr.push(data);
+        this.products = newArr;
+      } catch (err) {
+        console.log("Error is:", err);
+        this.products = null;
+      }
+    },
   },
 });
