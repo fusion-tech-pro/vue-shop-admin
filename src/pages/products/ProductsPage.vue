@@ -48,11 +48,13 @@
   <AddProductModal
     :opened="isAddProductModal"
     @change-visibility="setModalVisibleStatus"
+    @form-submit="onCreateNewProduct"
   />
 </template>
 
 <script lang="ts">
 import type { Product } from "@/core/models/Product";
+import type { AddNewProductFormState } from "./entities/index";
 import { useProductsStore } from "@/stores/products";
 import { defineComponent } from "vue";
 import AddProductModal from "./components/AddProductModal.vue";
@@ -83,6 +85,15 @@ export default defineComponent({
     setModalVisibleStatus(status: boolean) {
       this.isAddProductModal = status;
     },
+    onCreateNewProduct(values: AddNewProductFormState) {
+      this.productsStore.addNewProduct({
+        ...values,
+        image: "",
+        created_at: "n/a",
+        updated_at: "n/a",
+      });
+      this.setModalVisibleStatus(false);
+    },
   },
   computed: {
     filteredProducts() {
@@ -98,7 +109,7 @@ export default defineComponent({
             ?.toLowerCase()
             .includes(this.searchShopText.toLowerCase())
         ) as Array<Product>;
-      } else if (this.searchProductText.length > 1) {
+      } else if (this.searchProductText.length > 0) {
         return this.productsStore?.products?.filter((product) =>
           product.name
             .toLowerCase()
