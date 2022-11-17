@@ -1,4 +1,6 @@
 <script lang="ts">
+import { imageDefault } from "../assetsData/usersData";
+
 export default {
   props: {
     readonly: Boolean,
@@ -6,19 +8,23 @@ export default {
     rowModal: {
       type: Object,
       default() {
-        return { name: "", email: "" };
+        return { avatar: imageDefault, name: "", email: "" };
       },
     },
   },
   emits: ["close", "addUser"],
 
   beforeUpdate() {
+    this.avatar = this.$props.rowModal.avatar
+      ? this.$props.rowModal.avatar
+      : imageDefault;
     this.name = this.$props.rowModal.name;
     this.email = this.$props.rowModal.email;
   },
 
   data() {
     return {
+      avatar: this.$props.rowModal.avatar,
       name: this.$props.rowModal.name,
       email: this.$props.rowModal.email,
       selected: "",
@@ -48,10 +54,18 @@ export default {
 <template>
   <Transition name="modal">
     <div v-if="show" class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
+      <div class="modal-wrapper" @click="$emit('close')">
+        <div class="modal-container" @click.stop="">
           <div class="modal-header">
             <slot name="header">default header</slot>
+          </div>
+
+          <div class="row full-width justify-center">
+            <q-avatar size="150px">
+              <q-file standout v-model="avatar" accept=".jpg,.png">
+                <img style="height: 150px; max-width: 150px" :src="avatar" />
+              </q-file>
+            </q-avatar>
           </div>
 
           <div class="modal-body">
@@ -59,6 +73,7 @@ export default {
               >Name:
               <q-input
                 autofocus
+                dense
                 v-model="name"
                 :rules="[(val: String) => !!val || 'Field is required']"
             /></label>
@@ -69,11 +84,12 @@ export default {
               >Email:
               <q-input
                 :readonly="readonly"
+                dense
                 v-model="email"
                 :rules="[(val) => !!val || 'Email is missing', isValidEmail]"
             /></label>
           </div>
-          <div>
+          <div class="row full-width justify-center">
             <button class="modal-default-button" @click="$emit('close')">
               Cancel
             </button>

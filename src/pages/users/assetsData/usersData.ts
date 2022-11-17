@@ -68,3 +68,5 @@ export const rows = [
     email: "user10@mail.com",
   },
 ];
+
+export const imageDefault = "https://cdn.quasar.dev/img/avatar.png";

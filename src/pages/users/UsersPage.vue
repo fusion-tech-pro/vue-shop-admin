@@ -1,5 +1,5 @@
 <script lang="ts">
-import { columns, rows } from "./assetsData/usersData";
+import { columns, rows, imageDefault } from "./assetsData/usersData";
 import ModalEditUser from "./components/ModalEditUser.vue";
 
 interface rowType {
@@ -15,7 +15,7 @@ export default {
   data() {
     return {
       showModal: false,
-      imageAlt: "https://cdn.quasar.dev/img/avatar.png",
+      imageAlt: imageDefault,
       lowerSearch: "",
       search: "",
       columns: columns,
@@ -131,7 +131,7 @@ export default {
           <q-avatar>
             <!-- <q-file standout v-model="myAvatar" accept=".jpg,.png"> -->
             <!-- <template v-slot:append> -->
-            <img :src="props.row.avatar ? props.row.avatar : imageAlt" />
+            <q-img :src="props.row.avatar ? props.row.avatar : imageAlt" />
             <!-- </template> -->
             <!-- </q-file> -->
           </q-avatar>
