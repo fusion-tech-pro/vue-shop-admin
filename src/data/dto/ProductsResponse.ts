@@ -9,4 +9,5 @@ export interface ProductsResponse {
   status?: string;
   updated_at: string;
   created_at: string;
+  id: number;
 }

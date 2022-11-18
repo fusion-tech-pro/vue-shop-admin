@@ -11,6 +11,7 @@ export class Product {
   status?: string;
   updated_at: string;
   created_at: string;
+  id: number;
 
   constructor(options: {
     image?: string;
@@ -23,6 +24,7 @@ export class Product {
     status?: string;
     updated_at?: string;
     created_at?: string;
+    id: number;
   }) {
     this.image = options.image;
     this.name = options.name;
@@ -34,6 +36,7 @@ export class Product {
     this.status = options.status;
     this.updated_at = options.updated_at;
     this.created_at = options.created_at;
+    this.id = options.id;
   }
 
   static fromProductDto(ProductsResponse: ProductsResponse[]): Array<Product> {
@@ -49,6 +52,7 @@ export class Product {
         status: product.status,
         created_at: product.created_at,
         updated_at: product.updated_at,
+        id: product.id,
       });
     });
   }

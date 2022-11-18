@@ -17,6 +17,7 @@ class ProductsSource {
         status: "publish",
         created_at: "n/a",
         updated_at: "n/a",
+        id: 1,
       },
       {
         image: "",
@@ -29,6 +30,7 @@ class ProductsSource {
         status: "publish",
         created_at: "n/a",
         updated_at: "n/a",
+        id: 1,
       },
       {
         image: "",
@@ -41,6 +43,7 @@ class ProductsSource {
         status: "publish",
         created_at: "n/a",
         updated_at: "n/a",
+        id: 1,
       },
       {
         image: "",
@@ -53,6 +56,7 @@ class ProductsSource {
         status: "publish",
         created_at: "n/a",
         updated_at: "n/a",
+        id: 1,
       },
       {
         image: "",
@@ -65,6 +69,7 @@ class ProductsSource {
         status: "publish",
         created_at: "n/a",
         updated_at: "n/a",
+        id: 1,
       },
       {
         image: "",
@@ -77,6 +82,7 @@ class ProductsSource {
         status: "publish",
         created_at: "n/a",
         updated_at: "n/a",
+        id: 1,
       },
       {
         image: "",
@@ -89,6 +95,7 @@ class ProductsSource {
         status: "publish",
         created_at: "n/a",
         updated_at: "n/a",
+        id: 1,
       },
       {
         image: "",
@@ -101,6 +108,7 @@ class ProductsSource {
         status: "publish",
         created_at: "n/a",
         updated_at: "n/a",
+        id: 1,
       },
       {
         image: "",
@@ -113,6 +121,7 @@ class ProductsSource {
         status: "publish",
         created_at: "n/a",
         updated_at: "n/a",
+        id: 1,
       },
       {
         image: "",
@@ -125,6 +134,7 @@ class ProductsSource {
         status: "publish",
         created_at: "n/a",
         updated_at: "n/a",
+        id: 1,
       },
     ];
 
