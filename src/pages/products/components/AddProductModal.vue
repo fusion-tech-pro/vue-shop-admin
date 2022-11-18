@@ -2,9 +2,9 @@
   <q-dialog v-model="isOpenValue">
     <q-card class="full-width">
       <Form
-        @submit="(values) => onFormSubmit(values as AddNewProductFormState)"
+        @submit="(values) => onFormSubmit(values as ProductFormState)"
         :validation-schema="schema"
-        :initial-values="formState"
+        :initial-values="initialsValue"
         class="column q-pa-md"
       >
         <div class="row justify-between">
@@ -57,7 +57,7 @@
             :error="!!errorMessage"
           />
         </Field>
-        <Field name="productType" v-slot="{ value, errorMessage, field }">
+        <Field name="product_type" v-slot="{ value, errorMessage, field }">
           <q-input
             outlined
             label="Add product type for new product"
@@ -105,23 +105,46 @@
             :error="!!errorMessage"
           />
         </Field>
-        <q-btn class="full-width" color="primary" type="submit">Create</q-btn>
+        <q-btn class="full-width" color="primary" type="submit">{{
+          isUpdate ? "Update" : "Create"
+        }}</q-btn>
       </Form>
     </q-card>
   </q-dialog>
 </template>
 
 <script lang="ts">
-import { defineComponent, markRaw } from "vue";
+import { defineComponent, markRaw, type PropType } from "vue";
 import { Form, Field } from "vee-validate";
 import * as yup from "yup";
-import type { AddNewProductFormState } from "../entities/index";
+import type { ProductFormState } from "../entities/index";
+import type { Product } from "@/core/models/Product";
 
 export default defineComponent({
   components: {
     // eslint-disable-next-line vue/no-reserved-component-names
     Form,
     Field,
+  },
+  props: {
+    opened: {
+      required: true,
+      type: Boolean,
+    },
+    changingProduct: {
+      required: false,
+      type: Object as PropType<Product>,
+    },
+    isUpdate: {
+      required: false,
+      type: Boolean,
+    },
+  },
+  emits: {
+    changeVisibility(value: boolean) {
+      return true;
+    },
+    formSubmit: (values: ProductFormState) => true,
   },
   data() {
     return {
@@ -130,37 +153,16 @@ export default defineComponent({
           name: yup.string().required(),
           group: yup.string(),
           shop: yup.string().required(),
-          productType: yup.string(),
+          product_type: yup.string(),
           price: yup.number(),
           quantity: yup.number(),
           status: yup.string(),
         })
       ),
-      formState: {
-        name: "",
-        group: "",
-        shop: "",
-        productType: "",
-        price: 0,
-        quantity: 0,
-        status: "",
-      },
     };
   },
-  props: {
-    opened: {
-      required: true,
-      type: Boolean,
-    },
-  },
-  emits: {
-    changeVisibility(value: boolean) {
-      return true;
-    },
-    formSubmit: (values: AddNewProductFormState) => true,
-  },
   methods: {
-    onFormSubmit(values: AddNewProductFormState) {
+    onFormSubmit(values: ProductFormState) {
       this.$emit("formSubmit", values);
     },
   },
@@ -172,6 +174,18 @@ export default defineComponent({
       get() {
         return this.opened;
       },
+    },
+
+    initialsValue() {
+      return {
+        name: this.$props.changingProduct?.name ?? "",
+        group: this.$props.changingProduct?.group ?? "",
+        shop: this.$props.changingProduct?.shop ?? "",
+        product_type: this.$props.changingProduct?.product_type ?? "",
+        price: this.$props.changingProduct?.price ?? 0,
+        quantity: this.$props.changingProduct?.quantity ?? 0,
+        status: this.$props.changingProduct?.status ?? "",
+      };
     },
   },
 });
