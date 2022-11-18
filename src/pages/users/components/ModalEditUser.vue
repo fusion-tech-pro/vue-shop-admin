@@ -1,12 +1,13 @@
 <script lang="ts">
+import { defineComponent, type PropType } from "vue";
 import { imageDefault } from "../assetsData/usersData";
 
-export default {
+export default defineComponent({
   props: {
     readonly: Boolean,
     show: Boolean,
     rowModal: {
-      type: Object,
+      type: Object as PropType<{ avatar: string; name: string; email: string }>,
       default() {
         return { avatar: imageDefault, name: "", email: "" };
       },
@@ -14,24 +15,44 @@ export default {
   },
   emits: ["close", "addUser"],
 
-  beforeUpdate() {
-    this.avatar = this.$props.rowModal.avatar
-      ? this.$props.rowModal.avatar
-      : imageDefault;
-    this.name = this.$props.rowModal.name;
-    this.email = this.$props.rowModal.email;
-  },
-
   data() {
     return {
       avatar: this.$props.rowModal.avatar,
       name: this.$props.rowModal.name,
       email: this.$props.rowModal.email,
-      selected: "",
-      prefix: "",
+      someValueAvatar: null as File | null,
+      src: this.$props.rowModal.avatar,
     };
   },
 
+  watch: {
+    show(value) {
+      if (!value) {
+        return;
+      }
+      this.name = this.$props.rowModal.name;
+      this.email = this.$props.rowModal.email;
+      this.src = this.$props.rowModal.avatar
+        ? this.$props.rowModal.avatar
+        : imageDefault;
+    },
+    someValueAvatar: {
+      handler(newVal: File | null) {
+        if (newVal) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            if (typeof e.target?.result !== "string") {
+              return;
+            }
+            this.src = e.target?.result;
+          };
+
+          reader.readAsDataURL(newVal);
+        }
+      },
+      deep: true,
+    },
+  },
   methods: {
     update() {
       if (this.hasValidInput()) {
@@ -47,8 +68,15 @@ export default {
         /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
       return emailPattern.test(this.email) || "Invalid email";
     },
+    onFileChage(ev: Event) {
+      const elem = ev.target as HTMLInputElement;
+      if (!elem.files) return;
+      console.log("this.someValueAvata", elem.files[0]);
+
+      this.someValueAvatar = elem.files[0];
+    },
   },
-};
+});
 </script>
 
 <template>
@@ -62,9 +90,15 @@ export default {
 
           <div class="row full-width justify-center">
             <q-avatar size="150px">
-              <q-file standout v-model="avatar" accept=".jpg,.png">
-                <img style="height: 150px; max-width: 150px" :src="avatar" />
-              </q-file>
+              <label>
+                <img style="height: 150px; max-width: 150px" :src="src" />
+                <input
+                  type="file"
+                  accept=".jpg,.png"
+                  @change="onFileChage"
+                  :style="{ display: 'none' }"
+                />
+              </label>
             </q-avatar>
           </div>
 
@@ -90,10 +124,16 @@ export default {
             /></label>
           </div>
           <div class="row full-width justify-center">
-            <button class="modal-default-button" @click="$emit('close')">
+            <q-btn
+              class="modal-default-button"
+              color="negative"
+              @click="$emit('close')"
+            >
               Cancel
-            </button>
-            <button class="modal-default-button" @click="update">OK</button>
+            </q-btn>
+            <q-btn class="modal-default-button" color="primary" @click="update"
+              >OK</q-btn
+            >
           </div>
         </div>
       </div>

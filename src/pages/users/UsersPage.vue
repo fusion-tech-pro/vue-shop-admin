@@ -5,7 +5,7 @@ import ModalEditUser from "./components/ModalEditUser.vue";
 interface rowType {
   name: string;
   email: string;
-  avatar?: string;
+  avatar: string;
 }
 
 export default {
@@ -20,10 +20,9 @@ export default {
       search: "",
       columns: columns,
       rows: rows,
-      row: { name: "", email: "" },
+      row: { avatar: "", name: "", email: "" },
       headerModal: "",
       indexOfEdit: 0,
-      // myAvatar: null,
     };
   },
   computed: {
@@ -59,7 +58,7 @@ export default {
     },
 
     onEdit(row: rowType | undefined) {
-      this.row = row ? row : { name: "", email: "" };
+      this.row = row ? row : { avatar: "", name: "", email: "" };
       this.indexOfEdit = row ? this.rows.indexOf(row) : this.rows.length++;
       this.headerModal = !row ? "Add User" : "Edit User";
       this.showModal = true;
@@ -77,19 +76,19 @@ export default {
 </script>
 
 <template>
-  <!-- <Teleport to="body"> -->
-  <ModalEditUser
-    :rowModal="row"
-    :show="showModal"
-    :readonly="headerModal === 'Edit User'"
-    @addUser="updateUser"
-    @close="showModal = false"
-  >
-    <template #header>
-      <h3>{{ headerModal }}</h3>
-    </template>
-  </ModalEditUser>
-  <!-- </Teleport> -->
+  <Teleport to="body">
+    <ModalEditUser
+      :rowModal="row"
+      :show="showModal"
+      :readonly="headerModal === 'Edit User'"
+      @addUser="updateUser"
+      @close="showModal = false"
+    >
+      <template #header>
+        <h3>{{ headerModal }}</h3>
+      </template>
+    </ModalEditUser>
+  </Teleport>
 
   <div>Hello from Users!</div>
   <div class="q-pa-md">
@@ -129,11 +128,7 @@ export default {
       <template v-slot:body-cell-avatar="props">
         <q-td :props="props">
           <q-avatar>
-            <!-- <q-file standout v-model="myAvatar" accept=".jpg,.png"> -->
-            <!-- <template v-slot:append> -->
             <q-img :src="props.row.avatar ? props.row.avatar : imageAlt" />
-            <!-- </template> -->
-            <!-- </q-file> -->
           </q-avatar>
         </q-td>
       </template>
