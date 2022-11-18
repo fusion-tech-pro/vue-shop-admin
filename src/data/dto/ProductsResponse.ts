@@ -7,7 +7,7 @@ export interface ProductsResponse {
   price?: number;
   quantity?: number;
   status?: string;
-  updated_at: string;
-  created_at: string;
+  updated_at?: string;
+  created_at?: string;
   id: number;
 }
