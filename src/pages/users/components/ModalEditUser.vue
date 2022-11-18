@@ -71,8 +71,6 @@ export default defineComponent({
     onFileChage(ev: Event) {
       const elem = ev.target as HTMLInputElement;
       if (!elem.files) return;
-      console.log("this.someValueAvata", elem.files[0]);
-
       this.someValueAvatar = elem.files[0];
     },
   },
