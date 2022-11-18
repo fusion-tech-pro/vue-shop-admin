@@ -21,6 +21,14 @@
               @click="toggleEditProductModal(true, props.row)"
               :icon="'add'"
             />
+            <q-btn
+              size="sm"
+              color="accent"
+              round
+              dense
+              @click="removeProduct(props.row.id)"
+              :icon="'remove'"
+            />
           </q-td>
           <q-td v-for="col in props.cols" :key="col.name" :props="props">
             {{ col.value }}
@@ -48,6 +56,7 @@ import AddProductModal from "./AddProductModal.vue";
 import { useProductsStore } from "@/stores/products";
 
 const columns: QTableProps["columns"] = [
+  { name: "actions", label: "Actions", field: "actions" },
   {
     name: "image",
     required: true,
@@ -131,6 +140,9 @@ export default defineComponent({
         id: this.selectedProduct.id,
       });
       this.toggleEditProductModal(false);
+    },
+    removeProduct(id: number) {
+      this.productsStore.removeProduct(id);
     },
   },
 });

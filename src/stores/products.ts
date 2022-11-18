@@ -34,7 +34,7 @@ export const useProductsStore = defineStore("products", {
       this.products = newArr;
     },
     changeProduct(data: Product) {
-      const changedProducts = this.products.map((product) => {
+      const changedProducts = this.products!.map((product) => {
         if (product.id === data.id) {
           return {
             ...product,
@@ -52,6 +52,12 @@ export const useProductsStore = defineStore("products", {
         return product;
       });
       this.products = changedProducts;
+    },
+    removeProduct(id: number) {
+      const filteredProducts = this.products!.filter(
+        (product) => product.id !== id
+      );
+      this.products = filteredProducts;
     },
   },
 });
