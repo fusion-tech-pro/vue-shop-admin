@@ -7,7 +7,11 @@
       type="text"
       class="q-mb-sm"
       v-model.trim="searchProductText"
-    />
+    >
+      <template v-slot:prepend>
+        <q-icon name="search" color="grey" />
+      </template>
+    </q-input>
     <q-btn
       color="white"
       text-color="primary"
