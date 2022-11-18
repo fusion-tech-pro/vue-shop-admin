@@ -51,7 +51,7 @@
         <q-select
           outlined
           v-model.trim="searchGroupText"
-          :options="options"
+          :options="groupOptions"
           label="Filter by Group"
           bg-color="white"
           dense
@@ -62,7 +62,7 @@
         <q-select
           outlined
           v-model.trim="searchShopText"
-          :options="options"
+          :options="shopOptions"
           label="Filter by Shop"
           bg-color="white"
           dense
@@ -81,11 +81,11 @@
 </template>
 
 <script lang="ts">
-const options = [1, 2, 3, 5, 5];
 import type { Product } from "@/core/models/Product";
 import type { ProductFormState } from "./entities/index";
 import { useProductsStore } from "@/stores/products";
 import { defineComponent } from "vue";
+import { groupOptions, shopOptions } from "./assetsData";
 import AddProductModal from "./components/AddProductModal.vue";
 import ProductsTable from "./components/ProductsTable.vue";
 
@@ -105,7 +105,8 @@ export default defineComponent({
       searchShopText: "",
       isFiltersOpen: false,
       isAddProductModal: false,
-      options: options,
+      groupOptions,
+      shopOptions,
     };
   },
   methods: {
@@ -128,13 +129,13 @@ export default defineComponent({
   },
   computed: {
     filteredProducts() {
-      if (this.searchGroupText.length > 0) {
+      if (this.searchGroupText) {
         return this.productsStore?.products?.filter((product) =>
-          product.name
-            .toLowerCase()
+          product
+            ?.group!.toLowerCase()
             .includes(this.searchGroupText.toLowerCase())
         ) as Array<Product>;
-      } else if (this.searchShopText.length > 0) {
+      } else if (this.searchShopText) {
         return this.productsStore?.products?.filter((product) =>
           product.shop
             ?.toLowerCase()
