@@ -1,4 +1,4 @@
-export type AddNewProductFormState = {
+export type ProductFormState = {
   image?: string;
   name: string;
   group?: string;

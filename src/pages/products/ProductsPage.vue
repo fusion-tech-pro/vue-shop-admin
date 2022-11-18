@@ -54,7 +54,7 @@
 
 <script lang="ts">
 import type { Product } from "@/core/models/Product";
-import type { AddNewProductFormState } from "./entities/index";
+import type { ProductFormState } from "./entities/index";
 import { useProductsStore } from "@/stores/products";
 import { defineComponent } from "vue";
 import AddProductModal from "./components/AddProductModal.vue";
@@ -85,7 +85,7 @@ export default defineComponent({
     setModalVisibleStatus(status: boolean) {
       this.isAddProductModal = status;
     },
-    onCreateNewProduct(values: AddNewProductFormState) {
+    onCreateNewProduct(values: ProductFormState) {
       this.productsStore.addNewProduct({
         ...values,
         image: "",
