@@ -91,6 +91,7 @@ export default defineComponent({
         image: "",
         created_at: "n/a",
         updated_at: "n/a",
+        id: Math.floor(Math.random() * 100),
       });
       this.setModalVisibleStatus(false);
     },
