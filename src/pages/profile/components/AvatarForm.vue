@@ -33,14 +33,12 @@
           <div v-if="previewImg" class="row q-mt-sm">
             <q-avatar rounded size="85px">
               <q-img :src="previewImg" spinner-color="green" />
-              <q-badge
-                class="cursor-pointer bg-white delete-badge"
-                outline
-                rounded
-                label="x"
-                floating
+              <div
+                class="q-badge q-badge--outline q-badge--floating q-badge--rounded cursor-pointer bg-white delete-badge no-padding row flex-center"
                 @click="removeAvatar"
-              />
+              >
+                &#215;
+              </div>
             </q-avatar>
           </div>
           <input
@@ -180,5 +178,7 @@ export default defineComponent({
 
 .delete-badge {
   color: $primary;
+  width: 18px;
+  height: 18px;
 }
 </style>
