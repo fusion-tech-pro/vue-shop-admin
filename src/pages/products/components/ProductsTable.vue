@@ -8,25 +8,54 @@
           </q-th>
         </q-tr>
       </template>
-      <template v-slot:body-cell-actions="props">
-        <q-td :props="props">
-          <q-btn
-            size="sm"
-            color="primary"
-            flat
-            dense
-            @click="toggleEditProductModal(true, props.row)"
-            icon="ion-create"
-          />
-          <q-btn
-            size="sm"
-            color="red"
-            flat
-            dense
-            @click="removeProduct(props.row.id)"
-            icon="ion-trash"
-          />
-        </q-td>
+
+      <template v-slot:body="props">
+        <q-tr :props="props">
+          <q-td key="image" :props="props">
+            {{ props.row.image }}
+          </q-td>
+          <q-td key="name" :props="props">
+            {{ props.row.name }}
+          </q-td>
+          <q-td key="group" :props="props">
+            {{ props.row.group }}
+          </q-td>
+          <q-td key="shop" :props="props">
+            {{ props.row.shop }}
+          </q-td>
+          <q-td key="productType" :props="props">
+            {{ props.row.product_type }}
+          </q-td>
+          <q-td key="price" :props="props">
+            {{ props.row.price }}
+          </q-td>
+          <q-td key="quantity" :props="props">
+            {{ props.row.quantity }}
+          </q-td>
+          <q-td key="status" :props="props">
+            <q-badge color="primary">
+              {{ props.row.status }}
+            </q-badge>
+          </q-td>
+          <q-td key="actions" :props="props">
+            <q-btn
+              size="sm"
+              color="primary"
+              flat
+              dense
+              @click="toggleEditProductModal(true, props.row)"
+              icon="ion-create"
+            />
+            <q-btn
+              size="sm"
+              color="red"
+              flat
+              dense
+              @click="removeProduct(props.row.id)"
+              icon="ion-trash"
+            />
+          </q-td>
+        </q-tr>
       </template>
     </q-table>
   </div>
@@ -94,7 +123,7 @@ const columns: QTableProps["columns"] = [
     label: "Status",
     field: "status",
   },
-  { name: "actions", label: "Actions", field: "id" },
+  { name: "actions", label: "Actions", field: "id", align: "right" },
 ];
 
 export default defineComponent({
