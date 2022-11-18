@@ -1,4 +1,4 @@
-import type { Product } from "@/core/models/product";
+import type { Product } from "@/core/models/Product";
 import { productsSource } from "@/data/productsSource";
 import { defineStore } from "pinia";
 
@@ -13,9 +13,8 @@ export const useProductsStore = defineStore("products", {
     };
   },
   getters: {
-    getProducts: (state: ProductStore): Array<Product> => {
-      return state.products;
-    },
+    getProducts: (state: ProductStore): Array<Product> =>
+      state.products as Product[],
   },
   actions: {
     async fetchProducts() {
