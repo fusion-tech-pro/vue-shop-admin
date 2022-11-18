@@ -28,15 +28,30 @@ export const useProductsStore = defineStore("products", {
       }
     },
     addNewProduct(data: Product) {
-      // Need change to call API request when it will be done
-      try {
-        const newArr = this.products as Product[];
-        newArr.push(data);
-        this.products = newArr;
-      } catch (err) {
-        console.log("Error is:", err);
-        this.products = null;
-      }
+      // TODO Need change to call API request when it will be done
+      const newArr = this.products as Product[];
+      newArr.push(data);
+      this.products = newArr;
+    },
+    changeProduct(data: Product) {
+      const changedProducts = this.products.map((product) => {
+        if (product.id === data.id) {
+          return {
+            ...product,
+            image: data.image,
+            name: data.name,
+            group: data.group,
+            shop: data.shop,
+            product_type: data.product_type,
+            price: data.price,
+            quantity: data.quantity,
+            status: data.status,
+            id: data.id,
+          };
+        }
+        return product;
+      });
+      this.products = changedProducts;
     },
   },
 });
