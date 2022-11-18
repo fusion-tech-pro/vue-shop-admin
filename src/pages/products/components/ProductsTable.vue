@@ -3,37 +3,30 @@
     <q-table :rows="productsRow" :columns="columns" row-key="name">
       <template v-slot:header="props">
         <q-tr :props="props">
-          <q-th auto-width />
           <q-th v-for="col in props.cols" :key="col.name" :props="props">
             {{ col.label }}
           </q-th>
         </q-tr>
       </template>
-
-      <template v-slot:body="props">
-        <q-tr :props="props">
-          <q-td auto-width>
-            <q-btn
-              size="sm"
-              color="accent"
-              round
-              dense
-              @click="toggleEditProductModal(true, props.row)"
-              :icon="'add'"
-            />
-            <q-btn
-              size="sm"
-              color="accent"
-              round
-              dense
-              @click="removeProduct(props.row.id)"
-              :icon="'remove'"
-            />
-          </q-td>
-          <q-td v-for="col in props.cols" :key="col.name" :props="props">
-            {{ col.value }}
-          </q-td>
-        </q-tr>
+      <template v-slot:body-cell-actions="props">
+        <q-td :props="props">
+          <q-btn
+            size="sm"
+            color="primary"
+            flat
+            dense
+            @click="toggleEditProductModal(true, props.row)"
+            icon="ion-create"
+          />
+          <q-btn
+            size="sm"
+            color="red"
+            flat
+            dense
+            @click="removeProduct(props.row.id)"
+            icon="ion-trash"
+          />
+        </q-td>
       </template>
     </q-table>
   </div>
@@ -56,7 +49,6 @@ import AddProductModal from "./AddProductModal.vue";
 import { useProductsStore } from "@/stores/products";
 
 const columns: QTableProps["columns"] = [
-  { name: "actions", label: "Actions", field: "actions" },
   {
     name: "image",
     required: true,
@@ -102,6 +94,7 @@ const columns: QTableProps["columns"] = [
     label: "Status",
     field: "status",
   },
+  { name: "actions", label: "Actions", field: "id" },
 ];
 
 export default defineComponent({
