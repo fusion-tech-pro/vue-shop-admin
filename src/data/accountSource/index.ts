@@ -15,7 +15,9 @@ class AccountSource {
       user: {
         id: 1,
         user_name: "user",
+        avatar: "https://cdn.quasar.dev/img/avatar.png",
         email: "user@test.com",
+        contact_number: "1122334455",
         created_at: "n/a",
         updated_at: "n/a",
       },
@@ -33,7 +35,49 @@ class AccountSource {
     const response: UserResponse = {
       id: 1,
       user_name: "user",
+      avatar: "https://cdn.quasar.dev/img/avatar.png",
       email: "user@test.com",
+      contact_number: "1122334455",
+      created_at: "n/a",
+      updated_at: "n/a",
+    };
+
+    return User.fromUserDto(response);
+  }
+
+  async changePassword(
+    oldPassword: string,
+    newPassword: string
+  ): Promise<User> {
+    await sleep(0.2);
+    const response: UserResponse = {
+      id: 1,
+      user_name: "user",
+      avatar: "https://cdn.quasar.dev/img/avatar.png",
+      email: "user@test.com",
+      contact_number: "1122334455",
+      created_at: "n/a",
+      updated_at: "n/a",
+    };
+
+    return User.fromUserDto(response);
+  }
+
+  async changeMainInfo(
+    avatar: string,
+    userName: string,
+    email: string,
+    userBio: string,
+    contactNumber: string
+  ): Promise<User> {
+    await sleep(0.2);
+    const response: UserResponse = {
+      id: 1,
+      user_name: userName || "user",
+      avatar: avatar || "https://cdn.quasar.dev/img/avatar.png",
+      email: email || "user@test.com",
+      user_bio: userBio || "",
+      contact_number: contactNumber || "1122334455",
       created_at: "n/a",
       updated_at: "n/a",
     };

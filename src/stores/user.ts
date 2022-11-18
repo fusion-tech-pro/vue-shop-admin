@@ -63,5 +63,44 @@ export const useUserStore = defineStore("user", {
       tokenSource.clearStorage();
       this.user = null;
     },
+
+    async changePassword(oldPassword: string, newPassword: string) {
+      try {
+        this.loading = true;
+        this.error = null;
+        await accountSource.changePassword(oldPassword, newPassword);
+      } catch (err) {
+        console.error("Error is: ", err);
+        this.error = `${err}`;
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async changeMainInfo(
+      avatar: string,
+      userName: string,
+      email: string,
+      userBio: string,
+      contactNumber: string
+    ) {
+      try {
+        this.loading = true;
+        this.error = null;
+        const user = await accountSource.changeMainInfo(
+          avatar,
+          userName,
+          email,
+          userBio,
+          contactNumber
+        );
+        this.user = user;
+      } catch (err) {
+        console.error("Error is: ", err);
+        this.error = `${err}`;
+      } finally {
+        this.loading = false;
+      }
+    },
   },
 });

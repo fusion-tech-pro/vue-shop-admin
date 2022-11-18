@@ -7,4 +7,7 @@ export interface UserResponse {
   created_at: string;
 
   email?: string;
+  avatar?: string;
+  user_bio?: string;
+  contact_number?: string;
 }
