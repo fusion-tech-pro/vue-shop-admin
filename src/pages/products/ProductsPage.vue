@@ -1,18 +1,29 @@
 <template>
   <div class="products-page__search-bar-wrapper shadow-1">
-    <div class="products-page__search-bar">
+    <form
+      class="products-page__search-bar"
+      v-on:submit.prevent="onSubmitSearch"
+    >
       <p class="products-page__search-bar-title">Products</p>
       <q-input
         outlined
         label="Type your query and press enter"
         type="text"
         class="products-page__search-field"
+        v-model="searchProduct"
         dense
         hide-bottom-space
-        v-model.trim="searchProductText"
       >
         <template v-slot:prepend>
           <q-icon name="search" color="grey" />
+        </template>
+
+        <template v-if="searchText" v-slot:append>
+          <q-icon
+            name="cancel"
+            @click.stop.prevent="searchText = ''"
+            class="cursor-pointer"
+          />
         </template>
       </q-input>
       <q-btn
@@ -41,7 +52,7 @@
         flat
         @click="isAddProductModal = true"
       />
-    </div>
+    </form>
     <div
       v-if="isFiltersOpen"
       class="q-pt-md q-mt-md products-page__filters-wrapper"
@@ -50,23 +61,47 @@
         <label class="products-page__select-label">Filter By Group</label>
         <q-select
           outlined
-          v-model.trim="searchGroupText"
-          :options="groupOptions"
+          v-model="groupModel"
+          :options="groupOptionsRef"
+          @filter="filterGroupOptions"
+          input-debounce="0"
           label="Filter by Group"
           bg-color="white"
+          behavior="menu"
+          options-selected-class="text-primary"
           dense
-        />
+          clearable
+          use-input
+        >
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="text-grey"> No results </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
       </div>
       <div class="products-page__select-wrapper">
         <label class="products-page__select-label">Filter By Shop</label>
         <q-select
           outlined
-          v-model.trim="searchShopText"
-          :options="shopOptions"
+          v-model="shopModel"
+          :options="shopOptionsRef"
+          @filter="filterShopOptions"
+          input-debounce="0"
           label="Filter by Shop"
           bg-color="white"
+          behavior="menu"
+          options-selected-class="text-primary"
           dense
-        />
+          clearable
+          use-input
+        >
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="text-grey"> No results </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
       </div>
     </div>
   </div>
@@ -81,11 +116,11 @@
 </template>
 
 <script lang="ts">
-import type { Product } from "@/core/models/Product";
-import type { ProductFormState } from "./entities/index";
+import { defineComponent, ref } from "vue";
 import { useProductsStore } from "@/stores/products";
-import { defineComponent } from "vue";
 import { groupOptions, shopOptions } from "./assetsData";
+import type { ProductFormState } from "./entities/index";
+import type { Product } from "@/core/models/Product";
 import AddProductModal from "./components/AddProductModal.vue";
 import ProductsTable from "./components/ProductsTable.vue";
 
@@ -95,21 +130,68 @@ export default defineComponent({
   setup() {
     const productsStore = useProductsStore();
     productsStore.fetchProducts();
-    return { productsStore };
+
+    const shopOptionsRef = ref(shopOptions);
+    const groupOptionsRef = ref(groupOptions);
+
+    return {
+      productsStore,
+      shopOptions,
+      shopOptionsRef,
+      groupOptions,
+      groupOptionsRef,
+      shopModel: ref(null),
+      groupModel: ref(null),
+      filterShopOptions(val: string, update: Function) {
+        if (val === "") {
+          update(() => {
+            shopOptionsRef.value = shopOptions;
+          });
+          return;
+        }
+
+        update(() => {
+          const needle = val.toLowerCase();
+          shopOptionsRef.value = shopOptions.filter(
+            (v) => v.toLowerCase().indexOf(needle) > -1
+          );
+        });
+      },
+      filterGroupOptions(val: string, update: Function) {
+        if (val === "") {
+          update(() => {
+            groupOptionsRef.value = groupOptions;
+          });
+          return;
+        }
+
+        update(() => {
+          const needle = val.toLowerCase();
+          groupOptionsRef.value = groupOptions.filter(
+            (v) => v.toLowerCase().indexOf(needle) > -1
+          );
+        });
+      },
+    };
   },
 
   data() {
     return {
-      searchProductText: "",
-      searchGroupText: "",
-      searchShopText: "",
+      searchProduct: "",
+      searchText: "",
       isFiltersOpen: false,
       isAddProductModal: false,
-      groupOptions,
-      shopOptions,
     };
   },
+  watch: {
+    searchText() {
+      this.searchProduct = this.searchText;
+    },
+  },
   methods: {
+    onSubmitSearch() {
+      this.searchText = this.searchProduct;
+    },
     handleFilterClick() {
       this.isFiltersOpen = !this.isFiltersOpen;
     },
@@ -129,23 +211,21 @@ export default defineComponent({
   },
   computed: {
     filteredProducts() {
-      if (this.searchGroupText) {
+      if (this.groupModel !== null) {
         return this.productsStore?.products?.filter((product) =>
           product
             ?.group!.toLowerCase()
-            .includes(this.searchGroupText.toLowerCase())
+            .includes(String(this?.groupModel).toLowerCase())
         ) as Array<Product>;
-      } else if (this.searchShopText) {
+      } else if (this.shopModel !== null) {
         return this.productsStore?.products?.filter((product) =>
           product.shop
             ?.toLowerCase()
-            .includes(this.searchShopText.toLowerCase())
+            .includes(String(this?.shopModel).toLowerCase())
         ) as Array<Product>;
-      } else if (this.searchProductText.length > 0) {
+      } else if (this.searchText) {
         return this.productsStore?.products?.filter((product) =>
-          product.name
-            .toLowerCase()
-            .includes(this.searchProductText.toLowerCase())
+          product.name.toLowerCase().includes(this.searchText.toLowerCase())
         ) as Array<Product>;
       } else {
         return this.productsStore.products as Array<Product>;
@@ -232,5 +312,10 @@ export default defineComponent({
   margin-bottom: 12px;
   font-weight: 600;
   color: rgba(75, 85, 99, 1);
+}
+
+.products-page__select-selected {
+  color: rgba(75, 85, 99, 1);
+  background: grey;
 }
 </style>
