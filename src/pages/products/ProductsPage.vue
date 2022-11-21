@@ -201,7 +201,6 @@ export default defineComponent({
     onCreateNewProduct(values: ProductFormState) {
       this.productsStore.addNewProduct({
         ...values,
-        image: "",
         created_at: "n/a",
         updated_at: "n/a",
         id: Math.floor(Math.random() * 100),

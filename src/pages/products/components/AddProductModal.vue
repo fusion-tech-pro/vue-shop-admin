@@ -8,7 +8,9 @@
         class="column q-pa-md"
       >
         <div class="row justify-between">
-          <q-card-section> Add new product </q-card-section>
+          <q-card-section>
+            {{ isUpdate ? "Update current product" : "Add new product" }}
+          </q-card-section>
           <q-btn
             icon="close"
             flat
@@ -21,6 +23,21 @@
         <q-card-section class="row items-center q-pb-none">
           <q-space />
         </q-card-section>
+
+        <div class="row full-width justify-center q-mb-md">
+          <q-avatar size="150px">
+            <label>
+              <q-img height="150px" width="150px" :src="src" />
+              <input
+                type="file"
+                accept=".jpg,.png"
+                @change="onFileChange"
+                :style="{ display: 'none' }"
+              />
+            </label>
+          </q-avatar>
+        </div>
+
         <Field name="name" v-slot="{ value, errorMessage, field }">
           <q-input
             outlined
@@ -39,6 +56,7 @@
             label="Type group for new product"
             type="text"
             class="q-mb-sm"
+            @change="onFileChange"
             :model-value="value"
             v-bind="field"
             :error-message="errorMessage"
@@ -119,6 +137,7 @@ import { Form, Field } from "vee-validate";
 import * as yup from "yup";
 import type { ProductFormState } from "../entities/index";
 import type { Product } from "@/core/models/Product";
+import { noImageURL } from "../assetsData";
 
 export default defineComponent({
   components: {
@@ -148,6 +167,8 @@ export default defineComponent({
   },
   data() {
     return {
+      someValueAvatar: null as File | null,
+      src: this.$props.changingProduct?.image ?? noImageURL,
       schema: markRaw(
         yup.object({
           name: yup.string().required(),
@@ -161,9 +182,31 @@ export default defineComponent({
       ),
     };
   },
+  watch: {
+    someValueAvatar: {
+      handler(newVal: File | null) {
+        if (newVal) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            if (typeof e.target?.result !== "string") {
+              return;
+            }
+            this.src = e.target?.result;
+          };
+          reader.readAsDataURL(newVal);
+        }
+      },
+      deep: true,
+    },
+  },
   methods: {
     onFormSubmit(values: ProductFormState) {
-      this.$emit("formSubmit", values);
+      this.$emit("formSubmit", { ...values, image: this.src });
+    },
+    onFileChange(evt: Event) {
+      const elem = evt.target as HTMLInputElement;
+      if (!elem.files) return;
+      this.someValueAvatar = elem.files[0];
     },
   },
   computed: {
@@ -187,6 +230,9 @@ export default defineComponent({
         status: this.$props.changingProduct?.status ?? "",
       };
     },
+  },
+  updated() {
+    this.src = this.src = this.$props.changingProduct?.image ?? noImageURL;
   },
 });
 </script>

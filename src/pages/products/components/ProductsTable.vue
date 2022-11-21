@@ -163,7 +163,6 @@ export default defineComponent({
     onChangeCurrentProduct(changed: ProductFormState) {
       this.productsStore.changeProduct({
         ...changed,
-        image: "",
         updated_at: "",
         created_at: "",
         id: this.selectedProduct.id,
