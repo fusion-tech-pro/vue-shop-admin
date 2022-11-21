@@ -40,7 +40,7 @@
             {{ props.row.quantity }}
           </q-td>
           <q-td key="status" :props="props">
-            <q-badge color="primary">
+            <q-badge color="primary" class="q-pa-sm" rounded>
               {{ props.row.status }}
             </q-badge>
           </q-td>
@@ -146,7 +146,7 @@ export default defineComponent({
       this.editModalOpened = value;
     },
     toggleConfirmModal(value: boolean, productId?: number) {
-      this.selectedProductId = productId;
+      this.selectedProductId = productId as number;
       this.confirmModalOpened = value;
     },
     onChangeCurrentProduct(changed: ProductFormState) {
