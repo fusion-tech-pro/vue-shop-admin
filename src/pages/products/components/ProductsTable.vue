@@ -19,7 +19,14 @@
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td key="image" :props="props">
-            {{ props.row.image }}
+            <q-img
+              :src="props.row.image"
+              loading="lazy"
+              spinner-color="grey-8"
+              :ratio="1"
+              width="42px"
+              height="42px"
+            />
           </q-td>
           <q-td key="name" :props="props">
             {{ props.row.name }}

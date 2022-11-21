@@ -2,12 +2,13 @@ import { sleep } from "@/utils/common";
 import { Product } from "@/core/models/Product";
 import type { ProductsResponse } from "../dto/ProductsResponse";
 
+const mockImageURL = "https://baconmockup.com/640/360";
 class ProductsSource {
   async getProducts(): Promise<ProductsResponse[]> {
     await sleep(0.4);
     const response: ProductsResponse[] = [
       {
-        image: "",
+        image: mockImageURL,
         name: "Green Beans",
         group: "Grocery",
         shop: "Grocery Shop",
@@ -20,7 +21,7 @@ class ProductsSource {
         id: 1,
       },
       {
-        image: "",
+        image: mockImageURL,
         name: "Raymond",
         group: "Clothing",
         shop: "Clothing Shop",
@@ -33,7 +34,7 @@ class ProductsSource {
         id: 2,
       },
       {
-        image: "",
+        image: mockImageURL,
         name: "Golders",
         group: "Clothing",
         shop: "Clothing Shop",
@@ -46,7 +47,7 @@ class ProductsSource {
         id: 3,
       },
       {
-        image: "",
+        image: mockImageURL,
         name: "Givenchy Purse",
         group: "Bags",
         shop: "Bags Shop",
@@ -59,7 +60,7 @@ class ProductsSource {
         id: 4,
       },
       {
-        image: "",
+        image: mockImageURL,
         name: "Gucci Purse",
         group: "Bags",
         shop: "Bags Shop",
@@ -72,7 +73,7 @@ class ProductsSource {
         id: 5,
       },
       {
-        image: "",
+        image: mockImageURL,
         name: "Apples",
         group: "Grocery",
         shop: "Grocery Shop",
@@ -85,7 +86,7 @@ class ProductsSource {
         id: 6,
       },
       {
-        image: "",
+        image: mockImageURL,
         name: "Lollipop",
         group: "Grocery",
         shop: "Grocery Shop",
@@ -98,7 +99,7 @@ class ProductsSource {
         id: 7,
       },
       {
-        image: "",
+        image: mockImageURL,
         name: "Honeycomb",
         group: "Grocery",
         shop: "Grocery Shop",
@@ -111,7 +112,7 @@ class ProductsSource {
         id: 8,
       },
       {
-        image: "",
+        image: mockImageURL,
         name: "Donut",
         group: "Grocery",
         shop: "Grocery Shop",
@@ -124,7 +125,7 @@ class ProductsSource {
         id: 9,
       },
       {
-        image: "",
+        image: mockImageURL,
         name: "KitKat",
         group: "Grocery",
         shop: "Grocery Shop",
