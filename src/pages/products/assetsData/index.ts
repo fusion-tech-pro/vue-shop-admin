@@ -9,7 +9,7 @@ export const productColumns: QTableProps["columns"] = [
     name: "image",
     required: true,
     label: "Image",
-    align: "center",
+    align: "left",
 
     field: (row: Product) => row.image,
     format: (val: string) => `${val}`,
@@ -18,7 +18,7 @@ export const productColumns: QTableProps["columns"] = [
     name: "name",
     required: true,
     label: "Name",
-    align: "center",
+    align: "left",
 
     field: (row: Product) => row.name,
     format: (val: string) => `${val}`,
