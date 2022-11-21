@@ -1,27 +1,197 @@
+<template>
+  <Transition name="modal">
+    <div v-if="show" class="modal-mask">
+      <div class="modal-wrapper" @click="$emit('close')">
+        <div class="modal-container" @click.stop="">
+          <div class="modal-header"></div>
+
+          <div class="row full-width justify-center">
+            <q-avatar size="150px">
+              <label>
+                <img style="height: 150px; max-width: 150px" :src="src" />
+                <input
+                  type="file"
+                  accept=".jpg,.png"
+                  @change="onFileChage"
+                  :style="{ display: 'none' }"
+                />
+              </label>
+            </q-avatar>
+          </div>
+
+          <FormInput
+            @submit="(values: RowType) => onFormSubmit(values)"
+            @reset="resetForm"
+            :validation-schema="schema"
+            :initial-values="initialsValue"
+            class="q-pa-md shadow-2"
+            style="background-color: white"
+          >
+            <FieldInput
+              name="firstName"
+              v-slot="{ value, errorMessage, field }"
+            >
+              <q-input
+                dense
+                outlined
+                label="Enter First Name"
+                type="text"
+                class="q-mb-sm"
+                :model-value="value"
+                v-bind="field"
+                :error-message="errorMessage"
+                :error="!!errorMessage"
+              />
+            </FieldInput>
+            <FieldInput name="lastName" v-slot="{ value, errorMessage, field }">
+              <q-input
+                dense
+                outlined
+                label="Enter Last Name"
+                type="text"
+                class="q-mb-sm"
+                :model-value="value"
+                v-bind="field"
+                :error-message="errorMessage"
+                :error="!!errorMessage"
+              />
+            </FieldInput>
+            <FieldInput name="phone" v-slot="{ value, errorMessage, field }">
+              <q-input
+                dense
+                outlined
+                label="Enter Phone"
+                mask="(###) ### - ####"
+                class="q-mb-sm"
+                :model-value="value"
+                v-bind="field"
+                :error-message="errorMessage"
+                :error="!!errorMessage"
+              />
+            </FieldInput>
+            <FieldInput name="email" v-slot="{ value, errorMessage, field }">
+              <q-input
+                dense
+                outlined
+                label="Enter Email"
+                type="text"
+                class="q-mb-sm"
+                :model-value="value"
+                v-bind="field"
+                :error-message="errorMessage"
+                :error="!!errorMessage"
+              />
+            </FieldInput>
+            <FieldInput name="password" v-slot="{ value, errorMessage, field }">
+              <q-input
+                dense
+                outlined
+                label="Enter password"
+                :model-value="value"
+                v-bind="field"
+                class="q-mb-sm"
+                :error-message="errorMessage"
+                :error="!!errorMessage"
+                :type="isPwd ? 'password' : 'text'"
+              >
+                <template v-slot:append>
+                  <q-icon
+                    :name="isPwd ? 'visibility_off' : 'visibility'"
+                    class="cursor-pointer"
+                    @click="isPwd = !isPwd"
+                  ></q-icon>
+                </template>
+              </q-input>
+            </FieldInput>
+            <FieldInput
+              name="passwordConfirmation"
+              v-slot="{ value, errorMessage, field }"
+            >
+              <q-input
+                dense
+                outlined
+                label="Confirm password"
+                :model-value="value"
+                class="q-mb-sm"
+                v-bind="field"
+                :error-message="errorMessage"
+                :error="!!errorMessage"
+                :type="isPwd ? 'password' : 'text'"
+              >
+                <template v-slot:append>
+                  <q-icon
+                    :name="isPwd ? 'visibility_off' : 'visibility'"
+                    class="cursor-pointer"
+                    @click="isPwd = !isPwd"
+                  ></q-icon>
+                </template>
+              </q-input>
+            </FieldInput>
+
+            <div
+              style="justify-content: space-evenly; padding-top: 25px"
+              class="row full-width justify-center"
+            >
+              <q-btn color="negative" type="reset" @click="$emit('close')">{{
+                "Cancel"
+              }}</q-btn>
+              <q-btn color="primary" type="submit">{{ "Edit User" }}</q-btn>
+            </div>
+          </FormInput>
+        </div>
+      </div>
+    </div>
+  </Transition>
+</template>
+
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 import { imageDefault } from "../assetsData/usersData";
+import * as yup from "yup";
+import { Form as FormInput, Field as FieldInput } from "vee-validate";
+import type { RowType } from "../types";
+import { useUsersStore } from "../../../stores/usersStore";
 
 export default defineComponent({
+  components: {
+    FormInput,
+    FieldInput,
+  },
   props: {
+    changingUser: { required: true, type: Object as PropType<RowType> },
+
     readonly: Boolean,
     show: Boolean,
     rowModal: {
-      type: Object as PropType<{ avatar: string; name: string; email: string }>,
-      default() {
-        return { avatar: imageDefault, name: "", email: "" };
-      },
+      required: true,
+      type: Object as PropType<RowType>,
     },
   },
   emits: ["close", "addUser"],
 
+  setup() {
+    const store = useUsersStore();
+    return {
+      store,
+    };
+  },
+
   data() {
     return {
+      isPwd: true,
       avatar: this.$props.rowModal.avatar,
-      name: this.$props.rowModal.name,
-      email: this.$props.rowModal.email,
       someValueAvatar: null as File | null,
       src: this.$props.rowModal.avatar,
+      schema: yup.object({
+        firstName: yup.string().required(),
+        lastName: yup.string(),
+        phone: yup.string(),
+        email: yup.string().email().required(),
+        password: yup
+          .string()
+          .required()
+          .min(6, "Password should be of minimum 6 characters length"),
+      }),
     };
   },
 
@@ -30,8 +200,6 @@ export default defineComponent({
       if (!value) {
         return;
       }
-      this.name = this.$props.rowModal.name;
-      this.email = this.$props.rowModal.email;
       this.src = this.$props.rowModal.avatar
         ? this.$props.rowModal.avatar
         : imageDefault;
@@ -54,19 +222,12 @@ export default defineComponent({
     },
   },
   methods: {
-    update() {
-      if (this.hasValidInput()) {
-        this.$emit("addUser", this.name, this.email);
-        this.$emit("close");
-      }
+    onFormSubmit(values: RowType) {
+      this.store.updateUser(values);
+      this.$emit("close");
     },
-    hasValidInput() {
-      return this.name.trim() && this.isValidEmail() !== "Invalid email";
-    },
-    isValidEmail() {
-      const emailPattern =
-        /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
-      return emailPattern.test(this.email) || "Invalid email";
+    resetForm() {
+      this.$router.push("/users");
     },
     onFileChage(ev: Event) {
       const elem = ev.target as HTMLInputElement;
@@ -74,70 +235,19 @@ export default defineComponent({
       this.someValueAvatar = elem.files[0];
     },
   },
+  computed: {
+    initialsValue() {
+      return {
+        firstName: this.$props.changingUser?.firstName ?? "",
+        lastName: this.$props.changingUser?.lastName ?? "",
+        email: this.$props.changingUser?.email ?? "",
+        phone: this.$props.changingUser?.phone ?? "",
+        password: this.$props.changingUser?.password ?? "",
+      };
+    },
+  },
 });
 </script>
-
-<template>
-  <Transition name="modal">
-    <div v-if="show" class="modal-mask">
-      <div class="modal-wrapper" @click="$emit('close')">
-        <div class="modal-container" @click.stop="">
-          <div class="modal-header">
-            <slot name="header">default header</slot>
-          </div>
-
-          <div class="row full-width justify-center">
-            <q-avatar size="150px">
-              <label>
-                <img style="height: 150px; max-width: 150px" :src="src" />
-                <input
-                  type="file"
-                  accept=".jpg,.png"
-                  @change="onFileChage"
-                  :style="{ display: 'none' }"
-                />
-              </label>
-            </q-avatar>
-          </div>
-
-          <div class="modal-body">
-            <label
-              >Name:
-              <q-input
-                autofocus
-                dense
-                v-model="name"
-                :rules="[(val: String) => !!val || 'Field is required']"
-            /></label>
-          </div>
-
-          <div class="modal-footer">
-            <label
-              >Email:
-              <q-input
-                :readonly="readonly"
-                dense
-                v-model="email"
-                :rules="[(val) => !!val || 'Email is missing', isValidEmail]"
-            /></label>
-          </div>
-          <div class="row full-width justify-center">
-            <q-btn
-              class="modal-default-button"
-              color="negative"
-              @click="$emit('close')"
-            >
-              Cancel
-            </q-btn>
-            <q-btn class="modal-default-button" color="primary" @click="update"
-              >OK</q-btn
-            >
-          </div>
-        </div>
-      </div>
-    </div>
-  </Transition>
-</template>
 
 <style>
 .modal-mask {
@@ -158,7 +268,7 @@ export default defineComponent({
 }
 
 .modal-container {
-  width: 300px;
+  width: 600px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;

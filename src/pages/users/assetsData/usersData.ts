@@ -1,15 +1,25 @@
-export const columns = [
+import type { QTableProps } from "quasar";
+
+export const columns: QTableProps["columns"] = [
   {
     name: "avatar",
     label: "Avatar",
+    field: "avatar",
     align: "left",
   },
   {
-    name: "name",
+    name: "firstName",
     required: true,
     align: "center",
-    label: "Name",
-    field: "name",
+    label: "First Name",
+    field: "firstName",
+    sortable: true,
+  },
+  {
+    name: "lastName",
+    align: "center",
+    label: "Last Name",
+    field: "lastName",
     sortable: true,
   },
   {
@@ -20,51 +30,87 @@ export const columns = [
     field: "email",
     sortable: true,
   },
-  { name: "actions", label: "Actions" },
+  {
+    name: "phone",
+    required: true,
+    align: "center",
+    label: "Phone",
+    field: "phone",
+    sortable: true,
+  },
+  // {
+  //   name: "password",
+  //   required: true,
+  //   align: "center",
+  //   label: "Password",
+  //   field: "password",
+  //   sortable: true,
+  // },
+  { name: "actions", label: "Actions", field: "actions" },
 ];
 
 export const rows = [
   {
     avatar: "https://cdn.quasar.dev/app-icons/icon-128x128.png",
-    name: "user1",
+    firstName: "user1",
+    lastName: "Petrov",
+    phone: "(123) 456 - 7890",
+    password: "111111",
     email: "user1@mail.com",
   },
   {
     avatar: "https://cdn.quasar.dev/app-icons/icon-128x128.png",
-    name: "user2",
+    firstName: "user2",
+    lastName: "Petrov",
+    phone: "(123) 456 - 7890",
+    password: "111111",
     email: "user2@mail.com",
   },
   {
     avatar: "",
-    name: "user3",
+    firstName: "user3",
+    lastName: "Petrov",
+    phone: "(123) 456 - 7890",
+    password: "111111",
     email: "user3@mail.com",
   },
   {
-    name: "user4",
+    firstName: "user4",
+    lastName: "Petrov",
+    phone: "(123) 456 - 7890",
+    password: "111111",
     email: "user4@mail.com",
   },
   {
-    name: "user5",
+    firstName: "user5",
     email: "user5@mail.com",
+    password: "222222",
   },
   {
-    name: "user6",
+    firstName: "user6",
+    password: "222222",
     email: "user6@mail.com",
   },
   {
-    name: "user7",
+    firstName: "user7",
+    password: "333333",
     email: "user7@mail.com",
   },
   {
-    name: "user8",
+    firstName: "user8",
+    lastName: "Userovich",
+    password: "555555",
     email: "user8@mail.com",
   },
   {
-    name: "user9",
+    firstName: "user9",
+    password: "123456",
+    phone: "(123) 456 - 7890",
     email: "user9@mail.com",
   },
   {
-    name: "user10",
+    firstName: "user10",
+    password: "123456",
     email: "user10@mail.com",
   },
 ];
