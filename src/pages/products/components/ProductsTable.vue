@@ -1,6 +1,13 @@
 <template>
   <div v-if="productsRow !== null">
-    <q-table :rows="productsRow" :columns="columns" row-key="name">
+    <q-table
+      :rows="productsRow"
+      :columns="columns"
+      v-model:pagination="pagination"
+      hide-pagination
+      row-key="name"
+      class="products-table__wrapper"
+    >
       <template v-slot:header="props">
         <q-tr :props="props">
           <q-th v-for="col in props.cols" :key="col.name" :props="props">
@@ -40,24 +47,41 @@
           <q-td key="actions" :props="props">
             <q-btn
               size="sm"
-              color="primary"
-              flat
-              dense
-              @click="toggleEditProductModal(true, props.row)"
-              icon="ion-create"
-            />
-            <q-btn
-              size="sm"
               color="red"
               flat
               dense
               @click="removeProduct(props.row.id)"
               icon="ion-trash"
             />
+            <q-btn
+              size="sm"
+              color="grey-8"
+              flat
+              dense
+              @click="toggleEditProductModal(true, props.row)"
+              icon="ion-create"
+            />
           </q-td>
         </q-tr>
       </template>
     </q-table>
+    <div class="row justify-end q-pr-sm q-mt-lg">
+      <q-pagination
+        v-model="pagination.page"
+        color="grey-7"
+        active-design="push"
+        active-color="primary"
+        active-text-color="white"
+        gutter="8px"
+        size="md"
+        direction-links
+        outline
+        push
+        :max="pagesNumber"
+        :max-pages="4"
+        :boundary-numbers="false"
+      />
+    </div>
   </div>
 
   <AddProductModal
@@ -73,7 +97,7 @@
 import type { Product } from "@/core/models/Product";
 import type { ProductFormState } from "../entities/index";
 import { productColumns } from "../assetsData";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import AddProductModal from "./AddProductModal.vue";
 import { useProductsStore } from "@/stores/products";
 
@@ -81,9 +105,16 @@ export default defineComponent({
   components: { AddProductModal },
   setup() {
     const productsStore = useProductsStore();
+    const pagination = ref({
+      sortBy: "desc",
+      descending: false,
+      page: 1,
+      rowsPerPage: 3,
+    });
 
     return {
       columns: productColumns,
+      pagination,
       productsStore,
     };
   },
@@ -118,5 +149,25 @@ export default defineComponent({
       this.productsStore.removeProduct(id);
     },
   },
+  computed: {
+    pagesNumber() {
+      return Math.ceil(this.productsRow.length / this.pagination.rowsPerPage);
+    },
+  },
 });
 </script>
+
+<style scoped lang="scss">
+.products-table__wrapper {
+  .q-table__top,
+  .q-table__bottom,
+  thead tr:first-child th {
+    background-color: rgba(229, 231, 235, 0.3);
+    white-space: nowrap;
+    padding: 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 600;
+  }
+}
+</style>
