@@ -1,13 +1,6 @@
 <template>
   <Teleport to="body">
-    <ModalEditUser
-      :rowModal="row"
-      :show="showModal"
-      :readonly="headerModal === 'Edit User'"
-      :changingUser="row"
-      @addUser="updateUser"
-      @close="showModal = false"
-    >
+    <ModalEditUser :show="showModal" @close="showModal = false">
       <template #header>
         <h3>{{ headerModal }}</h3>
       </template>
@@ -19,13 +12,23 @@
       class="q-pa-md row full-width shadow-2"
       style="background-color: white; justify-content: space-between"
     >
-      <q-btn color="primary" label="Add user" @click="createUser"></q-btn>
+      <div class="text-h5 text-weight-bold">Users</div>
 
-      <q-input dense debounce="400" color="primary" v-model="search">
-        <template v-slot:append>
-          <q-icon name="search" />
-        </template>
-      </q-input>
+      <div class="row">
+        <q-input outlined dense debounce="400" color="primary" v-model="search">
+          <template v-slot:prepend>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+
+        <q-btn
+          class="q-ml-xl"
+          color="primary"
+          label="Add user"
+          style="font-weight: bold"
+          @click="createUser"
+        ></q-btn>
+      </div>
     </div>
   </div>
 
@@ -89,6 +92,7 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
 import { columns, imageDefault } from "./assetsData/usersData";
 import ModalEditUser from "./components/ModalEditUser.vue";
 import type { RowType } from "./types";
@@ -99,7 +103,7 @@ import { useUsersStore } from "../../stores/usersStore";
 // type ReturnTest = ReturnType<Method>;
 // type ArgsTest = Parameters<Method>;
 
-export default {
+export default defineComponent({
   components: {
     ModalEditUser,
   },
@@ -187,7 +191,7 @@ export default {
       this.$router.push("/users/create");
     },
   },
-};
+});
 </script>
 
 <style scoped>

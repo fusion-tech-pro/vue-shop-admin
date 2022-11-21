@@ -19,130 +19,11 @@
             </q-avatar>
           </div>
 
-          <FormInput
-            @submit="onFormSubmit"
-            @reset="resetForm"
-            :validation-schema="schema"
-            :initial-values="initialsValue"
-            class="q-pa-md shadow-2"
-            style="background-color: white"
-          >
-            <FieldInput
-              name="firstName"
-              v-slot="{ value, errorMessage, field }"
-            >
-              <q-input
-                dense
-                outlined
-                label="Enter First Name"
-                type="text"
-                class="q-mb-sm"
-                :model-value="value"
-                v-bind="field"
-                :error-message="errorMessage"
-                :error="!!errorMessage"
-              />
-            </FieldInput>
-
-            <FieldInput name="lastName" v-slot="{ value, errorMessage, field }">
-              <q-input
-                dense
-                outlined
-                label="Enter Last Name"
-                type="text"
-                class="q-mb-sm"
-                :model-value="value"
-                v-bind="field"
-                :error-message="errorMessage"
-                :error="!!errorMessage"
-              />
-            </FieldInput>
-
-            <FieldInput name="phone" v-slot="{ value, errorMessage, field }">
-              <q-input
-                dense
-                outlined
-                label="Enter Phone"
-                mask="(###) ### - ####"
-                class="q-mb-sm"
-                :model-value="value"
-                v-bind="field"
-                :error-message="errorMessage"
-                :error="!!errorMessage"
-              />
-            </FieldInput>
-
-            <FieldInput name="email" v-slot="{ value, errorMessage, field }">
-              <q-input
-                dense
-                outlined
-                label="Enter Email"
-                type="text"
-                class="q-mb-sm"
-                :model-value="value"
-                v-bind="field"
-                :error-message="errorMessage"
-                :error="!!errorMessage"
-              />
-            </FieldInput>
-
-            <FieldInput name="password" v-slot="{ value, errorMessage, field }">
-              <q-input
-                dense
-                outlined
-                label="Enter password"
-                :model-value="value"
-                v-bind="field"
-                class="q-mb-sm"
-                :error-message="errorMessage"
-                :error="!!errorMessage"
-                :type="isPwd ? 'password' : 'text'"
-              >
-                <template v-slot:append>
-                  <q-icon
-                    :name="isPwd ? 'visibility_off' : 'visibility'"
-                    class="cursor-pointer"
-                    @click="isPwd = !isPwd"
-                  ></q-icon>
-                </template>
-              </q-input>
-            </FieldInput>
-
-            <FieldInput
-              name="passwordConfirmation"
-              v-slot="{ value, errorMessage, field }"
-            >
-              <q-input
-                dense
-                outlined
-                label="Confirm password"
-                :model-value="value"
-                class="q-mb-sm"
-                v-bind="field"
-                :error-message="errorMessage"
-                :error="!!errorMessage"
-                :type="isPwd ? 'password' : 'text'"
-              >
-                <template v-slot:append>
-                  <q-icon
-                    :name="isPwd ? 'visibility_off' : 'visibility'"
-                    class="cursor-pointer"
-                    @click="isPwd = !isPwd"
-                  ></q-icon>
-                </template>
-              </q-input>
-            </FieldInput>
-
-            <div
-              style="justify-content: space-evenly; padding-top: 25px"
-              class="row full-width justify-center"
-            >
-              <q-btn color="negative" type="reset" @click="$emit('close')">{{
-                "Cancel"
-              }}</q-btn>
-              <q-btn color="primary" type="submit">{{ "Edit User" }}</q-btn>
-            </div>
-          </FormInput>
+          <EditUserForm
+            @form-close="$emit('close')"
+            @form-submit="onFormSubmit"
+            :init-user="initialValues"
+          />
         </div>
       </div>
     </div>
@@ -150,57 +31,44 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from "vue";
+import { defineComponent } from "vue";
 import { imageDefault } from "../assetsData/usersData";
-import * as yup from "yup";
-import { Form as FormInput, Field as FieldInput } from "vee-validate";
 import type { RowType } from "../types";
 import { useUsersStore } from "../../../stores/usersStore";
+import EditUserForm from "./EditUserForm.vue";
+// import { useQuasar } from "quasar";
 
 export default defineComponent({
   components: {
-    FormInput,
-    FieldInput,
+    EditUserForm,
   },
   props: {
-    changingUser: { required: true, type: Object as PropType<RowType> },
-
-    readonly: Boolean,
     show: Boolean,
-    rowModal: {
-      required: true,
-      type: Object as PropType<RowType>,
-    },
   },
-  emits: ["close", "addUser"],
+  emits: ["close"],
 
   setup() {
     const store = useUsersStore();
+    // const $q = useQuasar();
+    // function showNotification() {
+    //   $q.notify({
+    //     message: "Jim pinged you.",
+    //     color: "purple",
+    //     position: "top-right",
+    //   });
+    // }
+
     return {
       store,
+      // showNotification,
     };
   },
 
   data() {
     return {
       isPwd: true,
-      avatar: this.$props.rowModal.avatar,
       someValueAvatar: null as File | null,
-      src: this.$props.rowModal.avatar,
-      schema: yup.object({
-        firstName: yup.string().required(),
-        lastName: yup.string(),
-        phone: yup.string(),
-        email: yup.string().email().required(),
-        password: yup
-          .string()
-          .required()
-          .min(6, "Password should be of minimum 6 characters length"),
-        passwordConfirmation: yup
-          .string()
-          .required()
-          .oneOf([yup.ref("password"), null], "Passwords must match"),
-      }),
+      src: "",
     };
   },
 
@@ -209,9 +77,7 @@ export default defineComponent({
       if (!value) {
         return;
       }
-      this.src = this.$props.rowModal.avatar
-        ? this.$props.rowModal.avatar
-        : imageDefault;
+      this.src = this.store.rows[this.store.indexOfEdit].avatar ?? imageDefault;
     },
 
     someValueAvatar: {
@@ -234,6 +100,12 @@ export default defineComponent({
 
   methods: {
     onFormSubmit(values: RowType) {
+      // this.showNotification();
+      // this.$q.notify({
+      //   message: "Jim pinged you.",
+      //   color: "purple",
+      //   position: "top-right",
+      // });
       this.store.updateUser(values);
       this.$emit("close");
     },
@@ -250,14 +122,14 @@ export default defineComponent({
   },
 
   computed: {
-    initialsValue() {
+    initialValues() {
       return {
-        firstName: this.$props.changingUser?.firstName ?? "",
-        lastName: this.$props.changingUser?.lastName ?? "",
-        email: this.$props.changingUser?.email ?? "",
-        phone: this.$props.changingUser?.phone ?? "",
-        password: this.$props.changingUser?.password ?? "",
-        passwordConfirmation: this.$props.changingUser?.password ?? "",
+        firstName: this.store.rows[this.store.indexOfEdit].firstName,
+        lastName: this.store.rows[this.store.indexOfEdit].lastName,
+        email: this.store.rows[this.store.indexOfEdit].email,
+        phone: this.store.rows[this.store.indexOfEdit].phone,
+        password: this.store.rows[this.store.indexOfEdit].password,
+        passwordConfirmation: this.store.rows[this.store.indexOfEdit].password,
       };
     },
   },

@@ -19,132 +19,21 @@
         </q-avatar>
       </div>
 
-      <FormInput
-        @submit="(values: any) => onFormSubmit(values)"
-        :validation-schema="schema"
-        class="q-pa-md shadow-2"
-        style="background-color: white"
-      >
-        <FieldInput name="firstName" v-slot="{ value, errorMessage, field }">
-          <q-input
-            dense
-            outlined
-            label="Enter First Name"
-            type="text"
-            class="q-mb-sm"
-            :model-value="value"
-            v-bind="field"
-            :error-message="errorMessage"
-            :error="!!errorMessage"
-          />
-        </FieldInput>
-        <FieldInput name="lastName" v-slot="{ value, errorMessage, field }">
-          <q-input
-            dense
-            outlined
-            label="Enter Last Name"
-            type="text"
-            class="q-mb-sm"
-            :model-value="value"
-            v-bind="field"
-            :error-message="errorMessage"
-            :error="!!errorMessage"
-          />
-        </FieldInput>
-        <FieldInput name="phone" v-slot="{ value, errorMessage, field }">
-          <q-input
-            dense
-            outlined
-            label="Enter Phone"
-            mask="(###) ### - ####"
-            class="q-mb-sm"
-            :model-value="value"
-            v-bind="field"
-            :error-message="errorMessage"
-            :error="!!errorMessage"
-          />
-        </FieldInput>
-        <FieldInput name="email" v-slot="{ value, errorMessage, field }">
-          <q-input
-            dense
-            outlined
-            label="Enter Email"
-            type="text"
-            class="q-mb-sm"
-            :model-value="value"
-            v-bind="field"
-            :error-message="errorMessage"
-            :error="!!errorMessage"
-          />
-        </FieldInput>
-        <FieldInput name="password" v-slot="{ value, errorMessage, field }">
-          <q-input
-            dense
-            outlined
-            label="Enter password"
-            :model-value="value"
-            v-bind="field"
-            class="q-mb-sm"
-            :error-message="errorMessage"
-            :error="!!errorMessage"
-            :type="isPwd ? 'password' : 'text'"
-          >
-            <template v-slot:append>
-              <q-icon
-                :name="isPwd ? 'visibility_off' : 'visibility'"
-                class="cursor-pointer"
-                @click="isPwd = !isPwd"
-              ></q-icon>
-            </template>
-          </q-input>
-        </FieldInput>
-        <FieldInput
-          name="passwordConfirmation"
-          v-slot="{ value, errorMessage, field }"
-        >
-          <q-input
-            dense
-            outlined
-            label="Confirm password"
-            :model-value="value"
-            class="q-mb-sm"
-            v-bind="field"
-            :error-message="errorMessage"
-            :error="!!errorMessage"
-            :type="isPwd ? 'password' : 'text'"
-          >
-            <template v-slot:append>
-              <q-icon
-                :name="isPwd ? 'visibility_off' : 'visibility'"
-                class="cursor-pointer"
-                @click="isPwd = !isPwd"
-              ></q-icon>
-            </template>
-          </q-input>
-        </FieldInput>
-
-        <div
-          style="justify-content: space-evenly; padding-top: 25px"
-          class="row full-width justify-center"
-        >
-          <q-btn color="primary" type="submit">{{ "Create User" }}</q-btn>
-        </div>
-      </FormInput>
+      <EditUserForm @form-submit="onFormSubmit" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, markRaw } from "vue";
-import { Form as FormInput, Field as FieldInput } from "vee-validate";
 import * as yup from "yup";
 import type { RowType } from "../types";
 import { useUsersStore } from "../../../stores/usersStore";
+import EditUserForm from "./EditUserForm.vue";
 
 export default defineComponent({
   components: {
-    FormInput,
-    FieldInput,
+    EditUserForm,
   },
 
   setup() {
@@ -175,6 +64,14 @@ export default defineComponent({
             .oneOf([yup.ref("password"), null], "Passwords must match"),
         })
       ),
+      formState: {
+        firstName: "",
+        lastName: "",
+        password: "",
+        phone: "",
+        email: "",
+        passwordConfirmation: "",
+      },
     };
   },
 
@@ -200,7 +97,9 @@ export default defineComponent({
   methods: {
     onFormSubmit(values: RowType) {
       this.store.addUser({ ...values, createAt: Date.now() });
-      this.$router.push("/users");
+      this.$router.replace({
+        name: "users",
+      });
     },
 
     onFileChage(ev: Event) {
