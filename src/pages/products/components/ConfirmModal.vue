@@ -100,8 +100,6 @@ export default defineComponent({
 }
 
 .confirm-modal__subtitle {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
   line-height: 1.625;
   opacity: 0.7;
   margin-bottom: 32px;
