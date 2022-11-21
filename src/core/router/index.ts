@@ -12,6 +12,7 @@ const HomeView = () => import("@/pages/home/HomePage.vue");
 const DashboardPage = () => import("@/pages/dashboard/DashboardPage.vue");
 const UsersPage = () => import("@/pages/users/UsersPage.vue");
 const ProductsPage = () => import("@/pages/products/ProductsPage.vue");
+const OrdersPage = () => import("@/pages/orders/OrdersPage.vue");
 const EmptyView = () => import("@/pages/empty/EmptyView.vue");
 
 const router = createRouter({
@@ -38,6 +39,11 @@ const router = createRouter({
           path: "/products",
           component: ProductsPage,
           name: "products",
+        },
+        {
+          path: "/orders",
+          component: OrdersPage,
+          name: "orders",
         },
       ],
     },

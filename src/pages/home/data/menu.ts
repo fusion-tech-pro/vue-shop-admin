@@ -19,4 +19,10 @@ export const menu: MenuItem[] = [
     separator: false,
     link: "products",
   },
+  {
+    icon: "cart",
+    label: "Orders",
+    separator: false,
+    link: "orders",
+  },
 ];
