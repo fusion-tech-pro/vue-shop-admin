@@ -17,7 +17,12 @@
       </template>
 
       <template v-slot:body="props">
-        <q-tr :props="props">
+        <q-tr
+          :props="props"
+          @click="props.selected = !props.selected"
+          v-model="props.row.selected"
+          v-model:selected="selected"
+        >
           <q-td key="image" :props="props">
             <q-img
               :src="props.row.image"
@@ -40,9 +45,7 @@
           <q-td key="productType" :props="props">
             {{ props.row.product_type }}
           </q-td>
-          <q-td key="price" :props="props">
-            {{ props.row.price }}
-          </q-td>
+          <q-td key="price" :props="props"> {{ props.row.price }} $ </q-td>
           <q-td key="quantity" :props="props">
             {{ props.row.quantity }}
           </q-td>
@@ -131,6 +134,7 @@ export default defineComponent({
       columns: productColumns,
       pagination,
       productsStore,
+      selected: ref([]),
     };
   },
   data() {
