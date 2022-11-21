@@ -50,7 +50,7 @@
         no-caps
         dense
         flat
-        @click="isAddProductModal = true"
+        @click="isProductModal = true"
       />
     </form>
     <div
@@ -108,8 +108,8 @@
 
   <ProductsTable :productsRow="filteredProducts" />
 
-  <AddProductModal
-    :opened="isAddProductModal"
+  <ProductModal
+    :opened="isProductModal"
     @change-visibility="setModalVisibleStatus"
     @form-submit="onCreateNewProduct"
   />
@@ -121,11 +121,11 @@ import { useProductsStore } from "@/stores/products";
 import { groupOptions, shopOptions } from "./assetsData";
 import type { ProductFormState } from "./entities/index";
 import type { Product } from "@/core/models/Product";
-import AddProductModal from "./components/AddProductModal.vue";
+import ProductModal from "./components/ProductModal.vue";
 import ProductsTable from "./components/ProductsTable.vue";
 
 export default defineComponent({
-  components: { AddProductModal, ProductsTable },
+  components: { ProductModal, ProductsTable },
 
   setup() {
     const productsStore = useProductsStore();
@@ -180,7 +180,7 @@ export default defineComponent({
       searchProduct: "",
       searchText: "",
       isFiltersOpen: false,
-      isAddProductModal: false,
+      isProductModal: false,
     };
   },
   watch: {
@@ -196,7 +196,7 @@ export default defineComponent({
       this.isFiltersOpen = !this.isFiltersOpen;
     },
     setModalVisibleStatus(status: boolean) {
-      this.isAddProductModal = status;
+      this.isProductModal = status;
     },
     onCreateNewProduct(values: ProductFormState) {
       this.productsStore.addNewProduct({

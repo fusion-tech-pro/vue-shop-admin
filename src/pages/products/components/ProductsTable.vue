@@ -94,7 +94,7 @@
     </div>
   </div>
 
-  <AddProductModal
+  <ProductModal
     :isUpdate="true"
     :opened="editModalOpened"
     :changingProduct="selectedProduct"
@@ -115,12 +115,12 @@ import type { Product } from "@/core/models/Product";
 import type { ProductFormState } from "../entities/index";
 import { productColumns } from "../assetsData";
 import { defineComponent, ref } from "vue";
-import AddProductModal from "./AddProductModal.vue";
+import ProductModal from "./ProductModal.vue";
 import ConfirmModal from "./ConfirmModal.vue";
 import { useProductsStore } from "@/stores/products";
 
 export default defineComponent({
-  components: { AddProductModal, ConfirmModal },
+  components: { ProductModal, ConfirmModal },
   setup() {
     const productsStore = useProductsStore();
     const pagination = ref({
