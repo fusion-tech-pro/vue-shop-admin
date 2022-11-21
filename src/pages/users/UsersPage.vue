@@ -60,6 +60,12 @@
         </q-td>
       </template>
 
+      <template v-slot:body-cell-createAt="props">
+        <q-td :props="props">
+          {{ props.value && new Date(props.value).toLocaleString() }}
+        </q-td>
+      </template>
+
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
           <q-btn
@@ -87,6 +93,7 @@ import { columns, imageDefault } from "./assetsData/usersData";
 import ModalEditUser from "./components/ModalEditUser.vue";
 import type { RowType } from "./types";
 import { useUsersStore } from "../../stores/usersStore";
+
 export default {
   components: {
     ModalEditUser,
@@ -101,10 +108,8 @@ export default {
     return {
       showModal: false,
       imageAlt: imageDefault,
-      // lowerSearch: "",
       search: "",
       columns: columns,
-      // rows: rows as RowType[],
       row: {
         avatar: "",
         firstName: "",
@@ -112,7 +117,6 @@ export default {
         password: "123456",
       } as RowType,
       headerModal: "",
-      // indexOfEdit: 0,
     };
   },
   computed: {
@@ -123,15 +127,22 @@ export default {
     },
   },
   methods: {
-    customFilter(rowsUsers: RowType[], terms: { search: String }) {
-      // Users contain the entire data
-      // terms contains whatever you have as filter
+    customFilter(rowsUsers: Readonly<RowType[]>, terms: { search: string }) {
       let lowerSearch = terms?.search ? terms.search.toLowerCase() : "";
       const filteredRows = rowsUsers.filter((row: RowType) => {
         let answer = true;
         if (lowerSearch != "") {
           answer = false;
-          let temp_values: string[] = Object.values(row);
+          let temp_values: string[] = Object.entries(row)
+            .filter(
+              (item: string[]) =>
+                item[0] === "firstName" ||
+                item[0] === "email" ||
+                item[0] === "lastName"
+            )
+            .map((item: string[]) => {
+              return item[1];
+            });
           let temp_values_lower = temp_values.map((x) => x.toLowerCase());
           for (let val = 0; val < temp_values_lower.length; val++) {
             if (temp_values_lower[val].includes(lowerSearch)) {
@@ -142,7 +153,7 @@ export default {
         }
         return answer;
       });
-      return filteredRows;
+      return Object.freeze(filteredRows);
     },
     onEdit(row: RowType) {
       this.row = row
@@ -157,7 +168,6 @@ export default {
 
     onDelete(row: RowType) {
       this.store.removeUser(row);
-      // this.store.rows.splice(this.store.rows.indexOf(row), 1);
     },
 
     updateUser(firstName: string, email: string) {

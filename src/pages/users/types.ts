@@ -5,4 +5,5 @@ export interface RowType {
   phone?: string;
   email: string;
   avatar?: string;
+  createAt?: number;
 }

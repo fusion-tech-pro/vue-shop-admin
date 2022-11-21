@@ -5,7 +5,7 @@ export const columns: QTableProps["columns"] = [
     name: "avatar",
     label: "Avatar",
     field: "avatar",
-    align: "left",
+    align: "center",
   },
   {
     name: "firstName",
@@ -38,15 +38,14 @@ export const columns: QTableProps["columns"] = [
     field: "phone",
     sortable: true,
   },
-  // {
-  //   name: "password",
-  //   required: true,
-  //   align: "center",
-  //   label: "Password",
-  //   field: "password",
-  //   sortable: true,
-  // },
-  { name: "actions", label: "Actions", field: "actions" },
+  {
+    name: "createAt",
+    align: "center",
+    label: "Create",
+    field: "createAt",
+    sortable: true,
+  },
+  { name: "actions", label: "Actions", field: "actions", align: "center" },
 ];
 
 export const rows = [
@@ -57,6 +56,7 @@ export const rows = [
     phone: "(123) 456 - 7890",
     password: "111111",
     email: "user1@mail.com",
+    createAt: 1630037978762,
   },
   {
     avatar: "https://cdn.quasar.dev/app-icons/icon-128x128.png",
@@ -65,6 +65,7 @@ export const rows = [
     phone: "(123) 456 - 7890",
     password: "111111",
     email: "user2@mail.com",
+    createAt: 1609037971762,
   },
   {
     avatar: "",
@@ -73,6 +74,7 @@ export const rows = [
     phone: "(123) 456 - 7890",
     password: "111111",
     email: "user3@mail.com",
+    createAt: 1661107978762,
   },
   {
     firstName: "user4",
@@ -101,6 +103,7 @@ export const rows = [
     lastName: "Userovich",
     password: "555555",
     email: "user8@mail.com",
+    createAt: 1639137978762,
   },
   {
     firstName: "user9",

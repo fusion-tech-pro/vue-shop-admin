@@ -20,7 +20,7 @@
           </div>
 
           <FormInput
-            @submit="(values: RowType) => onFormSubmit(values)"
+            @submit="onFormSubmit"
             @reset="resetForm"
             :validation-schema="schema"
             :initial-values="initialsValue"

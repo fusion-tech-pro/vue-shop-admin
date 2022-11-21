@@ -200,7 +200,7 @@ export default defineComponent({
 
   methods: {
     onFormSubmit(values: RowType) {
-      this.store.addUser(values);
+      this.store.addUser({ ...values, createAt: Date.now() });
       this.$router.push("/users");
     },
     resetForm() {},
