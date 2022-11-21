@@ -21,7 +21,6 @@
 
       <FormInput
         @submit="(values: any) => onFormSubmit(values)"
-        @reset="resetForm"
         :validation-schema="schema"
         class="q-pa-md shadow-2"
         style="background-color: white"
@@ -128,7 +127,6 @@
           style="justify-content: space-evenly; padding-top: 25px"
           class="row full-width justify-center"
         >
-          <!-- <q-btn color="negative" type="reset">{{ "Cancel" }}</q-btn> -->
           <q-btn color="primary" type="submit">{{ "Create User" }}</q-btn>
         </div>
       </FormInput>
@@ -173,6 +171,7 @@ export default defineComponent({
             .min(6, "Password should be of minimum 6 characters length"),
           passwordConfirmation: yup
             .string()
+            .required()
             .oneOf([yup.ref("password"), null], "Passwords must match"),
         })
       ),
@@ -203,7 +202,7 @@ export default defineComponent({
       this.store.addUser({ ...values, createAt: Date.now() });
       this.$router.push("/users");
     },
-    resetForm() {},
+
     onFileChage(ev: Event) {
       const elem = ev.target as HTMLInputElement;
       if (!elem.files) return;

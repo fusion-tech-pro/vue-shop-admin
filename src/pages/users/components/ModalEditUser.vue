@@ -43,6 +43,7 @@
                 :error="!!errorMessage"
               />
             </FieldInput>
+
             <FieldInput name="lastName" v-slot="{ value, errorMessage, field }">
               <q-input
                 dense
@@ -56,6 +57,7 @@
                 :error="!!errorMessage"
               />
             </FieldInput>
+
             <FieldInput name="phone" v-slot="{ value, errorMessage, field }">
               <q-input
                 dense
@@ -69,6 +71,7 @@
                 :error="!!errorMessage"
               />
             </FieldInput>
+
             <FieldInput name="email" v-slot="{ value, errorMessage, field }">
               <q-input
                 dense
@@ -82,6 +85,7 @@
                 :error="!!errorMessage"
               />
             </FieldInput>
+
             <FieldInput name="password" v-slot="{ value, errorMessage, field }">
               <q-input
                 dense
@@ -103,6 +107,7 @@
                 </template>
               </q-input>
             </FieldInput>
+
             <FieldInput
               name="passwordConfirmation"
               v-slot="{ value, errorMessage, field }"
@@ -191,6 +196,10 @@ export default defineComponent({
           .string()
           .required()
           .min(6, "Password should be of minimum 6 characters length"),
+        passwordConfirmation: yup
+          .string()
+          .required()
+          .oneOf([yup.ref("password"), null], "Passwords must match"),
       }),
     };
   },
@@ -204,6 +213,7 @@ export default defineComponent({
         ? this.$props.rowModal.avatar
         : imageDefault;
     },
+
     someValueAvatar: {
       handler(newVal: File | null) {
         if (newVal) {
@@ -221,20 +231,24 @@ export default defineComponent({
       deep: true,
     },
   },
+
   methods: {
     onFormSubmit(values: RowType) {
       this.store.updateUser(values);
       this.$emit("close");
     },
+
     resetForm() {
       this.$router.push("/users");
     },
+
     onFileChage(ev: Event) {
       const elem = ev.target as HTMLInputElement;
       if (!elem.files) return;
       this.someValueAvatar = elem.files[0];
     },
   },
+
   computed: {
     initialsValue() {
       return {
@@ -243,6 +257,7 @@ export default defineComponent({
         email: this.$props.changingUser?.email ?? "",
         phone: this.$props.changingUser?.phone ?? "",
         password: this.$props.changingUser?.password ?? "",
+        passwordConfirmation: this.$props.changingUser?.password ?? "",
       };
     },
   },

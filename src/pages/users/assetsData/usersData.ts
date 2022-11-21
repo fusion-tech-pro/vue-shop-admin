@@ -68,7 +68,7 @@ export const rows = [
     createAt: 1609037971762,
   },
   {
-    avatar: "",
+    avatar: "https://cdn.quasar.dev/img/avatar.png",
     firstName: "user3",
     lastName: "Petrov",
     phone: "(123) 456 - 7890",
@@ -118,4 +118,5 @@ export const rows = [
   },
 ];
 
-export const imageDefault = "https://cdn.quasar.dev/img/avatar.png";
+export const imageDefault =
+  "https://st4.depositphotos.com/4329009/19956/v/450/depositphotos_199564354-stock-illustration-creative-vector-illustration-of-default.jpg";

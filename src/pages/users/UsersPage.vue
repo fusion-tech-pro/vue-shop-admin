@@ -93,6 +93,11 @@ import { columns, imageDefault } from "./assetsData/usersData";
 import ModalEditUser from "./components/ModalEditUser.vue";
 import type { RowType } from "./types";
 import { useUsersStore } from "../../stores/usersStore";
+// import type { QTableProps } from "quasar";
+
+// type Method = Exclude<QTableProps["filterMethod"], undefined>;
+// type ReturnTest = ReturnType<Method>;
+// type ArgsTest = Parameters<Method>;
 
 export default {
   components: {
@@ -128,6 +133,7 @@ export default {
   },
   methods: {
     customFilter(rowsUsers: Readonly<RowType[]>, terms: { search: string }) {
+      // customFilter(rowsUsers: ArgsTest[0], terms: ArgsTest[1]): ReturnTest {
       let lowerSearch = terms?.search ? terms.search.toLowerCase() : "";
       const filteredRows = rowsUsers.filter((row: RowType) => {
         let answer = true;
