@@ -50,7 +50,7 @@
               color="red"
               flat
               dense
-              @click="removeProduct(props.row.id)"
+              @click="toggleConfirmModal(true, props.row.id)"
               icon="ion-trash"
             />
             <q-btn
@@ -91,6 +91,13 @@
     @change-visibility="toggleEditProductModal"
     @form-submit="onChangeCurrentProduct"
   />
+
+  <ConfirmModal
+    :opened="confirmModalOpened"
+    :productId="selectedProductId"
+    @change-visibility="toggleConfirmModal"
+    @remove="removeProduct"
+  />
 </template>
 
 <script lang="ts">
@@ -99,10 +106,11 @@ import type { ProductFormState } from "../entities/index";
 import { productColumns } from "../assetsData";
 import { defineComponent, ref } from "vue";
 import AddProductModal from "./AddProductModal.vue";
+import ConfirmModal from "./ConfirmModal.vue";
 import { useProductsStore } from "@/stores/products";
 
 export default defineComponent({
-  components: { AddProductModal },
+  components: { AddProductModal, ConfirmModal },
   setup() {
     const productsStore = useProductsStore();
     const pagination = ref({
@@ -121,7 +129,9 @@ export default defineComponent({
   data() {
     return {
       selectedProduct: {} as Product,
+      selectedProductId: 0,
       editModalOpened: false,
+      confirmModalOpened: false,
     };
   },
   props: {
@@ -135,6 +145,10 @@ export default defineComponent({
       this.selectedProduct = curProduct as Product;
       this.editModalOpened = value;
     },
+    toggleConfirmModal(value: boolean, productId?: number) {
+      this.selectedProductId = productId;
+      this.confirmModalOpened = value;
+    },
     onChangeCurrentProduct(changed: ProductFormState) {
       this.productsStore.changeProduct({
         ...changed,
@@ -147,6 +161,7 @@ export default defineComponent({
     },
     removeProduct(id: number) {
       this.productsStore.removeProduct(id);
+      this.toggleConfirmModal(false);
     },
   },
   computed: {
