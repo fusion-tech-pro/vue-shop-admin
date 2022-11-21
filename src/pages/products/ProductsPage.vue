@@ -59,49 +59,21 @@
     >
       <div class="products-page__select-wrapper">
         <label class="products-page__select-label">Filter By Group</label>
-        <q-select
-          outlined
-          v-model="groupModel"
-          :options="groupOptionsRef"
-          @filter="filterGroupOptions"
-          input-debounce="0"
-          label="Filter by Group"
-          bg-color="white"
-          behavior="menu"
-          options-selected-class="text-primary"
-          dense
-          clearable
-          use-input
-        >
-          <template v-slot:no-option>
-            <q-item>
-              <q-item-section class="text-grey"> No results </q-item-section>
-            </q-item>
-          </template>
-        </q-select>
+        <ProductFilter
+          :modelValue="groupModel"
+          :options="groupOptions"
+          :label="'Filter by Group'"
+          @getFilterValue="getFilterByGroupValue"
+        />
       </div>
       <div class="products-page__select-wrapper">
         <label class="products-page__select-label">Filter By Shop</label>
-        <q-select
-          outlined
-          v-model="shopModel"
-          :options="shopOptionsRef"
-          @filter="filterShopOptions"
-          input-debounce="0"
-          label="Filter by Shop"
-          bg-color="white"
-          behavior="menu"
-          options-selected-class="text-primary"
-          dense
-          clearable
-          use-input
-        >
-          <template v-slot:no-option>
-            <q-item>
-              <q-item-section class="text-grey"> No results </q-item-section>
-            </q-item>
-          </template>
-        </q-select>
+        <ProductFilter
+          :modelValue="shopModel"
+          :options="shopOptions"
+          :label="'Filter by Shop'"
+          @getFilterValue="getFilterByShopValue"
+        />
       </div>
     </div>
   </div>
@@ -123,55 +95,21 @@ import type { ProductFormState } from "./entities/index";
 import type { Product } from "@/core/models/Product";
 import ProductModal from "./components/ProductModal.vue";
 import ProductsTable from "./components/ProductsTable.vue";
+import ProductFilter from "./components/ProductFilter.vue";
 
 export default defineComponent({
-  components: { ProductModal, ProductsTable },
+  components: { ProductModal, ProductsTable, ProductFilter },
 
   setup() {
     const productsStore = useProductsStore();
     productsStore.fetchProducts();
 
-    const shopOptionsRef = ref(shopOptions);
-    const groupOptionsRef = ref(groupOptions);
-
     return {
       productsStore,
-      shopOptions,
-      shopOptionsRef,
       groupOptions,
-      groupOptionsRef,
+      shopOptions,
       shopModel: ref(null),
       groupModel: ref(null),
-      filterShopOptions(val: string, update: Function) {
-        if (val === "") {
-          update(() => {
-            shopOptionsRef.value = shopOptions;
-          });
-          return;
-        }
-
-        update(() => {
-          const needle = val.toLowerCase();
-          shopOptionsRef.value = shopOptions.filter(
-            (v) => v.toLowerCase().indexOf(needle) > -1
-          );
-        });
-      },
-      filterGroupOptions(val: string, update: Function) {
-        if (val === "") {
-          update(() => {
-            groupOptionsRef.value = groupOptions;
-          });
-          return;
-        }
-
-        update(() => {
-          const needle = val.toLowerCase();
-          groupOptionsRef.value = groupOptions.filter(
-            (v) => v.toLowerCase().indexOf(needle) > -1
-          );
-        });
-      },
     };
   },
 
@@ -189,6 +127,12 @@ export default defineComponent({
     },
   },
   methods: {
+    getFilterByShopValue(data: string) {
+      this.shopModel = data as any;
+    },
+    getFilterByGroupValue(data: string) {
+      this.groupModel = data as any;
+    },
     onSubmitSearch() {
       this.searchText = this.searchProduct;
     },
