@@ -97,6 +97,8 @@ import { columns, imageDefault } from "./assetsData/usersData";
 import ModalEditUser from "./components/ModalEditUser.vue";
 import type { RowType } from "./types";
 import { useUsersStore } from "@/stores/usersStore";
+import { useQuasar } from "quasar";
+
 // import type { QTableProps } from "quasar";
 
 // type Method = Exclude<QTableProps["filterMethod"], undefined>;
@@ -109,8 +111,17 @@ export default defineComponent({
   },
   setup() {
     const store = useUsersStore();
+    const $q = useQuasar();
+    function showNotification() {
+      $q.notify({
+        message: "User deleted",
+        color: "purple",
+        position: "top-right",
+      });
+    }
     return {
       store,
+      showNotification,
     };
   },
   data() {
@@ -178,6 +189,7 @@ export default defineComponent({
 
     onDelete(row: RowType) {
       this.store.removeUser(row);
+      this.showNotification();
     },
 
     updateUser(firstName: string, email: string) {
