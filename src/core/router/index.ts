@@ -9,6 +9,7 @@ import {
 const SignInPage = () => import("@/pages/signIn/SignInPage.vue");
 
 const HomeView = () => import("@/pages/home/HomePage.vue");
+const ShopsPage = () => import("@/pages/shops/ShopsPage.vue");
 const DashboardPage = () => import("@/pages/dashboard/DashboardPage.vue");
 const UsersPage = () => import("@/pages/users/UsersPage.vue");
 const ProductsPage = () => import("@/pages/products/ProductsPage.vue");
@@ -28,6 +29,11 @@ const router = createRouter({
           path: "/dashboard",
           component: DashboardPage,
           name: "dashboard",
+        },
+        {
+          path: "/shops",
+          component: ShopsPage,
+          name: "shops",
         },
         {
           path: "/users",
