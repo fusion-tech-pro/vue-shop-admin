@@ -27,9 +27,10 @@
 <script lang="ts">
 import { defineComponent, markRaw } from "vue";
 import * as yup from "yup";
-import type { RowType } from "../types";
-import { useUsersStore } from "@/stores/usersStore";
-import EditUserForm from "./EditUserForm.vue";
+import type { EdditUserType } from "./types";
+import { useUsers } from "@/stores/users";
+import EditUserForm from "./components/EditUserForm.vue";
+import { imageDefault as defaultAvatar } from "@/data/userSource/usersData";
 
 export default defineComponent({
   components: {
@@ -37,7 +38,7 @@ export default defineComponent({
   },
 
   setup() {
-    const store = useUsersStore();
+    const store = useUsers();
     return {
       store,
     };
@@ -47,7 +48,7 @@ export default defineComponent({
     return {
       someValueAvatar: null as File | null,
       isPwd: true,
-      src: "https://st4.depositphotos.com/4329009/19956/v/450/depositphotos_199564354-stock-illustration-creative-vector-illustration-of-default.jpg",
+      src: defaultAvatar,
       schema: markRaw(
         yup.object({
           firstName: yup.string().required(),
@@ -103,7 +104,7 @@ export default defineComponent({
       });
     },
 
-    onFormSubmit(values: RowType) {
+    onFormSubmit(values: EdditUserType) {
       this.store.addUser({ ...values, createAt: Date.now(), id: Date.now() });
       this.showNotification();
       this.$router.replace({

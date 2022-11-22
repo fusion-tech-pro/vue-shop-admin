@@ -32,9 +32,9 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { imageDefault } from "../assetsData/usersData";
-import type { RowType } from "../types";
-import { useUsersStore } from "@/stores/usersStore";
+import { imageDefault } from "@/data/userSource/usersData";
+import type { EdditUserType } from "../types";
+import { useUsers } from "@/stores/users";
 import EditUserForm from "./EditUserForm.vue";
 import { useQuasar } from "quasar";
 
@@ -48,7 +48,7 @@ export default defineComponent({
   emits: ["close"],
 
   setup() {
-    const store = useUsersStore();
+    const store = useUsers();
     const $q = useQuasar();
     function showNotification() {
       $q.notify({
@@ -100,9 +100,9 @@ export default defineComponent({
   },
 
   methods: {
-    onFormSubmit(values: RowType) {
+    onFormSubmit(values: EdditUserType) {
       this.showNotification();
-      this.store.updateUser({ ...values });
+      this.store.updateUser(values);
       this.$emit("close");
     },
 

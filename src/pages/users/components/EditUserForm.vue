@@ -119,7 +119,7 @@
 import { defineComponent, markRaw, type PropType } from "vue";
 import { Form as FormInput, Field as FieldInput } from "vee-validate";
 import * as yup from "yup";
-import type { RowType, FormTypeUser } from "../types";
+import type { EdditUserType, FormTypeUser } from "../types";
 
 export default defineComponent({
   components: {
@@ -128,7 +128,7 @@ export default defineComponent({
   },
 
   props: {
-    initUser: { type: Object as PropType<RowType> },
+    initUser: { type: Object as PropType<EdditUserType> },
   },
 
   emits: {

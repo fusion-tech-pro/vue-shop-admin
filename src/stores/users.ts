@@ -1,13 +1,13 @@
 import { defineStore } from "pinia";
 import { usersSource } from "@/data/userSource";
 import type { User } from "@/core/models/User";
-import type { RowType } from "@/pages/users/types";
+import type { EdditUserType } from "@/pages/users/types";
 
 interface UserStore {
   users: User[];
   indexOfEdit: number;
 }
-export const useUsersStore = defineStore("users", {
+export const useUsers = defineStore("users", {
   state: (): UserStore => {
     return {
       users: [],
@@ -36,12 +36,10 @@ export const useUsersStore = defineStore("users", {
       }
     },
 
-    updateUser(user: RowType) {
+    updateUser(user: EdditUserType) {
       if (!this.users) {
         return;
       }
-      console.log("this.indexOfEdit", this.indexOfEdit);
-
       this.users[this.indexOfEdit] = {
         ...this.users[this.indexOfEdit],
         ...user,
@@ -53,7 +51,6 @@ export const useUsersStore = defineStore("users", {
         return;
       }
       this.users.push(user);
-      console.log("this.users", this.users);
     },
   },
 });

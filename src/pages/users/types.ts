@@ -1,4 +1,4 @@
-export interface RowType {
+export interface EdditUserType {
   id?: number;
   firstName: string;
   lastName?: string;

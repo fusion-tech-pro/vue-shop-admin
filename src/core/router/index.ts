@@ -13,7 +13,7 @@ const DashboardPage = () => import("@/pages/dashboard/DashboardPage.vue");
 const UsersPage = () => import("@/pages/users/UsersPage.vue");
 const ProductsPage = () => import("@/pages/products/ProductsPage.vue");
 const EmptyView = () => import("@/pages/empty/EmptyView.vue");
-const CreateUser = () => import("@/pages/users/components/CreateUser.vue");
+const CreateUser = () => import("@/pages/users/CreateUser.vue");
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

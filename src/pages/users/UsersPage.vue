@@ -93,10 +93,10 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { columns, imageDefault } from "./assetsData/usersData";
+import { columns, imageDefault } from "@/data/userSource/usersData";
 import ModalEditUser from "./components/ModalEditUser.vue";
-import type { RowType } from "./types";
-import { useUsersStore } from "@/stores/usersStore";
+import type { EdditUserType } from "./types";
+import { useUsers } from "@/stores/users";
 import { useQuasar } from "quasar";
 import type { User } from "@/core/models/User";
 
@@ -111,7 +111,7 @@ export default defineComponent({
     ModalEditUser,
   },
   setup() {
-    const store = useUsersStore();
+    const store = useUsers();
     // TODO: Add this hack when API is done to fetch data normally
     // store.fetchUsers();
     const $q = useQuasar();
@@ -138,7 +138,7 @@ export default defineComponent({
         firstName: "",
         email: "",
         password: "123456",
-      } as RowType,
+      } as EdditUserType,
       headerModal: "",
     };
   },
@@ -160,10 +160,13 @@ export default defineComponent({
   },
 
   methods: {
-    customFilter(rowsUsers: Readonly<RowType[]>, terms: { search: string }) {
+    customFilter(
+      rowsUsers: Readonly<EdditUserType[]>,
+      terms: { search: string }
+    ) {
       // customFilter(rowsUsers: ArgsTest[0], terms: ArgsTest[1]): ReturnTest {
       let lowerSearch = terms?.search ? terms.search.toLowerCase() : "";
-      const filteredRows = rowsUsers.filter((row: RowType) => {
+      const filteredRows = rowsUsers.filter((row: EdditUserType) => {
         let answer = true;
         if (lowerSearch != "") {
           answer = false;
