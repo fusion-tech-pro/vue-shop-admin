@@ -112,7 +112,8 @@ export default defineComponent({
   },
   setup() {
     const store = useUsersStore();
-    store.fetchUsers();
+    // TODO: Add this hack when API is done to fetch data normally
+    // store.fetchUsers();
     const $q = useQuasar();
     function showNotification() {
       $q.notify({
@@ -141,16 +142,23 @@ export default defineComponent({
       headerModal: "",
     };
   },
+
   computed: {
     filter() {
       return {
         search: this.search,
       };
     },
-    fetchUsers() {
-      return this.store.users;
-    },
   },
+
+  // TODO: Remove this hack when API is done to fetch data normally
+  created() {
+    if (this.store.users.length) {
+      return;
+    }
+    this.store.fetchUsers();
+  },
+
   methods: {
     customFilter(rowsUsers: Readonly<RowType[]>, terms: { search: string }) {
       // customFilter(rowsUsers: ArgsTest[0], terms: ArgsTest[1]): ReturnTest {
@@ -169,7 +177,9 @@ export default defineComponent({
             .map((item: string[]) => {
               return item[1];
             });
-          let temp_values_lower = temp_values.map((x) => x.toLowerCase());
+          let temp_values_lower = temp_values.map((x) =>
+            x ? x.toLowerCase() : ""
+          );
           for (let val = 0; val < temp_values_lower.length; val++) {
             if (temp_values_lower[val].includes(lowerSearch)) {
               answer = true;
