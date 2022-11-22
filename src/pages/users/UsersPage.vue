@@ -7,10 +7,7 @@
     </ModalEditUser>
   </Teleport>
 
-  <div
-    class="q-pa-md q-mb-md row full-width shadow-2 search-container"
-    style="background-color: white; justify-content: space-between"
-  >
+  <div class="q-pa-md q-mb-md row full-width shadow-2 search-container">
     <div class="text-h5 text-weight-bold">Users</div>
 
     <div class="row search-container">
@@ -24,7 +21,6 @@
         class="button-add"
         color="primary"
         label="Add user"
-        style="font-weight: bold"
         @click="createUser"
       ></q-btn>
     </div>
@@ -219,6 +215,7 @@ img {
 
 .button-add {
   margin-top: 5px;
+  font-weight: bold;
   @include media-sm {
     margin-top: 0px;
     margin-left: 20px;
@@ -227,6 +224,8 @@ img {
 
 .search-container {
   flex-direction: column;
+  background-color: white;
+  justify-content: space-between;
   @include media-sm {
     flex-direction: row;
   }

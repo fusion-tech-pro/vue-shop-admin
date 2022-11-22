@@ -1,13 +1,13 @@
 <template>
   <div class="row full-width justify-center">
-    <div style="width: 600px">
+    <div class="modal-container">
       <h5 class="row full-width justify-center text-weight-bold q-ma-md">
         Create New User
       </h5>
-      <div style="display: flex; justify-content: center">
+      <div class="avatar-container">
         <q-avatar class="q-ma-md" size="100px">
           <label>
-            <img style="height: 100px; max-width: 100px" :src="src" />
+            <img class="avatar-img" :src="src" />
             <input
               type="file"
               accept=".jpg,.png"
@@ -120,3 +120,20 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped lang="scss">
+.avatar-container {
+  display: flex;
+  justify-content: center;
+}
+
+.modal-container {
+  width: 600px;
+  margin-top: 15px;
+}
+
+.avatar-img {
+  height: 100px;
+  max-width: 100px;
+}
+</style>

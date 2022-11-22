@@ -8,7 +8,7 @@
           <div class="row full-width justify-center">
             <q-avatar size="150px">
               <label>
-                <img style="height: 150px; max-width: 150px" :src="src" />
+                <img class="avatar-img" :src="src" />
                 <input
                   type="file"
                   accept=".jpg,.png"
@@ -132,7 +132,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped lang="scss">
 .modal-mask {
   position: fixed;
   z-index: 9998;
@@ -199,5 +199,10 @@ export default defineComponent({
 .modal-leave-to .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+
+.avatar-img {
+  height: 100px;
+  max-width: 100px;
 }
 </style>
