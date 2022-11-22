@@ -2,8 +2,8 @@ import { sleep } from "@/utils/common";
 import type { ShopsResponse } from "../dto/ShopsResponse";
 import { Shop } from "@/core/models/Shop";
 
-class ShopsStore {
-  async getProducts(): Promise<ShopsResponse[]> {
+class ShopsSource {
+  async getShops(): Promise<ShopsResponse[]> {
     await sleep(0.4);
     const response: ShopsResponse[] = [
       {
@@ -23,6 +23,7 @@ class ShopsStore {
         total_products: 64,
         total_orders: 4,
         date_of_registration: "June 27, 2021",
+        id: 1,
       },
       {
         logo: "https://pickbazar-react-admin-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F886%2Fconversions%2FBackpack-thumbnail.jpg&w=3840&q=75",
@@ -41,6 +42,7 @@ class ShopsStore {
         total_products: 15,
         total_orders: 7,
         date_of_registration: "June 27, 2021",
+        id: 2,
       },
       {
         logo: "https://pickbazar-react-admin-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F891%2Fconversions%2FGroup-36321-thumbnail.jpg&w=3840&q=75",
@@ -59,6 +61,7 @@ class ShopsStore {
         total_products: 585,
         total_orders: 55,
         date_of_registration: "June 27, 2021",
+        id: 3,
       },
       {
         logo: "https://pickbazar-react-admin-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F889%2Fconversions%2FMakeup-thumbnail.jpg&w=3840&q=75",
@@ -77,6 +80,7 @@ class ShopsStore {
         total_products: 585,
         total_orders: 55,
         date_of_registration: "June 27, 2021",
+        id: 4,
       },
       {
         logo: "https://pickbazar-react-admin-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F890%2Fconversions%2Fbakery-thumbnail.jpg&w=3840&q=75",
@@ -95,6 +99,7 @@ class ShopsStore {
         total_products: 72,
         total_orders: 8,
         date_of_registration: "June 27, 2021",
+        id: 5,
       },
     ];
 
@@ -102,4 +107,4 @@ class ShopsStore {
   }
 }
 
-export const shopsStore = new ShopsStore();
+export const shopsSource = new ShopsSource();
