@@ -29,12 +29,16 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useShopsStore } from "@/stores/shops";
 
 export default defineComponent({
   components: {},
 
   setup() {
-    return {};
+    const shopsStore = useShopsStore();
+    shopsStore.fetchShops();
+
+    return { shopsStore };
   },
 
   data() {
@@ -54,6 +58,9 @@ export default defineComponent({
     onSubmitSearch() {
       this.searchText = this.searchShop;
     },
+  },
+  mounted() {
+    console.log("shops", this.shopsStore.getShops);
   },
 });
 </script>
