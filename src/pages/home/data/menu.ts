@@ -8,6 +8,12 @@ export const menu: MenuItem[] = [
     link: "dashboard",
   },
   {
+    icon: "list-box",
+    label: "Shops",
+    separator: false,
+    link: "shops",
+  },
+  {
     icon: "people",
     label: "Users",
     separator: false,
