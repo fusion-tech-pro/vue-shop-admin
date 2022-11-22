@@ -2,9 +2,12 @@
 
 export interface UserResponse {
   id: number;
-  user_name: string;
-  updated_at: string;
-  created_at: string;
-
-  email?: string;
+  first_name: string;
+  // updated_at: string;
+  created_at?: number;
+  last_name?: string;
+  email: string;
+  password: string;
+  phone?: string;
+  avatar?: string;
 }

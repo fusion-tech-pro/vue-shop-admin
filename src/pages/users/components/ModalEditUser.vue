@@ -77,7 +77,8 @@ export default defineComponent({
       if (!value) {
         return;
       }
-      this.src = this.store.rows[this.store.indexOfEdit].avatar ?? imageDefault;
+      this.src =
+        this.store.users[this.store.indexOfEdit].avatar ?? imageDefault;
     },
 
     someValueAvatar: {
@@ -101,12 +102,7 @@ export default defineComponent({
   methods: {
     onFormSubmit(values: RowType) {
       this.showNotification();
-      // this.$q.notify({
-      //   message: "Jim pinged you.",
-      //   color: "purple",
-      //   position: "top-right",
-      // });
-      this.store.updateUser(values);
+      this.store.updateUser({ ...values });
       this.$emit("close");
     },
 
@@ -124,12 +120,12 @@ export default defineComponent({
   computed: {
     initialValues() {
       return {
-        firstName: this.store.rows[this.store.indexOfEdit].firstName,
-        lastName: this.store.rows[this.store.indexOfEdit].lastName,
-        email: this.store.rows[this.store.indexOfEdit].email,
-        phone: this.store.rows[this.store.indexOfEdit].phone,
-        password: this.store.rows[this.store.indexOfEdit].password,
-        passwordConfirmation: this.store.rows[this.store.indexOfEdit].password,
+        firstName: this.store.users[this.store.indexOfEdit].firstName,
+        lastName: this.store.users[this.store.indexOfEdit].lastName,
+        email: this.store.users[this.store.indexOfEdit].email,
+        phone: this.store.users[this.store.indexOfEdit].phone,
+        password: this.store.users[this.store.indexOfEdit].password,
+        passwordConfirmation: this.store.users[this.store.indexOfEdit].password,
       };
     },
   },

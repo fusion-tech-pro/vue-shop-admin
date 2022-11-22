@@ -35,7 +35,7 @@
   <div class="q-pa-md">
     <q-table
       :columns="columns"
-      :rows="store.rows"
+      :rows="store.users"
       :filter="filter"
       :filter-method="customFilter"
       row-key="firstName"
@@ -98,6 +98,7 @@ import ModalEditUser from "./components/ModalEditUser.vue";
 import type { RowType } from "./types";
 import { useUsersStore } from "@/stores/usersStore";
 import { useQuasar } from "quasar";
+import type { User } from "@/core/models/User";
 
 // import type { QTableProps } from "quasar";
 
@@ -111,6 +112,7 @@ export default defineComponent({
   },
   setup() {
     const store = useUsersStore();
+    store.fetchUsers();
     const $q = useQuasar();
     function showNotification() {
       $q.notify({
@@ -145,6 +147,9 @@ export default defineComponent({
         search: this.search,
       };
     },
+    fetchUsers() {
+      return this.store.users;
+    },
   },
   methods: {
     customFilter(rowsUsers: Readonly<RowType[]>, terms: { search: string }) {
@@ -176,29 +181,21 @@ export default defineComponent({
       });
       return Object.freeze(filteredRows);
     },
-    onEdit(row: RowType) {
-      this.row = row
-        ? row
-        : { avatar: "", firstName: "", email: "", password: "123456" };
-      this.store.indexOfEdit = row
-        ? this.store.rows.indexOf(row)
-        : this.store.rows.length++;
-      this.headerModal = !row ? "Add User" : "Edit User";
+
+    onEdit(user: User) {
+      this.row = user;
+      this.store.indexOfEdit = user
+        ? this.store.users.indexOf(user)
+        : this.store.users.length++;
+      this.headerModal = !user ? "Add User" : "Edit User";
       this.showModal = true;
     },
 
-    onDelete(row: RowType) {
-      this.store.removeUser(row);
+    onDelete(user: User) {
+      this.store.removeUser(user);
       this.showNotification();
     },
 
-    updateUser(firstName: string, email: string) {
-      this.store.rows[this.store.indexOfEdit] = {
-        ...this.row,
-        firstName,
-        email,
-      };
-    },
     createUser() {
       this.$router.push("/users/create");
     },
