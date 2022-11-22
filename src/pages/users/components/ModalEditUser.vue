@@ -36,7 +36,7 @@ import { imageDefault } from "../assetsData/usersData";
 import type { RowType } from "../types";
 import { useUsersStore } from "@/stores/usersStore";
 import EditUserForm from "./EditUserForm.vue";
-// import { useQuasar } from "quasar";
+import { useQuasar } from "quasar";
 
 export default defineComponent({
   components: {
@@ -49,18 +49,18 @@ export default defineComponent({
 
   setup() {
     const store = useUsersStore();
-    // const $q = useQuasar();
-    // function showNotification() {
-    //   $q.notify({
-    //     message: "Jim pinged you.",
-    //     color: "purple",
-    //     position: "top-right",
-    //   });
-    // }
+    const $q = useQuasar();
+    function showNotification() {
+      $q.notify({
+        message: "Editing Completed",
+        color: "purple",
+        position: "top-right",
+      });
+    }
 
     return {
       store,
-      // showNotification,
+      showNotification,
     };
   },
 
@@ -100,7 +100,7 @@ export default defineComponent({
 
   methods: {
     onFormSubmit(values: RowType) {
-      // this.showNotification();
+      this.showNotification();
       // this.$q.notify({
       //   message: "Jim pinged you.",
       //   color: "purple",

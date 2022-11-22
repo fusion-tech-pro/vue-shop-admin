@@ -30,6 +30,7 @@ import * as yup from "yup";
 import type { RowType } from "../types";
 import { useUsersStore } from "@/stores/usersStore";
 import EditUserForm from "./EditUserForm.vue";
+import { useQuasar } from "quasar";
 
 export default defineComponent({
   components: {
@@ -38,8 +39,17 @@ export default defineComponent({
 
   setup() {
     const store = useUsersStore();
+    const $q = useQuasar();
+    function showNotification() {
+      $q.notify({
+        message: "User added",
+        color: "purple",
+        position: "top-right",
+      });
+    }
     return {
       store,
+      showNotification,
     };
   },
 
@@ -97,6 +107,7 @@ export default defineComponent({
   methods: {
     onFormSubmit(values: RowType) {
       this.store.addUser({ ...values, createAt: Date.now() });
+      this.showNotification();
       this.$router.replace({
         name: "users",
       });
