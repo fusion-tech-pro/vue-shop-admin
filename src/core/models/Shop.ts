@@ -58,24 +58,25 @@ export class Shop {
   }
 
   static fromShopDto(ShopsResponse: ShopsResponse[]): Array<Shop> {
-    return ShopsResponse.map((shop: Shop) => {
+    console.log("ShopsResponse", ShopsResponse);
+    return ShopsResponse.map((shop) => {
       return new Shop({
         logo: shop.logo,
-        coverImage: shop.coverImage,
+        coverImage: shop.cover_image,
         name: shop.name,
-        ownerName: shop.ownerName,
-        webSite: shop.webSite,
-        socialLink: shop.socialLink,
+        ownerName: shop.owner_name,
+        webSite: shop.website,
+        socialLink: shop.social_link,
         description: shop.description,
         country: shop.country,
         state: shop.state,
         city: shop.city,
         street: shop.street,
-        zipCode: shop.zipCode,
-        telephoneNumber: shop.telephoneNumber,
-        totalProducts: shop.totalProducts,
-        totalOrders: shop.totalOrders,
-        dateOfRegistration: shop.dateOfRegistration,
+        zipCode: shop.zip_code,
+        telephoneNumber: shop.telephone_number,
+        totalProducts: shop.total_products,
+        totalOrders: shop.total_orders,
+        dateOfRegistration: shop.date_of_registration,
         id: shop.id,
       });
     });
