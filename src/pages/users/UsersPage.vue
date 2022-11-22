@@ -96,7 +96,7 @@ import { defineComponent } from "vue";
 import { columns, imageDefault } from "./assetsData/usersData";
 import ModalEditUser from "./components/ModalEditUser.vue";
 import type { RowType } from "./types";
-import { useUsersStore } from "../../stores/usersStore";
+import { useUsersStore } from "@/stores/usersStore";
 // import type { QTableProps } from "quasar";
 
 // type Method = Exclude<QTableProps["filterMethod"], undefined>;

@@ -34,7 +34,7 @@
 import { defineComponent } from "vue";
 import { imageDefault } from "../assetsData/usersData";
 import type { RowType } from "../types";
-import { useUsersStore } from "../../../stores/usersStore";
+import { useUsersStore } from "@/stores/usersStore";
 import EditUserForm from "./EditUserForm.vue";
 // import { useQuasar } from "quasar";
 

@@ -28,7 +28,7 @@
 import { defineComponent, markRaw } from "vue";
 import * as yup from "yup";
 import type { RowType } from "../types";
-import { useUsersStore } from "../../../stores/usersStore";
+import { useUsersStore } from "@/stores/usersStore";
 import EditUserForm from "./EditUserForm.vue";
 
 export default defineComponent({
