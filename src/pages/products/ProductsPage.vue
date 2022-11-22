@@ -78,7 +78,7 @@
     </div>
   </div>
 
-  <ProductsTable :productsRow="filteredProducts" />
+  <ProductsTable :productsRow="(filteredProducts as Product[])" />
 
   <ProductModal
     :opened="isProductModal"
@@ -108,8 +108,8 @@ export default defineComponent({
       productsStore,
       groupOptions,
       shopOptions,
-      shopModel: ref(null),
-      groupModel: ref(null),
+      shopModel: ref<string | null>(null),
+      groupModel: ref<string | null>(null),
     };
   },
 
@@ -128,10 +128,10 @@ export default defineComponent({
   },
   methods: {
     getFilterByShopValue(data: string) {
-      this.shopModel = data as any;
+      this.shopModel = data;
     },
     getFilterByGroupValue(data: string) {
-      this.groupModel = data as any;
+      this.groupModel = data;
     },
     onSubmitSearch() {
       this.searchText = this.searchProduct;
@@ -155,23 +155,23 @@ export default defineComponent({
   computed: {
     filteredProducts() {
       if (this.groupModel !== null) {
-        return this.productsStore?.products?.filter((product) =>
+        return this.productsStore.products?.filter((product) =>
           product
             ?.group!.toLowerCase()
             .includes(String(this?.groupModel).toLowerCase())
-        ) as Array<Product>;
+        );
       } else if (this.shopModel !== null) {
-        return this.productsStore?.products?.filter((product) =>
+        return this.productsStore.products?.filter((product) =>
           product.shop
             ?.toLowerCase()
             .includes(String(this?.shopModel).toLowerCase())
-        ) as Array<Product>;
+        );
       } else if (this.searchText) {
-        return this.productsStore?.products?.filter((product) =>
+        return this.productsStore.products?.filter((product) =>
           product.name.toLowerCase().includes(this.searchText.toLowerCase())
-        ) as Array<Product>;
+        );
       } else {
-        return this.productsStore.products as Array<Product>;
+        return this.productsStore.products;
       }
     },
   },

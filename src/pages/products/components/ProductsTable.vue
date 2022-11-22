@@ -134,7 +134,7 @@ export default defineComponent({
       columns: productColumns,
       pagination,
       productsStore,
-      selected: ref([]),
+      selected: ref<[] | null>(null),
     };
   },
   data() {
