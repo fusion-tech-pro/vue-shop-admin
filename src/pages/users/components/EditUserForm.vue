@@ -3,9 +3,8 @@
     @submit="(values) => onFormSubmit(values as FormTypeUser)"
     @reset="closeForm"
     :validation-schema="schema"
-    class="q-pa-md shadow-2"
+    class="q-pa-md shadow-2 form-background"
     :initial-values="formState"
-    style="background-color: white"
   >
     <FieldInput name="firstName" v-slot="{ value, errorMessage, field }">
       <q-input
@@ -105,10 +104,7 @@
       </q-input>
     </FieldInput>
 
-    <div
-      style="justify-content: space-evenly; padding-top: 25px"
-      class="row full-width justify-center"
-    >
+    <div class="row full-width justify-center button-container">
       <q-btn v-show="initUser?.firstName" color="primary" type="reset">{{
         "Cancel"
       }}</q-btn>
@@ -174,3 +170,13 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.button-container {
+  justify-content: space-evenly;
+  padding-top: 25px;
+}
+.form-background {
+  background-color: white;
+}
+</style>
