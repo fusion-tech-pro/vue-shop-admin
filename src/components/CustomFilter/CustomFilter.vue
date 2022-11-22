@@ -28,7 +28,7 @@ export default defineComponent({
   props: {
     options: {
       required: true,
-      type: Array<string>,
+      type: Array<String>,
     },
     label: {
       required: false,
