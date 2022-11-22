@@ -3,6 +3,8 @@ export interface ShopsResponse {
   cover_image?: string;
   name: string;
   owner_name?: string;
+  website?: string;
+  social_link?: string;
   description?: string;
   country?: string;
   state?: string;

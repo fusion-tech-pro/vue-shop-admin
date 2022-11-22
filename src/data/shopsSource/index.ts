@@ -12,6 +12,8 @@ class ShopsSource {
           "https://pickbazar-react-admin-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F883%2FUntitled-6.jpg&w=3840&q=75",
         name: "Clothing Shop",
         owner_name: "Store Owner",
+        website: "",
+        social_link: "",
         description:
           "The clothing shop is the best shop around the city. This is being run under the store owner and our aim is to provide quality product and hassle free customer service.",
         country: "USA",
@@ -31,6 +33,8 @@ class ShopsSource {
           "https://pickbazar-react-admin-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F887%2FUntitled-1-%25281%2529.jpg&w=3840&q=75",
         name: "Bags Shop",
         owner_name: "Store Owner",
+        website: "",
+        social_link: "",
         description:
           "The Bag shop is the best shop around the city. This is being run under the store owner and our aim is to provide quality product and hassle free customer service.",
         country: "USA",
@@ -50,6 +54,8 @@ class ShopsSource {
           "https://pickbazar-react-admin-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F892%2FUntitled-2.jpg&w=3840&q=75",
         name: "Grocery Shop",
         owner_name: "Store Owner",
+        website: "",
+        social_link: "",
         description:
           "The grocery shop is the best shop around the city. This is being run under the store owner and our aim is to provide fresh and quality product and hassle free customer service.",
         country: "USA",
@@ -69,6 +75,8 @@ class ShopsSource {
           "https://pickbazar-react-admin-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F888%2FUntitled-3.jpg&w=3840&q=75",
         name: "Makeup Shop",
         owner_name: "Store Owner",
+        website: "",
+        social_link: "",
         description:
           "The makeup shop is the best shop around the city. This is being run under the store owner and our aim is to provide quality product and hassle free customer service.",
         country: "USA",
@@ -88,6 +96,8 @@ class ShopsSource {
           "https://pickbazar-react-admin-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F893%2FUntitled-5.jpg&w=3840&q=75",
         name: "Bakery Shop",
         owner_name: "Store Owner",
+        website: "",
+        social_link: "",
         description:
           "The bakery shop is the best shop around the city. This is being run under the store owner and our aim is to provide fresh and quality product and hassle free customer service.",
         country: "USA",

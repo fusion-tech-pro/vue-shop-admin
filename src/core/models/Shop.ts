@@ -5,6 +5,8 @@ export class Shop {
   coverImage?: string;
   name: string;
   ownerName?: string;
+  webSite?: string;
+  socialLink?: string;
   description?: string;
   country?: string;
   state?: string;
@@ -22,6 +24,8 @@ export class Shop {
     coverImage?: string;
     name: string;
     ownerName?: string;
+    webSite?: string;
+    socialLink?: string;
     description?: string;
     country?: string;
     state?: string;
@@ -38,6 +42,8 @@ export class Shop {
     this.coverImage = options.coverImage;
     this.name = options.name;
     this.ownerName = options.ownerName;
+    this.webSite = options.webSite;
+    this.socialLink = options.socialLink;
     this.description = options.description;
     this.country = options.country;
     this.state = options.state;
@@ -58,6 +64,8 @@ export class Shop {
         coverImage: shop.coverImage,
         name: shop.name,
         ownerName: shop.ownerName,
+        webSite: shop.webSite,
+        socialLink: shop.socialLink,
         description: shop.description,
         country: shop.country,
         state: shop.state,
