@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import { Quasar } from "quasar";
+import { Quasar, Notify } from "quasar";
 import { createPinia } from "pinia";
 import App from "./App.vue";
 import router from "./core/router";
@@ -28,7 +28,9 @@ app.use(pinia);
 useUserStore()
   .initializeUser()
   .then(() => {
-    app.use(Quasar, {});
+    app.use(Quasar, {
+      plugins: { Notify },
+    });
 
     // router runs right after it was used,
     // so we should run it after user initialized

@@ -1,6 +1,7 @@
 import { sleep } from "@/utils/common";
 import { User } from "@/core/models/User";
 import type { UserResponse } from "../dto/UserResponse";
+import type { MainInfoFormState } from "@/pages/profile/entities";
 
 class AccountSource {
   async login(
@@ -63,20 +64,15 @@ class AccountSource {
     return User.fromUserDto(response);
   }
 
-  async changeMainInfo(
-    avatar: string,
-    userName: string,
-    email: string,
-    userBio: string,
-    contactNumber: string
-  ): Promise<User> {
+  async changeMainInfo(values: MainInfoFormState): Promise<User> {
+    const { avatar, userName, email, userBio, contactNumber } = values;
     await sleep(0.2);
     const response: UserResponse = {
       id: 1,
       user_name: userName || "user",
-      avatar: avatar || "https://cdn.quasar.dev/img/avatar.png",
+      avatar,
       email: email || "user@test.com",
-      user_bio: userBio || "",
+      user_bio: userBio,
       contact_number: contactNumber || "1122334455",
       created_at: "n/a",
       updated_at: "n/a",

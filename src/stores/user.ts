@@ -1,6 +1,7 @@
 import type { User } from "@/core/models/User";
 import { accountSource } from "@/data/accountSource";
 import { tokenSource } from "@/data/tokenSource";
+import type { MainInfoFormState } from "@/pages/profile/entities";
 import { defineStore } from "pinia";
 
 interface UserState {
@@ -77,23 +78,11 @@ export const useUserStore = defineStore("user", {
       }
     },
 
-    async changeMainInfo(
-      avatar: string,
-      userName: string,
-      email: string,
-      userBio: string,
-      contactNumber: string
-    ) {
+    async changeMainInfo(values: MainInfoFormState) {
       try {
         this.loading = true;
         this.error = null;
-        const user = await accountSource.changeMainInfo(
-          avatar,
-          userName,
-          email,
-          userBio,
-          contactNumber
-        );
+        const user = await accountSource.changeMainInfo(values);
         this.user = user;
       } catch (err) {
         console.error("Error is: ", err);

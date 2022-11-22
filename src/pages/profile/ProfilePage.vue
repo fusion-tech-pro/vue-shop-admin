@@ -8,11 +8,7 @@
       :validation-schema="schema"
       :initial-values="formState"
     >
-      <AvatarForm
-        :avatar="formState.avatar"
-        @removeAvatar="removeAvatar"
-        @changeAvatar="changeAvatar"
-      ></AvatarForm>
+      <AvatarForm></AvatarForm>
       <q-separator class="hr-dashed" />
 
       <InfoForm :loading="userStore.loading"></InfoForm>
@@ -27,6 +23,7 @@
 import { Form } from "vee-validate";
 import { markRaw } from "vue";
 import * as yup from "yup";
+import { Notify } from "quasar";
 import AvatarForm from "./components/AvatarForm.vue";
 import InfoForm from "./components/InfoForm.vue";
 import PasswordForm from "./components/PasswordForm.vue";
@@ -50,28 +47,29 @@ const schema = markRaw(
 );
 const formState: MainInfoFormState = {
   avatar: userStore.user?.avatar || "",
-  userName: userStore.user?.username || "",
+  userName: userStore.user?.userName || "",
   email: userStore.user?.email || "",
-  userBio: userStore.user?.userbio || "",
-  contactNumber: userStore.user?.contactnumber || "",
+  userBio: userStore.user?.userBio || "",
+  contactNumber: userStore.user?.contactNumber || "",
 };
 
 async function onChangeMainInfo(values: MainInfoFormState) {
-  await userStore.changeMainInfo(
-    values.avatar,
-    values.userName,
-    values.email,
-    values.userBio,
-    values.contactNumber
-  );
-}
-
-function removeAvatar() {
-  formState.avatar = "";
-}
-
-function changeAvatar(value: string) {
-  formState.avatar = value;
+  try {
+    await userStore.changeMainInfo(values);
+    Notify.create({
+      type: "positive",
+      position: "top-right",
+      message: "Main information successfully updated",
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      Notify.create({
+        type: "negative",
+        position: "top-right",
+        message: error.message,
+      });
+    }
+  }
 }
 </script>
 

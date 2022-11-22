@@ -14,84 +14,35 @@
       <div class="bg-white shadow-1 rounded-borders">
         <div class="q-pa-lg label-file-loader">
           <Field name="oldPassword" v-slot="{ value, errorMessage, field }">
-            <q-input
+            <PasswordInput
               label="Old password"
               outlined
-              :type="formState.isViewOldPassword ? 'text' : 'password'"
               class="q-mb-md"
               v-bind="field"
-              :model-value="value"
-              :error-message="errorMessage"
-              :error="!!errorMessage"
-            >
-              <template v-slot:append>
-                <q-icon
-                  :name="
-                    formState.isViewOldPassword
-                      ? 'visibility'
-                      : 'visibility_off'
-                  "
-                  class="cursor-pointer"
-                  @click="
-                    formState.isViewOldPassword = !formState.isViewOldPassword
-                  "
-                />
-              </template>
-            </q-input>
+              :value="value"
+              :errorMessage="errorMessage"
+            ></PasswordInput>
           </Field>
 
           <Field name="newPassword" v-slot="{ value, errorMessage, field }">
-            <q-input
+            <PasswordInput
               label="New password"
               outlined
-              :type="formState.isViewNewPassword ? 'text' : 'password'"
               class="q-mb-md"
               v-bind="field"
-              :model-value="value"
-              :error-message="errorMessage"
-              :error="!!errorMessage"
-            >
-              <template v-slot:append>
-                <q-icon
-                  :name="
-                    formState.isViewNewPassword
-                      ? 'visibility'
-                      : 'visibility_off'
-                  "
-                  class="cursor-pointer"
-                  @click="
-                    formState.isViewNewPassword = !formState.isViewNewPassword
-                  "
-                />
-              </template>
-            </q-input>
+              :value="value"
+              :errorMessage="errorMessage"
+            ></PasswordInput>
           </Field>
 
           <Field name="repeatPassword" v-slot="{ value, errorMessage, field }">
-            <q-input
+            <PasswordInput
               label="Repeat password"
               outlined
-              :type="formState.isViewRepeatPassword ? 'text' : 'password'"
               v-bind="field"
-              :model-value="value"
-              :error-message="errorMessage"
-              :error="!!errorMessage"
-            >
-              <template v-slot:append>
-                <q-icon
-                  :name="
-                    formState.isViewRepeatPassword
-                      ? 'visibility'
-                      : 'visibility_off'
-                  "
-                  class="cursor-pointer"
-                  @click="
-                    formState.isViewRepeatPassword =
-                      !formState.isViewRepeatPassword
-                  "
-                />
-              </template>
-            </q-input>
+              :value="value"
+              :errorMessage="errorMessage"
+            ></PasswordInput>
           </Field>
         </div>
       </div>
@@ -108,8 +59,10 @@
 import { defineComponent, markRaw } from "vue";
 import * as yup from "yup";
 import { Form, Field } from "vee-validate";
+import { Notify } from "quasar";
 import { useUserStore } from "@/stores/user";
 import type { PasswordFormState } from "../entities";
+import PasswordInput from "@/components/PasswordInput/PasswordInput.vue";
 
 const userStore = useUserStore();
 
@@ -117,11 +70,11 @@ export default defineComponent({
   props: {
     loading: Boolean,
   },
-  emits: {},
   components: {
     // eslint-disable-next-line vue/no-reserved-component-names
     Form,
     Field,
+    PasswordInput,
   },
   data() {
     return {
@@ -141,24 +94,33 @@ export default defineComponent({
                 ),
             })
             .required("Repeat new password without errors"),
-          isViewOldPassword: yup.boolean(),
-          isViewNewPassword: yup.boolean(),
-          isViewRepeatPassword: yup.boolean(),
         })
       ),
       formState: {
         oldPassword: "",
         newPassword: "",
         repeatPassword: "",
-        isViewOldPassword: false,
-        isViewNewPassword: false,
-        isViewRepeatPassword: false,
       },
     };
   },
   methods: {
     async onFormSubmit(values: PasswordFormState) {
-      await userStore.changePassword(values.oldPassword, values.newPassword);
+      try {
+        await userStore.changePassword(values.oldPassword, values.newPassword);
+        Notify.create({
+          type: "positive",
+          position: "top-right",
+          message: "Password successfully updated",
+        });
+      } catch (error) {
+        if (error instanceof Error) {
+          Notify.create({
+            type: "negative",
+            position: "top-right",
+            message: error.message,
+          });
+        }
+      }
     },
   },
 });

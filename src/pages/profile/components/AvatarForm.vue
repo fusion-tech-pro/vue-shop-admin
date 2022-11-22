@@ -6,132 +6,124 @@
     </div>
 
     <div class="bg-white col-xs-12 col-sm-8 shadow-1 rounded-borders">
-      <Field name="avatar" v-slot="{ errorMessage, field }">
-        <div
-          class="q-pa-lg label-file-loader row"
-          v-bind="field"
-          :error-message="errorMessage"
-          :error="!!errorMessage"
+      <div class="q-pa-lg label-file-loader row">
+        <label
+          id="drag-area"
+          for="avatar"
+          class="label-file-loader height-content"
+          @drop.prevent="onDropFile"
         >
-          <label
-            id="drag-area"
-            for="avatar"
-            class="label-file-loader height-content"
-            @drop.prevent="onDropFile"
+          <div
+            tabindex="0"
+            class="label-file-loader cursor-pointer back column flex-center rounded-borders border-dashed"
+            :class="{ 'dashed-on-drag': isInDragArea }"
           >
-            <div
-              tabindex="0"
-              class="label-file-loader cursor-pointer back column flex-center rounded-borders border-dashed"
-              :class="isInDragArea && 'dashed-on-drag'"
-            >
-              <q-icon name="cloud_upload" class="icon-download" />
-              <p class="q-mb-none q-mt-md q-px-sm text-center">
-                Upload an image or drag and drop PNG, JPG
-              </p>
-            </div>
-          </label>
-          <div v-if="previewImg" class="row q-mt-sm">
-            <q-avatar rounded size="85px">
-              <q-img :src="previewImg" spinner-color="green" />
-              <div
-                class="q-badge q-badge--outline q-badge--floating q-badge--rounded cursor-pointer bg-white delete-badge no-padding row flex-center"
-                @click="removeAvatar"
-              >
-                &#215;
-              </div>
-            </q-avatar>
+            <q-icon name="cloud_upload" class="icon-download" />
+            <p class="q-mb-none q-mt-md q-px-sm text-center">
+              Upload an image or drag and drop PNG, JPG
+            </p>
           </div>
-          <input
-            id="avatar"
-            type="file"
-            accept="image/*"
-            hidden
-            @change="onChangeFile"
-            class="border-dashed"
-          />
+        </label>
+        <div v-if="previewImg" class="row q-mt-sm">
+          <q-avatar rounded size="85px">
+            <q-img :src="previewImg" spinner-color="green" />
+            <div
+              class="q-badge q-badge--outline q-badge--floating q-badge--rounded cursor-pointer bg-white delete-badge no-padding row flex-center"
+              @click="removeAvatar"
+            >
+              &#215;
+            </div>
+          </q-avatar>
         </div>
-      </Field>
+        <input
+          id="avatar"
+          type="file"
+          accept="image/*"
+          hidden
+          @change="onChangeFile"
+          class="border-dashed"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { Field } from "vee-validate";
-import { useUserStore } from "@/stores/user";
+import { useField } from "vee-validate";
 import convertFileToBase64 from "@/utils/imageConvertHelper";
 
-const userStore = useUserStore();
-
 export default defineComponent({
-  props: {
-    avatar: String,
-  },
-  emits: {
-    removeAvatar: () => true,
-    changeAvatar: (value: string) => true,
-  },
-  components: {
-    Field,
+  setup() {
+    const { setValue, value } = useField("avatar");
+
+    return {
+      setValue,
+      value,
+    };
   },
   data() {
     return {
-      previewImg: userStore.user?.avatar || "",
+      previewImg: this.value + "",
       isInDragArea: false,
     };
   },
   mounted() {
-    function preventDefaults(e: Event) {
-      e.preventDefault();
-    }
-
-    let dropArea = document.getElementById("drag-area");
-
-    const events = ["dragenter", "dragover", "dragleave", "drop"];
-
-    const highLight = () => {
-      this.isInDragArea = true;
-    };
-
-    const unHighLight = () => {
-      this.isInDragArea = false;
-    };
-
-    events.forEach((eventName) => {
-      dropArea?.addEventListener(eventName, preventDefaults);
-    });
-
-    ["dragenter", "dragover"].forEach((eventName) => {
-      dropArea?.addEventListener(eventName, highLight, false);
-    });
-    ["dragleave", "drop"].forEach((eventName) => {
-      dropArea?.addEventListener(eventName, unHighLight, false);
-    });
+    this.initialFunctionForDragAndDrop();
   },
 
   methods: {
+    preventDefaults(e: Event) {
+      e.preventDefault();
+    },
+
+    highLight() {
+      this.isInDragArea = true;
+    },
+
+    unHighLight() {
+      this.isInDragArea = false;
+    },
+
+    initialFunctionForDragAndDrop() {
+      const events = ["dragenter", "dragover", "dragleave", "drop"];
+      let dropArea = document.getElementById("drag-area");
+
+      events.forEach((eventName) => {
+        dropArea?.addEventListener(eventName, this.preventDefaults);
+      });
+
+      ["dragenter", "dragover"].forEach((eventName) => {
+        dropArea?.addEventListener(eventName, this.highLight, false);
+      });
+
+      ["dragleave", "drop"].forEach((eventName) => {
+        dropArea?.addEventListener(eventName, this.unHighLight, false);
+      });
+    },
+
     removeAvatar() {
       this.previewImg = "";
-      this.$emit("removeAvatar");
+      this.setValue("");
     },
 
     async onDropFile(e: DragEvent) {
       const file = e.dataTransfer!.files[0];
-      await this.changeAvatar(file);
+      await this.onChangeAvatar(file);
     },
 
     async onChangeFile(e: Event) {
       const tar = e.target as EventTarget & HTMLInputElement;
       if (tar.files) {
         const file = tar.files[0];
-        await this.changeAvatar(file);
+        await this.onChangeAvatar(file);
       }
     },
 
-    async changeAvatar(file: any) {
+    async onChangeAvatar(file: Blob) {
       this.previewImg = URL.createObjectURL(file);
       const resultFile = await convertFileToBase64(file);
-      this.$emit("changeAvatar", resultFile as string);
+      this.setValue(resultFile as String);
     },
   },
 });
