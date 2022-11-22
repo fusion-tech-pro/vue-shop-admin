@@ -7,88 +7,84 @@
     </ModalEditUser>
   </Teleport>
 
-  <div class="q-pa-md row full-width">
-    <div
-      class="q-pa-md row full-width shadow-2"
-      style="background-color: white; justify-content: space-between"
-    >
-      <div class="text-h5 text-weight-bold">Users</div>
+  <div
+    class="q-pa-md q-mb-md row full-width shadow-2 search-container"
+    style="background-color: white; justify-content: space-between"
+  >
+    <div class="text-h5 text-weight-bold">Users</div>
 
-      <div class="row">
-        <q-input outlined dense debounce="400" color="primary" v-model="search">
-          <template v-slot:prepend>
-            <q-icon name="search" />
-          </template>
-        </q-input>
+    <div class="row search-container">
+      <q-input outlined dense debounce="400" color="primary" v-model="search">
+        <template v-slot:prepend>
+          <q-icon name="search" />
+        </template>
+      </q-input>
 
-        <q-btn
-          class="q-ml-xl"
-          color="primary"
-          label="Add user"
-          style="font-weight: bold"
-          @click="createUser"
-        ></q-btn>
-      </div>
+      <q-btn
+        class="button-add"
+        color="primary"
+        label="Add user"
+        style="font-weight: bold"
+        @click="createUser"
+      ></q-btn>
     </div>
   </div>
 
-  <div class="q-pa-md">
-    <q-table
-      :columns="columns"
-      :rows="store.users"
-      :filter="filter"
-      :filter-method="customFilter"
-      row-key="firstName"
-    >
-      <template v-slot:body-cell-firstName="props">
-        <q-td key="firstName" :props="props">
-          {{ props.row.firstName }}
-          <q-popup-edit v-model="props.row.firstName" v-slot="scope" buttons>
-            <q-input v-model="scope.value" dense autofocus></q-input>
-          </q-popup-edit>
-        </q-td>
-      </template>
+  <q-table
+    :columns="columns"
+    :rows="store.users"
+    :filter="filter"
+    :filter-method="customFilter"
+    row-key="firstName"
+  >
+    <template v-slot:body-cell-firstName="props">
+      <q-td key="firstName" :props="props">
+        {{ props.row.firstName }}
+        <q-popup-edit v-model="props.row.firstName" v-slot="scope" buttons>
+          <q-input v-model="scope.value" dense autofocus></q-input>
+        </q-popup-edit>
+      </q-td>
+    </template>
 
-      <template v-slot:body-cell-avatar="props">
-        <q-td :props="props">
-          <q-avatar>
-            <q-img :src="props.row.avatar ? props.row.avatar : imageAlt" />
-          </q-avatar>
-        </q-td>
-      </template>
+    <template v-slot:body-cell-avatar="props">
+      <q-td :props="props">
+        <q-avatar>
+          <q-img :src="props.row.avatar ? props.row.avatar : imageAlt" />
+        </q-avatar>
+      </q-td>
+    </template>
 
-      <template v-slot:body-cell-email="props">
-        <q-td :props="props">
-          <q-badge :label="props.value"></q-badge>
-        </q-td>
-      </template>
+    <template v-slot:body-cell-email="props">
+      <q-td :props="props">
+        <q-badge :label="props.value"></q-badge>
+      </q-td>
+    </template>
 
-      <template v-slot:body-cell-createAt="props">
-        <q-td :props="props">
-          {{ props.value && new Date(props.value).toLocaleString() }}
-        </q-td>
-      </template>
+    <template v-slot:body-cell-createAt="props">
+      <q-td :props="props">
+        {{ props.value && new Date(props.value).toLocaleString() }}
+      </q-td>
+    </template>
 
-      <template v-slot:body-cell-actions="props">
-        <q-td :props="props">
-          <q-btn
-            color="primary"
-            flat
-            icon="ion-create"
-            @click="onEdit(props.row)"
-          >
-          </q-btn>
+    <template v-slot:body-cell-actions="props">
+      <q-td :props="props">
+        <q-btn
+          color="primary"
+          flat
+          icon="ion-create"
+          @click="onEdit(props.row)"
+        >
+        </q-btn>
 
-          <q-btn
-            color="red"
-            flat
-            icon="ion-trash"
-            @click="onDelete(props.row)"
-          ></q-btn>
-        </q-td>
-      </template>
-    </q-table>
-  </div>
+        <q-btn
+          color="red"
+          flat
+          icon="ion-trash"
+          @click="onDelete(props.row)"
+        ></q-btn>
+      </q-td>
+    </template>
+  </q-table>
 </template>
 
 <script lang="ts">
@@ -216,8 +212,23 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 img {
   width: 40px;
+}
+
+.button-add {
+  margin-top: 5px;
+  @include media-sm {
+    margin-top: 0px;
+    margin-left: 20px;
+  }
+}
+
+.search-container {
+  flex-direction: column;
+  @include media-sm {
+    flex-direction: row;
+  }
 }
 </style>
