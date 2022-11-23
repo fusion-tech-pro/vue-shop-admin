@@ -7,22 +7,33 @@
     </ModalEditUser>
   </Teleport>
 
-  <div class="q-pa-md q-mb-md row full-width shadow-2 search-container">
+  <div class="q-pa-md q-mb-md row shadow-2 header-container">
     <div class="text-h5 text-weight-bold">Users</div>
 
-    <div class="row search-container">
-      <q-input outlined dense debounce="400" color="primary" v-model="search">
+    <div class="row col-12 col-sm-7 search-container">
+      <q-input
+        :style="{
+          width: 'inherit',
+        }"
+        outlined
+        dense
+        debounce="400"
+        color="primary"
+        v-model="search"
+      >
         <template v-slot:prepend>
           <q-icon name="search" />
         </template>
       </q-input>
 
-      <q-btn
-        class="button-add"
-        color="primary"
-        label="Add user"
-        @click="createUser"
-      ></q-btn>
+      <div :style="{ display: 'flex', justifyContent: 'center' }">
+        <q-btn
+          class="button-add"
+          color="primary"
+          label="Add user"
+          @click="createUser"
+        ></q-btn>
+      </div>
     </div>
   </div>
 
@@ -214,18 +225,30 @@ img {
 }
 
 .button-add {
+  /* margin-left: 10; */
   margin-top: 5px;
   font-weight: bold;
+  justify-content: center;
   @include media-sm {
     margin-top: 0px;
-    margin-left: 20px;
+    margin-left: 10px;
+  }
+}
+
+.header-container {
+  flex-direction: column;
+  background-color: white;
+  justify-content: space-between;
+  @include media-sm {
+    flex-direction: row;
   }
 }
 
 .search-container {
   flex-direction: column;
   background-color: white;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  justify-content: flex-end;
   @include media-sm {
     flex-direction: row;
   }
