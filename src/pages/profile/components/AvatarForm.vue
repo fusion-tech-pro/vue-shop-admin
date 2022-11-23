@@ -51,20 +51,23 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useField } from "vee-validate";
+import { Notify } from "quasar";
 import convertFileToBase64 from "@/utils/imageConvertHelper";
+import { useUserStore } from "@/stores/user";
+
+const userStore = useUserStore();
 
 export default defineComponent({
   setup() {
-    const { setValue, value } = useField("avatar");
+    const { setValue } = useField("avatar");
 
     return {
       setValue,
-      value,
     };
   },
   data() {
     return {
-      previewImg: this.value + "",
+      previewImg: userStore.user?.avatar || "",
       isInDragArea: false,
     };
   },
@@ -107,23 +110,33 @@ export default defineComponent({
       this.setValue("");
     },
 
-    async onDropFile(e: DragEvent) {
+    onDropFile(e: DragEvent) {
       const file = e.dataTransfer!.files[0];
-      await this.onChangeAvatar(file);
+      this.onChangeAvatar(file);
     },
 
-    async onChangeFile(e: Event) {
+    onChangeFile(e: Event) {
       const tar = e.target as EventTarget & HTMLInputElement;
       if (tar.files) {
         const file = tar.files[0];
-        await this.onChangeAvatar(file);
+        this.onChangeAvatar(file);
       }
     },
 
     async onChangeAvatar(file: Blob) {
-      this.previewImg = URL.createObjectURL(file);
-      const resultFile = await convertFileToBase64(file);
-      this.setValue(resultFile as String);
+      try {
+        this.previewImg = URL.createObjectURL(file);
+        const resultFile = await convertFileToBase64(file);
+        this.setValue(resultFile as String);
+      } catch (error) {
+        if (error instanceof Error) {
+          Notify.create({
+            type: "negative",
+            position: "top-right",
+            message: error.message,
+          });
+        }
+      }
     },
   },
 });
