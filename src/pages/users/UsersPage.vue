@@ -195,7 +195,7 @@ export default defineComponent({
         }
         return answer;
       });
-      return Object.freeze(filteredRows);
+      return Object(filteredRows);
     },
 
     onEdit(user: User) {
