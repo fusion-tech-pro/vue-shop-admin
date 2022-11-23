@@ -173,7 +173,7 @@ export default defineComponent({
         let answer = true;
         if (lowerSearch != "") {
           answer = false;
-          let temp_values: string[] = Object.entries(row)
+          let temp_values_lower: string[] = Object.entries(row)
             .filter(
               (item: string[]) =>
                 item[0] === "firstName" ||
@@ -181,11 +181,11 @@ export default defineComponent({
                 item[0] === "lastName"
             )
             .map((item: string[]) => {
-              return item[1];
+              return item[1].toLowerCase();
             });
-          let temp_values_lower = temp_values.map((x) =>
-            x ? x.toLowerCase() : ""
-          );
+          // let temp_values_lower = temp_values.map((x) =>
+          //   x ? x.toLowerCase() : ""
+          // );
           for (let val = 0; val < temp_values_lower.length; val++) {
             if (temp_values_lower[val].includes(lowerSearch)) {
               answer = true;

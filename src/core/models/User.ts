@@ -35,7 +35,7 @@ export class User {
       id: userResponse.id,
       firstName: userResponse.first_name,
       email: userResponse.email,
-      lastName: userResponse.last_name,
+      lastName: userResponse.last_name ?? "",
       password: userResponse.password,
       phone: userResponse.phone,
       createAt: userResponse.created_at,
