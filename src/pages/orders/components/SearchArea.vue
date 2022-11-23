@@ -14,7 +14,11 @@
           />
         </div>
         <div class="row col-xs-12 col-sm-auto justify-center">
-          <q-icon name="ion-more" size="30px" class="more-icon" />
+          <q-icon
+            name="ion-more"
+            size="30px"
+            class="more-icon cursor-pointer"
+          />
         </div>
       </div>
     </q-card-section>
