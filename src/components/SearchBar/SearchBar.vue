@@ -9,6 +9,7 @@
         class="search-bar__search-field"
         v-model="searchRowValue"
         dense
+        @update:model-value="searchText = ''"
         hide-bottom-space
         :class="{}"
       >
