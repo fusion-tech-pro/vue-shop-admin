@@ -186,7 +186,6 @@ export default defineComponent({
     padding: 32px;
   }
 }
-// TODO try to make dynamical grid-columns for class on next line
 .search-bar__search-form {
   display: flex;
   flex-direction: column;
@@ -197,7 +196,6 @@ export default defineComponent({
   @include media-sm {
     display: grid;
     grid-template-columns: 1fr 4fr repeat(2, max-content);
-    column-gap: 20px;
   }
 }
 .search-bar__search-title {
@@ -226,6 +224,7 @@ export default defineComponent({
   justify-self: center;
   padding: 0;
   font-weight: 600;
+  margin-left: 20px;
 
   @include media-sm {
     justify-self: end;
