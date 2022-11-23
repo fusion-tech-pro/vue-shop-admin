@@ -51,16 +51,9 @@ export default defineComponent({
 
   data() {
     return {
-      searchProduct: "",
-      searchText: "",
       searchedProduct: "",
       isProductModal: false,
     };
-  },
-  watch: {
-    searchText() {
-      this.searchProduct = this.searchText;
-    },
   },
   methods: {
     getSearchedProductValue(value: string) {
@@ -72,10 +65,6 @@ export default defineComponent({
     getFilterByGroupValue(data: string) {
       this.groupModel = data;
     },
-    onSubmitSearch() {
-      this.searchText = this.searchProduct;
-    },
-
     setModalVisibleStatus(status: boolean) {
       this.isProductModal = status;
     },
@@ -103,9 +92,11 @@ export default defineComponent({
             ?.toLowerCase()
             .includes(String(this?.shopModel).toLowerCase())
         );
-      } else if (this.searchText) {
+      } else if (this.searchedProduct) {
         return this.productsStore.products?.filter((product) =>
-          product.name.toLowerCase().includes(this.searchText.toLowerCase())
+          product.name
+            .toLowerCase()
+            .includes(this.searchedProduct.toLowerCase())
         );
       } else {
         return this.productsStore.products;
