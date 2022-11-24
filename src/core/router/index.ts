@@ -13,6 +13,7 @@ const DashboardPage = () => import("@/pages/dashboard/DashboardPage.vue");
 const UsersPage = () => import("@/pages/users/UsersPage.vue");
 const ProductsPage = () => import("@/pages/products/ProductsPage.vue");
 const EmptyView = () => import("@/pages/empty/EmptyView.vue");
+const CreateUser = () => import("@/pages/users/CreateUser.vue");
 const ProfilePage = () => import("@/pages/profile/ProfilePage.vue");
 
 const router = createRouter({
@@ -58,6 +59,12 @@ const router = createRouter({
       name: "logout",
       component: EmptyView,
       beforeEnter: [logoutGuard],
+    },
+    {
+      path: "/users/create",
+      name: "create",
+      component: CreateUser,
+      beforeEnter: [authenticatedGuard],
     },
   ],
 });

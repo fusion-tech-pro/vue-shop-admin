@@ -2,36 +2,46 @@ import type { UserResponse } from "@/data/dto/UserResponse";
 
 export class User {
   id: number;
-  userName: string;
-  email: string | undefined;
-  avatar: string | undefined;
-  userBio: string | undefined;
-  contactNumber: string | undefined;
+  firstName: string;
+  lastName?: string;
+  email: string;
+  password: string;
+  contactNumber?: string;
+  avatar?: string;
+  createAt?: string;
+  userName?: string;
+  userBio?: string;
 
   constructor(options: {
     id: number;
-    userName: string;
-    email?: string;
-    avatar?: string;
-    userBio?: string;
+    firstName: string;
+    lastName?: string;
+    email: string;
+    password: string;
     contactNumber?: string;
+    avatar?: string;
+    createAt?: string;
   }) {
     this.id = options.id;
-    this.userName = options.userName;
+    this.firstName = options.firstName;
     this.email = options.email;
-    this.avatar = options.avatar;
-    this.userBio = options.userBio;
+    this.lastName = options.lastName;
+    this.password = options.password;
     this.contactNumber = options.contactNumber;
+    this.avatar = options.avatar;
+    this.createAt = options.createAt;
   }
 
   static fromUserDto(userResponse: UserResponse): User {
     return new User({
       id: userResponse.id,
-      userName: userResponse.user_name,
+      firstName: userResponse.first_name ?? "",
       email: userResponse.email,
-      avatar: userResponse.avatar,
-      userBio: userResponse.user_bio,
+      lastName: userResponse.last_name ?? "",
+      password: "111111",
       contactNumber: userResponse.contact_number,
+      createAt: userResponse.created_at,
+      avatar: userResponse.avatar,
     });
   }
 }
