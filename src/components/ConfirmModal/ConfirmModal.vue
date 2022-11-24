@@ -16,15 +16,15 @@
         color="primary"
         class="confirm-modal__icon"
       />
-      <h2 class="confirm-modal__title">Delete</h2>
-      <p class="confirm-modal__subtitle">Are you sure, you want to delete?</p>
+      <h2 class="confirm-modal__title">{{ title }}</h2>
+      <p class="confirm-modal__subtitle">{{ subtitle }}</p>
       <div class="confirm-modal__buttons-wrapper">
         <q-btn
           class="full-width"
           color="primary"
           type="submit"
           @click="$emit('changeVisibility', false)"
-          >Cancel</q-btn
+          >{{ cancelButtonText }}</q-btn
         >
         <q-btn
           class="full-width"
@@ -32,7 +32,7 @@
           size="md"
           type="submit"
           @click="confirm"
-          >Delete</q-btn
+          >{{ submitButtonText }}</q-btn
         >
       </div>
     </q-card>
@@ -52,11 +52,21 @@ export default defineComponent({
       required: true,
       type: Number,
     },
-  },
-  emits: {
-    remove: (productId: number) => true,
-    changeVisibility(value: boolean) {
-      return true;
+    title: {
+      required: false,
+      type: String,
+    },
+    subtitle: {
+      required: false,
+      type: String,
+    },
+    cancelButtonText: {
+      required: true,
+      type: String,
+    },
+    submitButtonText: {
+      required: true,
+      type: String,
     },
   },
   data() {
@@ -64,7 +74,7 @@ export default defineComponent({
   },
   methods: {
     confirm() {
-      this.$emit("remove", this.productId);
+      this.$emit("confirmEmit", this.productId);
     },
   },
   computed: {

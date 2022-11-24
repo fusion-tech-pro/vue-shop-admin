@@ -105,8 +105,12 @@
   <ConfirmModal
     :opened="confirmModalOpened"
     :productId="selectedProductId"
+    :title="'Delete'"
+    :subtitle="'Are you sure, you want to delete?'"
+    :cancelButtonText="'Cancel'"
+    :submitButtonText="'Delete'"
     @change-visibility="toggleConfirmModal"
-    @remove="removeProduct"
+    @confirmEmit="removeProduct"
   />
 </template>
 
@@ -116,7 +120,7 @@ import type { ProductFormState } from "../entities/index";
 import { productColumns } from "../assetsData";
 import { defineComponent, ref } from "vue";
 import ProductModal from "./ProductModal.vue";
-import ConfirmModal from "./ConfirmModal.vue";
+import ConfirmModal from "../../../components/ConfirmModal/ConfirmModal.vue";
 import { useProductsStore } from "@/stores/products";
 
 export default defineComponent({
