@@ -56,7 +56,7 @@
           </q-td>
           <q-td key="actions" :props="props">
             <q-btn
-              size="sm"
+              size="md"
               color="red"
               flat
               dense
@@ -64,7 +64,7 @@
               icon="ion-trash"
             />
             <q-btn
-              size="sm"
+              size="md"
               color="grey-8"
               flat
               dense
