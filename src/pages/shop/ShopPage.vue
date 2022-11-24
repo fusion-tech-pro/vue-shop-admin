@@ -25,8 +25,9 @@
         class="shop-page__visit-button"
       />
     </div>
-    <div class="shop-page__image-wrapper">
-      <q-img :src="shop?.coverImage" />
+
+    <div class="shop-page__shop-image-wrapper">
+      <q-img :src="shop?.coverImage" :fit="'contain'" />
       <q-btn
         icon="edit"
         color="blue-8"
@@ -35,6 +36,67 @@
         class="shop-page__edit-button"
       />
     </div>
+
+    <div class="shop-page__shop-statistic-wrapper">
+      <p class="shop-page__statistic-title">Products</p>
+      <div class="shop-page__statistic-block">
+        <div class="shop-page__statistic-item">
+          <q-icon name="ion-cube" class="shop-page__statistic-icon" size="sm" />
+          <div class="shop-page__statistic-text-wrapper">
+            <span class="shop-page__statistic-count">{{
+              shop?.totalProducts
+            }}</span>
+          </div>
+          <p class="shop-page__statistic-type">Total Products</p>
+        </div>
+        <div class="shop-page__statistic-item">
+          <q-icon
+            name="ion-appstore"
+            class="shop-page__statistic-icon"
+            size="sm"
+          />
+          <div class="shop-page__statistic-text-wrapper">
+            <span class="shop-page__statistic-count">{{
+              shop?.totalOrders
+            }}</span>
+            <p class="shop-page__statistic-type">Total Orders</p>
+          </div>
+        </div>
+      </div>
+      <p class="shop-page__statistic-title">Revenue</p>
+      <div class="shop-page__statistic-block">
+        <div class="shop-page__statistic-item">
+          <q-icon
+            name="currency_exchange"
+            class="shop-page__statistic-icon"
+            size="sm"
+          />
+          <div class="shop-page__statistic-text-wrapper">
+            <p class="shop-page__statistic-type">Gross Sales</p>
+          </div>
+        </div>
+        <div class="shop-page__statistic-item">
+          <q-icon
+            name="attach_money"
+            class="shop-page__statistic-icon"
+            size="sm"
+          />
+          <div class="shop-page__statistic-text-wrapper">
+            <p class="shop-page__statistic-type">Current Balance</p>
+          </div>
+        </div>
+      </div>
+      <p class="shop-page__statistic-title">Others</p>
+      <div class="shop-page__statistic-block">
+        <div class="shop-page__statistic-item">
+          <q-icon name="percent" class="shop-page__statistic-icon" size="sm" />
+          <div class="shop-page__statistic-text-wrapper">
+            <span class="shop-page__statistic-count">0 %</span>
+            <p class="shop-page__statistic-type">Admin Commission Rate</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -42,7 +104,7 @@
 import { defineComponent, type PropType } from "vue";
 import { useShopsStore } from "@/stores/shops";
 import type { Shop } from "@/core/models/Shop";
-
+// TODO make reusable statistic item and try to pass background color prop
 export default defineComponent({
   setup() {
     const shopsStore = useShopsStore();
@@ -64,7 +126,7 @@ export default defineComponent({
 .shop-page__wrapper {
   display: grid;
   grid-template-rows: 2fr 1fr;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr repeat(2, 1fr);
   gap: 20px;
 }
 .shop-page__info-wrapper {
@@ -122,7 +184,7 @@ export default defineComponent({
   padding: 12px;
 }
 
-.shop-page__image-wrapper {
+.shop-page__shop-image-wrapper {
   width: 100%;
   height: 100%;
   background: white;
@@ -130,6 +192,7 @@ export default defineComponent({
   border-radius: 5px;
   position: relative;
   display: flex;
+  grid-column: 2 / 4;
 }
 
 .shop-page__edit-button {
@@ -140,5 +203,58 @@ export default defineComponent({
   margin: 10px 10px 0 0;
   position: absolute;
   right: 5px;
+}
+
+.shop-page__shop-statistic-wrapper {
+  display: grid;
+  background: white;
+  border: 1px solid #ececec;
+  border-radius: 5px;
+  grid-column: 1 / 3;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: max-content 1fr;
+  row-gap: 10px;
+  column-gap: 20px;
+  padding: 16px;
+}
+
+.shop-page__statistic-title {
+  grid-row: 1;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  margin: 0;
+}
+.shop-page__statistic-item {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-row: 2;
+  align-items: center;
+  justify-content: center;
+  column-gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid #ececec;
+}
+.shop-page__statistic-icon {
+  background: #fc9ec6;
+  padding: 12px;
+  border: 0 solid;
+  border-radius: 50%;
+  color: white;
+  grid-row: 1 / -1;
+}
+
+.shop-page__statistic-count {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+}
+
+.shop-page__statistic-type {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: rgb(107, 114, 128);
+  margin: 0;
+  grid-column: 2;
 }
 </style>
