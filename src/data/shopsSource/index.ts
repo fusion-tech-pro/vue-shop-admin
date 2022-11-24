@@ -26,6 +26,7 @@ class ShopsSource {
         total_orders: 4,
         date_of_registration: "June 27, 2021",
         id: 1,
+        status: "active",
       },
       {
         logo: "https://pickbazar-react-admin-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F886%2Fconversions%2FBackpack-thumbnail.jpg&w=3840&q=75",
@@ -47,6 +48,7 @@ class ShopsSource {
         total_orders: 7,
         date_of_registration: "June 27, 2021",
         id: 2,
+        status: "active",
       },
       {
         logo: "https://pickbazar-react-admin-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F891%2Fconversions%2FGroup-36321-thumbnail.jpg&w=3840&q=75",
@@ -68,6 +70,7 @@ class ShopsSource {
         total_orders: 55,
         date_of_registration: "June 27, 2021",
         id: 3,
+        status: "active",
       },
       {
         logo: "https://pickbazar-react-admin-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F889%2Fconversions%2FMakeup-thumbnail.jpg&w=3840&q=75",
@@ -89,6 +92,7 @@ class ShopsSource {
         total_orders: 55,
         date_of_registration: "June 27, 2021",
         id: 4,
+        status: "active",
       },
       {
         logo: "https://pickbazar-react-admin-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F890%2Fconversions%2Fbakery-thumbnail.jpg&w=3840&q=75",
@@ -110,6 +114,7 @@ class ShopsSource {
         total_orders: 8,
         date_of_registration: "June 27, 2021",
         id: 5,
+        status: "active",
       },
     ];
 

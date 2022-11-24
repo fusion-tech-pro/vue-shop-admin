@@ -16,4 +16,5 @@ export interface ShopsResponse {
   total_orders?: number;
   date_of_registration?: string;
   id: number;
+  status: string;
 }

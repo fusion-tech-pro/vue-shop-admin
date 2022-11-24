@@ -18,6 +18,7 @@ export class Shop {
   totalOrders?: number;
   dateOfRegistration?: string;
   id: number;
+  status: string;
 
   constructor(options: {
     logo?: string;
@@ -37,6 +38,7 @@ export class Shop {
     totalOrders?: number;
     dateOfRegistration?: string;
     id: number;
+    status: string;
   }) {
     this.logo = options.logo;
     this.coverImage = options.coverImage;
@@ -55,6 +57,7 @@ export class Shop {
     this.totalOrders = options.totalOrders;
     this.dateOfRegistration = options.dateOfRegistration;
     this.id = options.id;
+    this.status = options.status;
   }
 
   static fromShopDto(ShopsResponse: ShopsResponse[]): Array<Shop> {
@@ -77,6 +80,7 @@ export class Shop {
         totalOrders: shop.total_orders,
         dateOfRegistration: shop.date_of_registration,
         id: shop.id,
+        status: shop.status,
       });
     });
   }

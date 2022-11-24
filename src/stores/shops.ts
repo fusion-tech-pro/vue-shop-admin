@@ -1,5 +1,5 @@
 import type { Shop } from "@/core/models/Shop";
-import { shopsSource } from "@/data/ShopsSource";
+import { shopsSource } from "@/data/shopsSource";
 import { defineStore } from "pinia";
 
 interface ShopStore {
