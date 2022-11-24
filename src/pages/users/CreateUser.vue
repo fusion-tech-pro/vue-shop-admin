@@ -107,7 +107,7 @@ export default defineComponent({
     onFormSubmit(values: EdditUserType) {
       this.store.addUser({
         ...values,
-        createAt: Date.now(),
+        createAt: new Date().toLocaleString(),
         id: Date.now(),
         avatar: this.src,
       });

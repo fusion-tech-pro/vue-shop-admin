@@ -6,7 +6,7 @@ export interface EdditUserType {
   phone?: string;
   email: string;
   avatar?: string;
-  createAt?: number;
+  createAt?: string;
   passwordConfirmation?: string;
 }
 

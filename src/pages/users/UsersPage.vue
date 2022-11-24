@@ -69,7 +69,7 @@
 
     <template v-slot:body-cell-createAt="props">
       <q-td :props="props">
-        {{ props.value && new Date(props.value).toLocaleString() }}
+        {{ props.value ?? "n/a" }}
       </q-td>
     </template>
 
@@ -199,7 +199,7 @@ export default defineComponent({
     },
 
     onEdit(user: User) {
-      this.row = user;
+      this.row = { ...user };
       this.store.indexOfEdit = user
         ? this.store.users.indexOf(user)
         : this.store.users.length++;
