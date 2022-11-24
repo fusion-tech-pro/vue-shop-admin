@@ -102,7 +102,7 @@ export default defineComponent({
   methods: {
     onFormSubmit(values: EdditUserType) {
       this.showNotification();
-      this.store.updateUser(values);
+      this.store.updateUser({ ...values, avatar: this.src });
       this.$emit("close");
     },
 

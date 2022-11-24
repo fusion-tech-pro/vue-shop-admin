@@ -1,8 +1,8 @@
 <template>
   <div id="q-app" style="min-height: 100vh">
-    <div class="q-pa-md row items-start q-gutter-md">
-      <div class="col-12 col-sm-5" v-for="(item, index) in cards" :key="index">
-        <q-card class="my-card" flat bordered>
+    <div class="q-pa-none q-mb-sm row" style="justify-content: space-between">
+      <div class="cardContainer" v-for="(item, index) in cards" :key="index">
+        <q-card class="myCard" flat bordered>
           <q-card-section horizontal style="justify-content: space-between">
             <q-card-section class="q-pt-xs">
               <div class="text-h7 text-weight-bold q-mt-sm q-mb-xs">
@@ -14,7 +14,7 @@
             </q-card-section>
 
             <q-card-section class="col-2 flex flex-center">
-              <q-icon name="warning" size="32px" color="primary"> </q-icon>
+              <q-icon name="warning" size="52px" color="primary"> </q-icon>
             </q-card-section>
           </q-card-section>
 
@@ -25,27 +25,27 @@
       </div>
     </div>
 
-    <div class="q-pa-md">
+    <div>
       <q-table
-        title="Recent Orders"
+        class="no-shadow"
+        title="Recents Orders"
         :rows="rows"
         :columns="columns"
         row-key="name"
         hide-bottom
-        class="q-table__title-center relative-position row items-center"
       >
-        <template v-slot:header="props">
+        <!-- <template v-slot:header="props">
           <q-tr :props="props">
             <q-th auto-width></q-th>
             <q-th v-for="col in props.cols" :key="col.name" :props="props">
               {{ col.label }}
             </q-th>
           </q-tr>
-        </template>
+        </template> -->
 
         <template v-slot:body="props">
           <q-tr :props="props">
-            <q-td auto-width>
+            <!-- <q-td auto-width>
               <q-btn
                 size="sm"
                 color="accent"
@@ -54,25 +54,51 @@
                 @click="props.expand = !props.expand"
                 :icon="props.expand ? 'remove' : 'add'"
               ></q-btn>
-            </q-td>
-            <q-td v-for="col in props.cols" :key="col.name" :props="props">
+            </q-td> -->
+            <q-td
+              v-for="(col, index) in props.cols"
+              :key="col.name"
+              :props="props"
+            >
+              <q-btn
+                :style="index && { display: 'none' }"
+                dense
+                round
+                flat
+                :icon="props.expand ? 'arrow_drop_up' : 'arrow_drop_down'"
+                @click="props.expand = !props.expand"
+              ></q-btn>
               {{ col.value }}
             </q-td>
           </q-tr>
           <q-tr v-show="props.expand" :props="props">
-            <q-td colspan="100%" class="q-ma-xl">
+            <q-td colspan="100%" class="myclass">
               <q-table
-                borderless
-                hide-header
+                :style="{
+                  backgroundColor: 'yellow',
+                }"
                 hide-bottom
-                :rows="rows"
+                :rows="rowsTemp"
                 :columns="columns"
               >
-                <q-tr :props="props" class="myclass"></q-tr>
+                <q-tr :props="props">
+                  <q-th
+                    v-for="col in props.cols"
+                    :key="col.name"
+                    :props="props"
+                  >
+                    {{ col.label }}
+                  </q-th>
+                  <q-td
+                    v-for="col in props.cols"
+                    :key="col.name"
+                    :props="props"
+                  >
+                    <q-btn round flat :icon="'arrow_drop_down'"></q-btn>
+                    {{ col.value }}
+                  </q-td>
+                </q-tr>
               </q-table>
-              <!-- <div class="text-left">
-                This is expand slot for row above: {{ props.row.name }}.
-              </div> -->
             </q-td>
           </q-tr>
         </template>
@@ -91,6 +117,24 @@ export default defineComponent({
       cards: dataCards,
       columns: columns,
       rows: rows,
+      rowsTemp: [
+        {
+          name: "Eclair",
+          calories: 262,
+
+          protein: 6.0,
+          sodium: 337,
+          status: "Order Received",
+        },
+        {
+          name: "Cupcake",
+          calories: 305,
+
+          protein: 4.3,
+          sodium: 413,
+          status: "Order Received",
+        },
+      ],
       lorem:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     };
@@ -99,11 +143,29 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.myclass td:hover:before {
-  display: none;
+.myclass {
+  margin: 0px;
+  padding: 0px 0px 0px 0px;
+  /* display: none; */
 }
-
-/* td.q-td {
+.cardContainer {
   padding: 0px;
-} */
+  margin-bottom: 15px;
+  margin-left: 0px;
+  width: 100%;
+  @include media-sm {
+    width: 48%;
+  }
+}
+.myCard {
+  padding: 10px 20px 10px 10px;
+}
+.my-table-details {
+  font-size: 0.85em;
+  font-style: italic;
+  max-width: 200px;
+  white-space: normal;
+  color: "yellow";
+  margin-top: 4px;
+}
 </style>

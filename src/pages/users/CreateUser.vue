@@ -105,7 +105,12 @@ export default defineComponent({
     },
 
     onFormSubmit(values: EdditUserType) {
-      this.store.addUser({ ...values, createAt: Date.now(), id: Date.now() });
+      this.store.addUser({
+        ...values,
+        createAt: Date.now(),
+        id: Date.now(),
+        avatar: this.src,
+      });
       this.showNotification();
       this.$router.replace({
         name: "users",
