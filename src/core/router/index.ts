@@ -14,6 +14,7 @@ const DashboardPage = () => import("@/pages/dashboard/DashboardPage.vue");
 const UsersPage = () => import("@/pages/users/UsersPage.vue");
 const ProductsPage = () => import("@/pages/products/ProductsPage.vue");
 const EmptyView = () => import("@/pages/empty/EmptyView.vue");
+const ShopView = () => import("@/pages/shop/Shop.vue");
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +45,12 @@ const router = createRouter({
           path: "/products",
           component: ProductsPage,
           name: "products",
+        },
+        {
+          path: "/shop/:name/:id",
+          component: ShopView,
+          name: "shop",
+          props: true,
         },
       ],
     },

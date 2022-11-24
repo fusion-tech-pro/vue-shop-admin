@@ -68,7 +68,7 @@
               color="grey-8"
               flat
               dense
-              @click="toggleEditProductModal(true, props.row)"
+              @click="openShopPage(props.row.id, props.row.name)"
               icon="ion-eye"
             />
           </q-td>
@@ -139,16 +139,16 @@ export default defineComponent({
   },
   data() {
     return {
-      selectedShop: {} as Shop,
       selectedShopId: 0,
       editModalOpened: false,
       confirmModalOpened: false,
     };
   },
   methods: {
-    toggleEditProductModal(value: boolean, curShop?: Shop) {
-      this.selectedShop = curShop as Shop;
-      this.editModalOpened = value;
+    openShopPage(id: number, name: string) {
+      this.$router.push({
+        path: `shop/:${name}/:${id}`,
+      });
     },
     toggleConfirmModal(value: boolean, productId?: number) {
       this.selectedShopId = productId as number;
