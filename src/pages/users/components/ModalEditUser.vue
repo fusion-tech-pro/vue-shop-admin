@@ -33,7 +33,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { imageDefault } from "@/data/userSource/usersData";
-import type { EdditUserType } from "../types";
+import type { EditUserType } from "../types";
 import { useUsers } from "@/stores/users";
 import EditUserForm from "./EditUserForm.vue";
 import { useQuasar } from "quasar";
@@ -100,7 +100,7 @@ export default defineComponent({
   },
 
   methods: {
-    onFormSubmit(values: EdditUserType) {
+    onFormSubmit(values: EditUserType) {
       this.showNotification();
       this.store.updateUser({ ...values, avatar: this.src });
       this.$emit("close");

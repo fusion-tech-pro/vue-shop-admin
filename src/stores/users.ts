@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { usersSource } from "@/data/userSource";
 import type { User } from "@/core/models/User";
-import type { EdditUserType } from "@/pages/users/types";
+import type { EditUserType } from "@/pages/users/types";
 
 interface UserStore {
   users: User[];
@@ -36,7 +36,7 @@ export const useUsers = defineStore("users", {
       }
     },
 
-    updateUser(user: EdditUserType) {
+    updateUser(user: EditUserType) {
       if (!this.users) {
         return;
       }

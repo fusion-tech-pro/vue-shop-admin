@@ -27,7 +27,7 @@
 <script lang="ts">
 import { defineComponent, markRaw } from "vue";
 import * as yup from "yup";
-import type { EdditUserType } from "./types";
+import type { EditUserType } from "./types";
 import { useUsers } from "@/stores/users";
 import EditUserForm from "./components/EditUserForm.vue";
 import { imageDefault as defaultAvatar } from "@/data/userSource/usersData";
@@ -104,7 +104,7 @@ export default defineComponent({
       });
     },
 
-    onFormSubmit(values: EdditUserType) {
+    onFormSubmit(values: EditUserType) {
       this.store.addUser({
         ...values,
         createAt: new Date().toLocaleString(),

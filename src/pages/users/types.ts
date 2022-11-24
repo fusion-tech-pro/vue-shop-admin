@@ -1,4 +1,4 @@
-export interface EdditUserType {
+export interface EditUserType {
   id?: number;
   firstName: string;
   lastName?: string;
