@@ -11,7 +11,7 @@
         @click="$emit('changeVisibility', false)"
       />
       <q-icon
-        name="delete"
+        :name="iconName"
         size="48px"
         color="primary"
         class="confirm-modal__icon"
@@ -48,9 +48,13 @@ export default defineComponent({
       required: true,
       type: Boolean,
     },
-    productId: {
+    itemId: {
       required: true,
       type: Number,
+    },
+    iconName: {
+      required: true,
+      type: String,
     },
     title: {
       required: false,
@@ -74,7 +78,7 @@ export default defineComponent({
   },
   methods: {
     confirm() {
-      this.$emit("confirmEmit", this.productId);
+      this.$emit("confirmEmit", this.itemId);
     },
   },
   computed: {
