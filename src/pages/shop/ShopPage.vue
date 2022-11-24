@@ -97,6 +97,20 @@
         </div>
       </div>
     </div>
+
+    <div class="shop-page__extra-wrapper">
+      <div class="shop-page__shop-registration">
+        <p class="shop-page__registration-title">Registered Since</p>
+        <p class="shop-page__reg-date">{{ shop?.dateOfRegistration }}</p>
+      </div>
+      <div class="shop-page__payment-wrapper">
+        <p class="shop-page__payment-title">Payment Information</p>
+        <p class="shop-page__payment-row">Name:</p>
+        <p class="shop-page__payment-row">Email</p>
+        <p class="shop-page__payment-row">Bank:</p>
+        <p class="shop-page__payment-row">Account No:</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -256,5 +270,50 @@ export default defineComponent({
   color: rgb(107, 114, 128);
   margin: 0;
   grid-column: 2;
+}
+
+.shop-page__extra-wrapper {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ececec;
+  background: white;
+  border-radius: 5px;
+}
+
+.shop-page__shop-registration {
+  border-bottom: 1px solid #ececec;
+  padding: 24px;
+}
+.shop-page__registration-title {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: rgb(107, 114, 128);
+  margin-bottom: 8px;
+}
+
+.shop-page__reg-date {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.shop-page__payment-wrapper {
+  display: grid;
+  padding: 24px;
+}
+
+.shop-page__payment-title {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.shop-page__payment-row {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: rgb(107, 114, 128);
+  margin-bottom: 8px;
 }
 </style>
