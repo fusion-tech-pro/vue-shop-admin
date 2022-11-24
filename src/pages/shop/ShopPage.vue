@@ -38,8 +38,8 @@
     </div>
 
     <div class="shop-page__shop-statistic-wrapper">
-      <p class="shop-page__statistic-title">Products</p>
       <div class="shop-page__statistic-block">
+        <p class="shop-page__statistic-title">Products</p>
         <div class="shop-page__statistic-item">
           <q-icon name="ion-cube" class="shop-page__statistic-icon" size="sm" />
           <div class="shop-page__statistic-text-wrapper">
@@ -63,8 +63,8 @@
           </div>
         </div>
       </div>
-      <p class="shop-page__statistic-title">Revenue</p>
       <div class="shop-page__statistic-block">
+        <p class="shop-page__statistic-title">Revenue</p>
         <div class="shop-page__statistic-item">
           <q-icon
             name="currency_exchange"
@@ -86,8 +86,8 @@
           </div>
         </div>
       </div>
-      <p class="shop-page__statistic-title">Others</p>
       <div class="shop-page__statistic-block">
+        <p class="shop-page__statistic-title">Others</p>
         <div class="shop-page__statistic-item">
           <q-icon name="percent" class="shop-page__statistic-icon" size="sm" />
           <div class="shop-page__statistic-text-wrapper">
@@ -139,9 +139,14 @@ export default defineComponent({
 <style scoped lang="scss">
 .shop-page__wrapper {
   display: grid;
-  grid-template-rows: 2fr 1fr;
-  grid-template-columns: 1fr repeat(2, 1fr);
-  gap: 20px;
+  row-gap: 20px;
+
+  @include media-lg {
+    display: grid;
+    grid-template-rows: 2fr 1fr;
+    grid-template-columns: 1fr repeat(2, 1fr);
+    gap: 20px;
+  }
 }
 .shop-page__info-wrapper {
   display: flex;
@@ -152,6 +157,10 @@ export default defineComponent({
   border: 1px solid #ececec;
   border-radius: 5px;
   background: white;
+
+  @include media-lg {
+    grid-row: 1;
+  }
 }
 
 .shop-page__shop-avatar {
@@ -200,13 +209,19 @@ export default defineComponent({
 
 .shop-page__shop-image-wrapper {
   width: 100%;
-  height: 100%;
   background: white;
   border: 1px solid #ececec;
   border-radius: 5px;
   position: relative;
   display: flex;
-  grid-column: 2 / 4;
+  order: -1;
+  height: 400px;
+
+  @include media-lg {
+    grid-column: 2 / 4;
+    height: 100%;
+    order: none;
+  }
 }
 
 .shop-page__edit-button {
@@ -224,12 +239,17 @@ export default defineComponent({
   background: white;
   border: 1px solid #ececec;
   border-radius: 5px;
-  grid-column: 1 / 3;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: max-content 1fr;
   row-gap: 10px;
   column-gap: 20px;
   padding: 16px;
+  order: 1;
+
+  @include media-lg {
+    grid-column: 1 / 3;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: max-content 1fr;
+    grid-row: 2;
+  }
 }
 
 .shop-page__statistic-title {
@@ -237,7 +257,7 @@ export default defineComponent({
   font-size: 1.125rem;
   line-height: 1.75rem;
   font-weight: 600;
-  margin: 0;
+  margin-bottom: 10px;
 }
 .shop-page__statistic-item {
   display: grid;
