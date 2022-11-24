@@ -14,6 +14,10 @@ export const useShopsStore = defineStore("shops", {
   },
   getters: {
     getShops: (state: ShopStore): Array<Shop> => state.shops as Shop[],
+    getShopById: (state: ShopStore) => {
+      return (shopId: number) =>
+        state.shops?.find((shop) => shop.id === shopId);
+    },
   },
   actions: {
     async fetchShops() {
