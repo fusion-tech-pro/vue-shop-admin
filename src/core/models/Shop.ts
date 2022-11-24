@@ -58,7 +58,6 @@ export class Shop {
   }
 
   static fromShopDto(ShopsResponse: ShopsResponse[]): Array<Shop> {
-    console.log("ShopsResponse", ShopsResponse);
     return ShopsResponse.map((shop) => {
       return new Shop({
         logo: shop.logo,
