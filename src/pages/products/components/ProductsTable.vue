@@ -181,7 +181,7 @@ export default defineComponent({
   },
   computed: {
     pagesNumber() {
-      return Math.ceil(this.productsRow.length / this.pagination.rowsPerPage);
+      return Math.ceil(this.productsRow?.length / this.pagination.rowsPerPage);
     },
   },
 });
