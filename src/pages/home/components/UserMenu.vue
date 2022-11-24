@@ -1,10 +1,12 @@
 <template>
   <q-list>
-    <q-item clickable v-close-popup>
-      <q-item-section>
-        <q-item-label>Profile</q-item-label>
-      </q-item-section>
-    </q-item>
+    <router-link to="/profile" class="drawer-item">
+      <q-item clickable v-close-popup>
+        <q-item-section>
+          <q-item-label>Profile</q-item-label>
+        </q-item-section>
+      </q-item>
+    </router-link>
 
     <router-link to="/logout" class="drawer-item">
       <q-item clickable v-close-popup>

@@ -14,6 +14,7 @@ const UsersPage = () => import("@/pages/users/UsersPage.vue");
 const ProductsPage = () => import("@/pages/products/ProductsPage.vue");
 const EmptyView = () => import("@/pages/empty/EmptyView.vue");
 const CreateUser = () => import("@/pages/users/CreateUser.vue");
+const ProfilePage = () => import("@/pages/profile/ProfilePage.vue");
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,6 +40,11 @@ const router = createRouter({
           path: "/products",
           component: ProductsPage,
           name: "products",
+        },
+        {
+          path: "/profile",
+          component: ProfilePage,
+          name: "profile",
         },
       ],
     },
