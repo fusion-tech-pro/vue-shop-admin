@@ -25,6 +25,16 @@
         class="shop-page__visit-button"
       />
     </div>
+    <div class="shop-page__image-wrapper">
+      <q-img :src="shop?.coverImage" />
+      <q-btn
+        icon="edit"
+        color="blue-8"
+        text-color="white"
+        label="Edit Shop"
+        class="shop-page__edit-button"
+      />
+    </div>
   </div>
 </template>
 
@@ -110,5 +120,25 @@ export default defineComponent({
 .shop-page__visit-button {
   width: 100%;
   padding: 12px;
+}
+
+.shop-page__image-wrapper {
+  width: 100%;
+  height: 100%;
+  background: white;
+  border: 1px solid #ececec;
+  border-radius: 5px;
+  position: relative;
+  display: flex;
+}
+
+.shop-page__edit-button {
+  width: fit-content;
+  height: 20px;
+  grid-row: 1;
+  justify-self: end;
+  margin: 10px 10px 0 0;
+  position: absolute;
+  right: 5px;
 }
 </style>
