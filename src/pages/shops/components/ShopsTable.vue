@@ -147,7 +147,7 @@ export default defineComponent({
   methods: {
     openShopPage(id: number, name: string) {
       this.$router.push({
-        path: `shop/:${name}/:${id}`,
+        path: `shop/:${name}/${id}`,
       });
     },
     toggleConfirmModal(value: boolean, productId?: number) {
