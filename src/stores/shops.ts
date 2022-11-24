@@ -30,7 +30,7 @@ export const useShopsStore = defineStore("shops", {
       newArr.push(data);
       this.shops = newArr;
     },
-    ChangeShop(data: Shop) {
+    changeShop(data: Shop) {
       const changedShop = this.shops!.map((shop) => {
         if (shop.id === data.id) {
           return {
@@ -43,6 +43,21 @@ export const useShopsStore = defineStore("shops", {
     },
     removeShop(id: number) {
       const filteredShops = this.shops!.filter((shop) => shop.id !== id);
+      this.shops = filteredShops;
+    },
+    changeStatusShop(id: number) {
+      let newStatus;
+      const filteredShops = this.shops!.map((shop) => {
+        newStatus = shop.status === "active" ? "inactive" : "active";
+        if (shop.id === id) {
+          return {
+            ...shop,
+            status: newStatus,
+          };
+        }
+        return shop;
+      });
+
       this.shops = filteredShops;
     },
   },
