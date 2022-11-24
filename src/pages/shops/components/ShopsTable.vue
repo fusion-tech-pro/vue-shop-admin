@@ -46,13 +46,17 @@
             {{ props.row.totalOrders }}
           </q-td>
           <q-td key="status" :props="props">
-            <q-badge color="primary" class="q-pa-sm" rounded>
+            <q-badge
+              :color="props.row.status === 'active' ? 'primary' : 'red'"
+              class="q-pa-sm"
+              rounded
+            >
               {{ props.row.status }}
             </q-badge>
           </q-td>
           <q-td key="actions" :props="props">
             <q-btn
-              size="sm"
+              size="md"
               color="red"
               flat
               dense
@@ -60,7 +64,7 @@
               icon="ion-close-circle"
             />
             <q-btn
-              size="sm"
+              size="md"
               color="grey-8"
               flat
               dense
@@ -98,7 +102,7 @@
     :cancelButtonText="'Cancel'"
     :submitButtonText="'Submit'"
     @change-visibility="toggleConfirmModal"
-    @confirmEmit="removeShop"
+    @confirmEmit="changeShopStatus"
   />
 </template>
 
@@ -150,7 +154,10 @@ export default defineComponent({
       this.selectedShopId = productId as number;
       this.confirmModalOpened = value;
     },
-    removeShop() {},
+    changeShopStatus(id: number) {
+      this.shopsStore.changeStatusShop(id);
+      this.toggleConfirmModal(false);
+    },
   },
   computed: {
     pagesNumber() {
