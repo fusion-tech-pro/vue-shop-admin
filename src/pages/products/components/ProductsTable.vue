@@ -104,7 +104,8 @@
 
   <ConfirmModal
     :opened="confirmModalOpened"
-    :productId="selectedProductId"
+    :itemId="selectedProductId"
+    :iconName="'delete'"
     :title="'Delete'"
     :subtitle="'Are you sure, you want to delete?'"
     :cancelButtonText="'Cancel'"
