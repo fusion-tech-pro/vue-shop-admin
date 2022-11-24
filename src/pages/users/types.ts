@@ -3,7 +3,7 @@ export interface EdditUserType {
   firstName: string;
   lastName?: string;
   password: string;
-  phone?: string;
+  contactNumber?: string;
   email: string;
   avatar?: string;
   createAt?: string;
@@ -14,7 +14,7 @@ export type FormTypeUser = {
   firstName: string;
   lastName?: string;
   password: string;
-  phone?: string;
+  contactNumber?: string;
   email: string;
   passwordConfirmation?: string;
 };

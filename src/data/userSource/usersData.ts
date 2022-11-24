@@ -31,11 +31,11 @@ export const columns: QTableProps["columns"] = [
     sortable: true,
   },
   {
-    name: "phone",
+    name: "contactNumber",
     required: true,
     align: "center",
     label: "Phone",
-    field: "phone",
+    field: "contactNumber",
     sortable: true,
   },
   {

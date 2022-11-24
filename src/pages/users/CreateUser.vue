@@ -53,7 +53,7 @@ export default defineComponent({
         yup.object({
           firstName: yup.string().required(),
           lastName: yup.string(),
-          phone: yup.string(),
+          contactNumber: yup.string(),
           email: yup.string().email().required(),
           password: yup
             .string()
@@ -69,7 +69,7 @@ export default defineComponent({
         firstName: "",
         lastName: "",
         password: "",
-        phone: "",
+        contactNumber: "",
         email: "",
         passwordConfirmation: "",
       },

@@ -123,7 +123,7 @@ export default defineComponent({
         firstName: this.store.users[this.store.indexOfEdit].firstName,
         lastName: this.store.users[this.store.indexOfEdit].lastName,
         email: this.store.users[this.store.indexOfEdit].email,
-        phone: this.store.users[this.store.indexOfEdit].phone,
+        contactNumber: this.store.users[this.store.indexOfEdit].contactNumber,
         password: this.store.users[this.store.indexOfEdit].password,
         passwordConfirmation: this.store.users[this.store.indexOfEdit].password,
       };

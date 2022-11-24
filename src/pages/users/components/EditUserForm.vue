@@ -32,7 +32,7 @@
         :error="!!errorMessage"
       />
     </FieldInput>
-    <FieldInput name="phone" v-slot="{ value, errorMessage, field }">
+    <FieldInput name="contactNumber" v-slot="{ value, errorMessage, field }">
       <q-input
         dense
         outlined
@@ -143,7 +143,7 @@ export default defineComponent({
         yup.object({
           firstName: yup.string().required(),
           lastName: yup.string(),
-          phone: yup.string(),
+          contactNumber: yup.string(),
           email: yup.string().email().required(),
           password: yup
             .string()

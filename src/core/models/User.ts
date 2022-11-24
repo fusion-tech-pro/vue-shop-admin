@@ -6,9 +6,11 @@ export class User {
   lastName?: string;
   email: string;
   password: string;
-  phone?: string;
+  contactNumber?: string;
   avatar?: string;
   createAt?: string;
+  userName?: string;
+  userBio?: string;
 
   constructor(options: {
     id: number;
@@ -16,7 +18,7 @@ export class User {
     lastName?: string;
     email: string;
     password: string;
-    phone?: string;
+    contactNumber?: string;
     avatar?: string;
     createAt?: string;
   }) {
@@ -25,7 +27,7 @@ export class User {
     this.email = options.email;
     this.lastName = options.lastName;
     this.password = options.password;
-    this.phone = options.phone;
+    this.contactNumber = options.contactNumber;
     this.avatar = options.avatar;
     this.createAt = options.createAt;
   }
@@ -37,7 +39,7 @@ export class User {
       email: userResponse.email,
       lastName: userResponse.last_name ?? "",
       password: "111111",
-      phone: userResponse.contact_number,
+      contactNumber: userResponse.contact_number,
       createAt: userResponse.created_at,
       avatar: userResponse.avatar,
     });
