@@ -5,15 +5,19 @@
     :isFiltersShow="false"
     :isAddButtonShow="false"
   />
+
+  <ShopsTable :shopsRow="(getFilteredShops as Shop[])" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useShopsStore } from "@/stores/shops";
 import SearchBar from "../../components/SearchBar/SearchBar.vue";
+import ShopsTable from "./components/ShopsTable.vue";
+import type { Shop } from "@/core/models/Shop";
 
 export default defineComponent({
-  components: { SearchBar },
+  components: { SearchBar, ShopsTable },
 
   setup() {
     const shopsStore = useShopsStore();
