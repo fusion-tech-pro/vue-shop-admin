@@ -2,10 +2,11 @@
   <div class="q-py-lg">
     <q-table
       :columns="columns"
-      :rows="rows"
+      :rows="ordersStore.orders"
       row-key="name"
       class="products-table__wrapper"
       hide-bottom
+      :loading="ordersStore.loading"
     >
       <template v-slot:header="props">
         <q-tr :props="props">
@@ -16,54 +17,38 @@
       </template>
 
       <template v-slot:body="props">
-        <q-tr :props="props">
-          <q-td key="trackingNumber" :props="props">
-            {{ props.row.trackingNumber }}
-          </q-td>
-          <q-td key="deliveryFee" :props="props">
-            ${{ props.row.deliveryFee }}
-          </q-td>
-          <q-td key="totalPrice" :props="props">
-            ${{ props.row.totalPrice }}
-          </q-td>
-          <q-td key="orderDate" :props="props">
-            {{ props.row.orderDate }}
-          </q-td>
-          <q-td key="status" :props="props">
-            {{ props.row.status }}
-          </q-td>
-          <q-td key="address" :props="props">{{ props.row.address }}</q-td>
-          <q-td key="actions" :props="props">
-            <q-icon
-              name="ion-eye"
-              size="30px"
-              class="more-icon cursor-pointer"
-            />
-          </q-td>
-        </q-tr>
+        <OrderBody :props="props"></OrderBody>
       </template>
     </q-table>
   </div>
 </template>
 
 <script lang="ts">
+import { useOrdersStore } from "@/stores/orders";
 import type { QTableProps } from "quasar";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
+import OrderBody from "./OrderBody.vue";
 const columns: QTableProps["columns"] = [
+  {
+    name: "more",
+    label: "",
+    align: "right",
+    field: "more",
+    headerClasses: "q-table--col-auto-width",
+  },
   {
     name: "trackingNumber",
     required: true,
     label: "Tracking Number",
     align: "center",
     field: "trackingNumber",
-    format: (val: any) => `${val}`,
+    headerClasses: "q-table--col-auto-width",
   },
   {
     name: "deliveryFee",
     label: "Delivery Fee",
     field: "deliveryFee",
     align: "center",
-    format: (val: any) => `$${val}`,
   },
   {
     name: "totalPrice",
@@ -71,7 +56,6 @@ const columns: QTableProps["columns"] = [
     field: "totalPrice",
     sortable: true,
     align: "center",
-    format: (val: any) => `$${val}`,
   },
   {
     name: "orderDate",
@@ -92,84 +76,45 @@ const columns: QTableProps["columns"] = [
     label: "Shipping Address",
     field: "address",
     align: "left",
+    classes: "address-area",
+    headerStyle: "max-width: 2000px; min-width: 190px",
   },
   {
     name: "actions",
     label: "Actions",
     field: "actions",
     align: "center",
-    sort: (a: string, b: string) => parseInt(a, 10) - parseInt(b, 10),
-  },
-];
-
-const rows = [
-  {
-    trackingNumber: "CGG82oQZc4i8",
-    deliveryFee: "50.00",
-    totalPrice: "1,641.20",
-    orderDate: "20-09-2021",
-    status: "Order Received",
-    address: "2148 Straford ParkWinchesterKY40391United States",
-    actions: "/ccskrf",
-  },
-  {
-    trackingNumber: "CGG82oQZc4i8",
-    deliveryFee: "50.00",
-    totalPrice: "1,641.20",
-    orderDate: "20-09-2021",
-    status: "Order Received",
-    address: "2148 Straford ParkWinchesterKY40391United States",
-    actions: "/ccskrf",
-  },
-  {
-    trackingNumber: "CGG82oQZc4i8",
-    deliveryFee: "50.00",
-    totalPrice: "1,641.20",
-    orderDate: "20-09-2021",
-    status: "Order Received",
-    address: "2148 Straford ParkWinchesterKY40391United States",
-    actions: "/ccskrf",
-  },
-  {
-    trackingNumber: "CGG82oQZc4i8",
-    deliveryFee: "50.00",
-    totalPrice: "1,641.20",
-    orderDate: "20-09-2021",
-    status: "Order Received",
-    address: "2148 Straford ParkWinchesterKY40391United States",
-    actions: "/ccskrf",
-  },
-  {
-    trackingNumber: "CGG82oQZc4i8",
-    deliveryFee: "50.00",
-    totalPrice: "1,641.20",
-    orderDate: "20-09-2021",
-    status: "Order Received",
-    address: "2148 Straford ParkWinchesterKY40391United States",
-    actions: "/ccskrf",
+    headerClasses: "q-table--col-auto-width",
   },
 ];
 
 export default defineComponent({
   setup() {
-    return { columns, rows };
+    const ordersStore = useOrdersStore();
+    ordersStore.getOrders();
+    const pagination = ref({
+      sortBy: "desc",
+      descending: false,
+      page: 1,
+      rowsPerPage: 3,
+    });
+    return {
+      columns,
+      pagination,
+      ordersStore,
+    };
   },
+  components: { OrderBody },
 });
 </script>
 
 <style scoped lang="scss">
-.more-icon {
-  color: $gray-500;
-}
 .products-table__wrapper {
   .q-table__top,
   .q-table__bottom,
   thead tr:first-child th {
     background-color: $gray-100;
-    white-space: nowrap;
-    padding: 0.75rem;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
+    font-size: 14px;
     font-weight: 600;
   }
 }
