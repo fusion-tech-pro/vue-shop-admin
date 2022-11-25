@@ -69,7 +69,7 @@
 
     <template v-slot:body-cell-createAt="props">
       <q-td :props="props">
-        {{ props.value && new Date(props.value).toLocaleString() }}
+        {{ props.value ?? "n/a" }}
       </q-td>
     </template>
 
@@ -97,17 +97,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { columns, imageDefault } from "@/data/userSource/usersData";
-import ModalEditUser from "./components/ModalEditUser.vue";
-import type { EdditUserType } from "./types";
-import { useUsers } from "@/stores/users";
-import { useQuasar } from "quasar";
 import type { User } from "@/core/models/User";
-
-// import type { QTableProps } from "quasar";
-
-// type Method = Exclude<QTableProps["filterMethod"], undefined>;
-// type ReturnTest = ReturnType<Method>;
-// type ArgsTest = Parameters<Method>;
+import { useQuasar } from "quasar";
+import { useUsers } from "@/stores/users";
+import ModalEditUser from "./components/ModalEditUser.vue";
+import type { EditUserType } from "./types";
 
 export default defineComponent({
   components: {
@@ -140,8 +134,8 @@ export default defineComponent({
         avatar: "",
         firstName: "",
         email: "",
-        password: "123456",
-      } as EdditUserType,
+        password: "",
+      } as EditUserType,
       headerModal: "",
     };
   },
@@ -164,30 +158,28 @@ export default defineComponent({
 
   methods: {
     customFilter(
-      rowsUsers: Readonly<EdditUserType[]>,
+      rowsUsers: Readonly<EditUserType[]>,
       terms: { search: string }
     ) {
-      // customFilter(rowsUsers: ArgsTest[0], terms: ArgsTest[1]): ReturnTest {
       let lowerSearch = terms?.search ? terms.search.toLowerCase() : "";
-      const filteredRows = rowsUsers.filter((row: EdditUserType) => {
+      const filteredRows = rowsUsers.filter((row: EditUserType) => {
         let answer = true;
         if (lowerSearch != "") {
           answer = false;
-          let temp_values_lower: string[] = Object.entries(row)
+
+          let tempValuesLower = Object.entries(row)
             .filter(
-              (item: string[]) =>
+              (item) =>
                 item[0] === "firstName" ||
                 item[0] === "email" ||
                 item[0] === "lastName"
             )
-            .map((item: string[]) => {
+            .map((item) => {
               return item[1].toLowerCase();
             });
-          // let temp_values_lower = temp_values.map((x) =>
-          //   x ? x.toLowerCase() : ""
-          // );
-          for (let val = 0; val < temp_values_lower.length; val++) {
-            if (temp_values_lower[val].includes(lowerSearch)) {
+
+          for (let val = 0; val < tempValuesLower.length; val++) {
+            if (tempValuesLower[val].includes(lowerSearch)) {
               answer = true;
               break;
             }
@@ -199,7 +191,7 @@ export default defineComponent({
     },
 
     onEdit(user: User) {
-      this.row = user;
+      this.row = { ...user };
       this.store.indexOfEdit = user
         ? this.store.users.indexOf(user)
         : this.store.users.length++;
@@ -225,7 +217,6 @@ img {
 }
 
 .button-add {
-  /* margin-left: 10; */
   margin-top: 5px;
   font-weight: bold;
   justify-content: center;
@@ -247,7 +238,6 @@ img {
 .search-container {
   flex-direction: column;
   background-color: white;
-  /* justify-content: space-between; */
   justify-content: flex-end;
   @include media-sm {
     flex-direction: row;

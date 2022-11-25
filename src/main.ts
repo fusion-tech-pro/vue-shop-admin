@@ -29,9 +29,7 @@ useUserStore()
   .initializeUser()
   .then(() => {
     app.use(Quasar, {
-      plugins: {
-        Notify,
-      },
+      plugins: { Notify },
     });
 
     // router runs right after it was used,

@@ -32,7 +32,7 @@
         :error="!!errorMessage"
       />
     </FieldInput>
-    <FieldInput name="phone" v-slot="{ value, errorMessage, field }">
+    <FieldInput name="contactNumber" v-slot="{ value, errorMessage, field }">
       <q-input
         dense
         outlined
@@ -119,7 +119,7 @@
 import { defineComponent, markRaw, type PropType } from "vue";
 import { Form as FormInput, Field as FieldInput } from "vee-validate";
 import * as yup from "yup";
-import type { EdditUserType, FormTypeUser } from "../types";
+import type { EditUserType, FormTypeUser } from "../types";
 
 export default defineComponent({
   components: {
@@ -128,7 +128,7 @@ export default defineComponent({
   },
 
   props: {
-    initUser: { type: Object as PropType<EdditUserType> },
+    initUser: { type: Object as PropType<EditUserType> },
   },
 
   emits: {
@@ -143,7 +143,7 @@ export default defineComponent({
         yup.object({
           firstName: yup.string().required(),
           lastName: yup.string(),
-          phone: yup.string(),
+          contactNumber: yup.string(),
           email: yup.string().email().required(),
           password: yup
             .string()

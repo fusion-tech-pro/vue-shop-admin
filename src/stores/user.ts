@@ -1,6 +1,7 @@
 import type { User } from "@/core/models/User";
 import { accountSource } from "@/data/accountSource";
 import { tokenSource } from "@/data/tokenSource";
+import type { MainInfoFormState } from "@/pages/profile/entities";
 import { defineStore } from "pinia";
 
 interface UserState {
@@ -62,6 +63,33 @@ export const useUserStore = defineStore("user", {
     logout() {
       tokenSource.clearStorage();
       this.user = null;
+    },
+
+    async changePassword(oldPassword: string, newPassword: string) {
+      try {
+        this.loading = true;
+        this.error = null;
+        await accountSource.changePassword(oldPassword, newPassword);
+      } catch (err) {
+        console.error("Error is: ", err);
+        this.error = `${err}`;
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async changeMainInfo(values: MainInfoFormState) {
+      try {
+        this.loading = true;
+        this.error = null;
+        const user = await accountSource.changeMainInfo(values);
+        this.user = user;
+      } catch (err) {
+        console.error("Error is: ", err);
+        this.error = `${err}`;
+      } finally {
+        this.loading = false;
+      }
     },
   },
 });

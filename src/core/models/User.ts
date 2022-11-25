@@ -6,9 +6,11 @@ export class User {
   lastName?: string;
   email: string;
   password: string;
-  phone?: string;
+  contactNumber?: string;
   avatar?: string;
-  createAt?: number;
+  createAt?: string;
+  userName?: string;
+  userBio?: string;
 
   constructor(options: {
     id: number;
@@ -16,16 +18,16 @@ export class User {
     lastName?: string;
     email: string;
     password: string;
-    phone?: string;
+    contactNumber?: string;
     avatar?: string;
-    createAt?: number;
+    createAt?: string;
   }) {
     this.id = options.id;
     this.firstName = options.firstName;
     this.email = options.email;
     this.lastName = options.lastName;
     this.password = options.password;
-    this.phone = options.phone;
+    this.contactNumber = options.contactNumber;
     this.avatar = options.avatar;
     this.createAt = options.createAt;
   }
@@ -33,11 +35,11 @@ export class User {
   static fromUserDto(userResponse: UserResponse): User {
     return new User({
       id: userResponse.id,
-      firstName: userResponse.first_name,
+      firstName: userResponse.first_name ?? "",
       email: userResponse.email,
       lastName: userResponse.last_name ?? "",
-      password: userResponse.password,
-      phone: userResponse.phone,
+      password: "111111",
+      contactNumber: userResponse.contact_number,
       createAt: userResponse.created_at,
       avatar: userResponse.avatar,
     });
