@@ -1,8 +1,8 @@
 <template>
   <div id="q-app" style="min-height: 100vh">
     <div class="q-pa-none q-mb-sm row" style="justify-content: space-between">
-      <div class="cardContainer" v-for="(item, index) in cards" :key="index">
-        <q-card class="myCard" flat bordered>
+      <div class="card-container" v-for="(item, index) in cards" :key="index">
+        <q-card class="my-card" flat bordered>
           <q-card-section horizontal style="justify-content: space-between">
             <q-card-section class="q-pt-xs">
               <div class="text-h7 text-weight-bold q-mt-sm q-mb-xs">
@@ -25,82 +25,164 @@
       </div>
     </div>
 
-    <div>
+    <MyChart />
+
+    <div class="q-mb-lg">
       <q-table
         class="no-shadow"
-        title="Recents Orders"
         :rows="rows"
         :columns="columns"
         row-key="name"
         hide-bottom
       >
-        <!-- <template v-slot:header="props">
+        <template v-slot:top>
+          <div
+            class="q-table__title"
+            style="
+              font-weight: bold;
+              display: flex;
+              width: 100%;
+              justify-content: center;
+            "
+          >
+            Recent Orders
+          </div>
+        </template>
+        <template v-slot:header="props">
           <q-tr :props="props">
-            <q-th auto-width></q-th>
+            <q-th style="width: 1px"></q-th>
             <q-th v-for="col in props.cols" :key="col.name" :props="props">
-              {{ col.label }}
+              <q-badge style="font-size: 16px" :label="col.label"></q-badge>
             </q-th>
           </q-tr>
-        </template> -->
+        </template>
 
         <template v-slot:body="props">
           <q-tr :props="props">
-            <!-- <q-td auto-width>
+            <q-td style="padding: 0 0 0 10px">
               <q-btn
-                size="sm"
-                color="accent"
-                round
-                dense
-                @click="props.expand = !props.expand"
-                :icon="props.expand ? 'remove' : 'add'"
-              ></q-btn>
-            </q-td> -->
-            <q-td
-              v-for="(col, index) in props.cols"
-              :key="col.name"
-              :props="props"
-            >
-              <q-btn
-                :style="index && { display: 'none' }"
                 dense
                 round
                 flat
                 :icon="props.expand ? 'arrow_drop_up' : 'arrow_drop_down'"
                 @click="props.expand = !props.expand"
               ></q-btn>
-              {{ col.value }}
             </q-td>
-          </q-tr>
-          <q-tr v-show="props.expand" :props="props">
-            <q-td colspan="100%" class="myclass">
-              <q-table
-                :style="{
-                  backgroundColor: 'yellow',
-                }"
-                hide-bottom
-                :rows="rowsTemp"
-                :columns="columns"
+
+            <q-td v-for="col in props.cols" :key="col.name" :props="props">
+              <div
+                :style="
+                  col.label === 'Status' && { color: 'red', fontWeight: 'bold' }
+                "
               >
-                <q-tr :props="props">
-                  <q-th
-                    v-for="col in props.cols"
-                    :key="col.name"
-                    :props="props"
-                  >
-                    {{ col.label }}
-                  </q-th>
-                  <q-td
-                    v-for="col in props.cols"
-                    :key="col.name"
-                    :props="props"
-                  >
-                    <q-btn round flat :icon="'arrow_drop_down'"></q-btn>
-                    {{ col.value }}
-                  </q-td>
-                </q-tr>
-              </q-table>
+                {{ col.value }}
+              </div>
             </q-td>
           </q-tr>
+          <q-tr
+            v-show="props.expand"
+            :props="props"
+            v-for="(col, index) in rowsTemp"
+            :key="index"
+          >
+            <q-td style="background-color: #f3f4f6"></q-td>
+            <q-td
+              v-for="(cell, index) in col"
+              :key="index"
+              style="background-color: #f3f4f6"
+            >
+              <div
+                :style="
+                  index === 'status' && {
+                    color: 'red',
+                    fontWeight: 'bold',
+                  }
+                "
+              >
+                {{ cell }}
+              </div>
+            </q-td>
+          </q-tr>
+        </template>
+      </q-table>
+    </div>
+
+    <div class="q-mb-lg">
+      <q-table
+        class="no-shadow"
+        :rows="rows"
+        :columns="columns"
+        row-key="name"
+        hide-bottom
+      >
+        <template v-slot:top>
+          <div
+            class="q-table__title"
+            style="
+              font-weight: bold;
+              display: flex;
+              width: 100%;
+              justify-content: center;
+            "
+          >
+            Popular Products
+          </div>
+        </template>
+        <template v-slot:header="props">
+          <q-tr :props="props">
+            <!-- <q-th style="width: 1px"></q-th> -->
+            <q-th v-for="col in props.cols" :key="col.name" :props="props">
+              <q-badge style="font-size: 16px" :label="col.label"></q-badge>
+            </q-th>
+          </q-tr>
+        </template>
+
+        <template v-slot:body="props">
+          <q-tr :props="props">
+            <!-- <q-td style="padding: 0 0 0 10px">
+              <q-btn
+                dense
+                round
+                flat
+                :icon="props.expand ? 'arrow_drop_up' : 'arrow_drop_down'"
+                @click="props.expand = !props.expand"
+              ></q-btn>
+            </q-td> -->
+
+            <q-td v-for="col in props.cols" :key="col.name" :props="props">
+              <div
+                :style="
+                  col.label === 'Status' && { color: 'red', fontWeight: 'bold' }
+                "
+              >
+                {{ col.value }}
+              </div>
+            </q-td>
+          </q-tr>
+          <!-- <q-tr
+            v-show="props.expand"
+            :props="props"
+            v-for="(col, index) in rowsTemp"
+            :key="index"
+          >
+            <q-td style="background-color: #f3f4f6"></q-td>
+            <q-td
+              v-for="(cell, index) in col"
+              :key="index"
+              style="background-color: #f3f4f6"
+            >
+              <div
+                :style="
+                  index === 'status' && {
+                    color: 'red',
+                    fontWeight: 'bold',
+                  }
+                "
+              >
+                {{ cell }}
+              </div>
+            </q-td>
+          </q-tr> -->
         </template>
       </q-table>
     </div>
@@ -110,8 +192,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { dataCards, columns, rows } from "./data";
+import MyChart from "./components/MyChart.vue";
 
 export default defineComponent({
+  components: { MyChart },
   data() {
     return {
       cards: dataCards,
@@ -119,19 +203,17 @@ export default defineComponent({
       rows: rows,
       rowsTemp: [
         {
-          name: "Eclair",
-          calories: 262,
-
-          protein: 6.0,
-          sodium: 337,
+          name: "One Item",
+          calories: 250,
+          protein: 5.0,
+          sodium: 300,
           status: "Order Received",
         },
         {
-          name: "Cupcake",
-          calories: 305,
-
-          protein: 4.3,
-          sodium: 413,
+          name: "Second Item",
+          calories: 200,
+          protein: 3,
+          sodium: 400,
           status: "Order Received",
         },
       ],
@@ -148,7 +230,7 @@ export default defineComponent({
   padding: 0px 0px 0px 0px;
   /* display: none; */
 }
-.cardContainer {
+.card-container {
   padding: 0px;
   margin-bottom: 15px;
   margin-left: 0px;
@@ -157,7 +239,7 @@ export default defineComponent({
     width: 48%;
   }
 }
-.myCard {
+.my-card {
   padding: 10px 20px 10px 10px;
 }
 .my-table-details {

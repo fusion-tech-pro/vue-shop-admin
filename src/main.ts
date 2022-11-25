@@ -32,11 +32,6 @@ useUserStore()
       plugins: {
         Notify,
       },
-      config: {
-        notify: {
-          /* look at QuasarConfOptions from the API card */
-        },
-      },
     });
 
     // router runs right after it was used,
