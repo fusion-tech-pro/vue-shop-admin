@@ -39,6 +39,24 @@ export const useShopsStore = defineStore("shops", {
         if (shop.id === data.id) {
           return {
             ...shop,
+            logo: data.logo,
+            coverImage: data.coverImage,
+            name: data.name,
+            ownerName: data.ownerName,
+            webSite: data.webSite,
+            socialLink: data.socialLink,
+            description: data.description,
+            country: data.country,
+            state: data.state,
+            city: data.city,
+            street: data.street,
+            zipCode: data.zipCode,
+            telephoneNumber: data.telephoneNumber,
+            totalProducts: data.totalProducts,
+            totalOrders: data.totalOrders,
+            dateOfRegistration: data.dateOfRegistration,
+            id: data.id,
+            status: data.status,
           };
         }
         return shop;
