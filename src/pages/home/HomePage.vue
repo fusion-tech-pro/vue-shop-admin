@@ -10,6 +10,17 @@
           </q-avatar>
           Shop Admin
         </q-toolbar-title>
+
+        <q-btn
+          flat
+          color="primary"
+          outline
+          text-color="white"
+          @click="toggleShopModal"
+        >
+          Create Shop
+        </q-btn>
+
         <q-btn
           dense
           flat
@@ -36,14 +47,24 @@
       </div>
     </q-page-container>
   </q-layout>
+
+  <ShopModalVue
+    :opened="editModalOpened"
+    @change-visibility="toggleShopModal"
+    @form-submit="onCreateShop"
+  />
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
 import DrawerMenu from "./components/DrawerMenu.vue";
 import UserMenu from "./components/UserMenu.vue";
+import ShopModalVue from "../../pages/shop/components/ShopModal.vue";
+import { useShopsStore } from "@/stores/shops";
 
 const drawerOpened = ref(false);
+const editModalOpened = ref(false);
+const shopsStore = useShopsStore();
 
 function toggleLeftDrawer() {
   drawerOpened.value = !drawerOpened.value;
@@ -51,6 +72,22 @@ function toggleLeftDrawer() {
 
 function onDrawerChange(opened: boolean) {
   drawerOpened.value = opened;
+}
+
+function toggleShopModal() {
+  editModalOpened.value = !editModalOpened.value;
+}
+
+function onCreateShop(values: any) {
+  shopsStore.createShop({
+    ...values,
+    status: "active",
+    totalProducts: 0,
+    totalOrders: 0,
+    dateOfRegistration: new Date(),
+    id: Math.floor(Math.random() * 100),
+  });
+  toggleShopModal();
 }
 </script>
 
