@@ -137,7 +137,7 @@ import { Form, Field } from "vee-validate";
 import * as yup from "yup";
 import type { ProductFormState } from "../entities/index";
 import type { Product } from "@/core/models/Product";
-import { noImageURL } from "../assetsData";
+import { noImageURL } from "../../../utils/constants";
 
 export default defineComponent({
   components: {
