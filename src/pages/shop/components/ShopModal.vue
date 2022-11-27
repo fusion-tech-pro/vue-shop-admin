@@ -21,35 +21,17 @@
           <q-space />
         </q-card-section>
 
-        <p>Shop logo</p>
-        <div class="row full-width justify-center q-mb-md">
-          <q-avatar size="150px">
-            <label>
-              <q-img height="150px" width="150px" :src="logoSrc" />
-              <input
-                type="file"
-                accept=".jpg,.png"
-                @change="onFileChange"
-                :style="{ display: 'none' }"
-              />
-            </label>
-          </q-avatar>
-        </div>
+        <UploadImage
+          :label="'Shop cover image'"
+          :imageSrc="logoSrc"
+          @get-image="getLogoSrc"
+        />
 
-        <p>Shop cover image</p>
-        <div class="row full-width justify-center q-mb-md">
-          <q-avatar size="150px">
-            <label>
-              <q-img height="150px" width="150px" :src="coverImageSrc" />
-              <input
-                type="file"
-                accept=".jpg,.png"
-                @change="onFileChangee"
-                :style="{ display: 'none' }"
-              />
-            </label>
-          </q-avatar>
-        </div>
+        <UploadImage
+          :label="'Shop cover image'"
+          :imageSrc="coverImageSrc"
+          @get-image="getCoverImageSrc"
+        />
 
         <Field name="name" v-slot="{ value, errorMessage, field }">
           <q-input
@@ -70,7 +52,6 @@
             type="text"
             class="q-mb-sm"
             multiline
-            @change="onFileChange"
             :model-value="value"
             v-bind="field"
             :error-message="errorMessage"
@@ -200,12 +181,14 @@ import * as yup from "yup";
 import type { ShopFormState } from "../entities";
 import type { Shop } from "@/core/models/Shop";
 import { noImageURL } from "../../../utils/constants";
+import UploadImage from "./UploadImage.vue";
 
 export default defineComponent({
   components: {
     // eslint-disable-next-line vue/no-reserved-component-names
     Form,
     Field,
+    UploadImage,
   },
   props: {
     opened: {
@@ -223,10 +206,8 @@ export default defineComponent({
   },
   data() {
     return {
-      newLogoSrc: null as File | null,
       logoSrc: this.$props.changingProduct?.logo ?? noImageURL,
       coverImageSrc: this.$props.changingProduct?.coverImage ?? noImageURL,
-      newCoverImageSrc: null as File | null,
       schema: markRaw(
         yup.object({
           name: yup.string().required(),
@@ -250,38 +231,7 @@ export default defineComponent({
     },
     formSubmit: (values: ShopFormState) => true,
   },
-  watch: {
-    newLogoSrc: {
-      handler(newVal: File | null) {
-        if (newVal) {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            if (typeof e.target?.result !== "string") {
-              return;
-            }
-            this.logoSrc = e.target?.result;
-          };
-          reader.readAsDataURL(newVal);
-        }
-      },
-      deep: true,
-    },
-    newCoverImageSrc: {
-      handler(newVal: File | null) {
-        if (newVal) {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            if (typeof e.target?.result !== "string") {
-              return;
-            }
-            this.coverImageSrc = e.target?.result;
-          };
-          reader.readAsDataURL(newVal);
-        }
-      },
-      deep: true,
-    },
-  },
+  watch: {},
   methods: {
     onFormSubmit(values: ShopFormState) {
       this.$emit("formSubmit", {
@@ -290,15 +240,11 @@ export default defineComponent({
         coverImage: this.coverImageSrc,
       });
     },
-    onFileChange(evt: Event) {
-      const elem = evt.target as HTMLInputElement;
-      if (!elem.files) return;
-      this.newLogoSrc = elem.files[0];
+    getLogoSrc(value: String) {
+      this.logoSrc = value as string;
     },
-    onFileChangee(evt: Event) {
-      const elem = evt.target as HTMLInputElement;
-      if (!elem.files) return;
-      this.newCoverImageSrc = elem.files[0];
+    getCoverImageSrc(value: String) {
+      this.coverImageSrc = value as string;
     },
   },
   computed: {
