@@ -61,6 +61,7 @@ import DrawerMenu from "./components/DrawerMenu.vue";
 import UserMenu from "./components/UserMenu.vue";
 import ShopModalVue from "../../pages/shop/components/ShopModal.vue";
 import { useShopsStore } from "@/stores/shops";
+import type { ShopFormState } from "../shop/entities";
 
 const drawerOpened = ref(false);
 const editModalOpened = ref(false);
@@ -78,13 +79,15 @@ function toggleShopModal() {
   editModalOpened.value = !editModalOpened.value;
 }
 
-function onCreateShop(values: any) {
+function onCreateShop(values: ShopFormState) {
+  const dateOfRegistration = new Date();
+
   shopsStore.createShop({
     ...values,
     status: "active",
     totalProducts: 0,
     totalOrders: 0,
-    dateOfRegistration: new Date(),
+    dateOfRegistration: String(dateOfRegistration),
     id: Math.floor(Math.random() * 100),
   });
   toggleShopModal();
