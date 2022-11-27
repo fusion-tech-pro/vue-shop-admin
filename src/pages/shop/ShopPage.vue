@@ -34,6 +34,7 @@
         text-color="white"
         label="Edit Shop"
         class="shop-page__edit-button"
+        @click="toggleEditShopModal(true)"
       />
     </div>
 
@@ -46,8 +47,8 @@
             <span class="shop-page__statistic-count">{{
               shop?.totalProducts
             }}</span>
+            <p class="shop-page__statistic-type">Total Products</p>
           </div>
-          <p class="shop-page__statistic-type">Total Products</p>
         </div>
         <div class="shop-page__statistic-item">
           <q-icon
@@ -112,14 +113,24 @@
       </div>
     </div>
   </div>
+
+  <ShopModalVue
+    :opened="editModalOpened"
+    :changingProduct="shop"
+    @change-visibility="toggleEditShopModal"
+    @form-submit="onChangeShop"
+  />
 </template>
 
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 import { useShopsStore } from "@/stores/shops";
 import type { Shop } from "@/core/models/Shop";
-// TODO make reusable statistic item and try to pass background color prop
+import ShopModalVue from "./components/ShopModal.vue";
+import type { ShopFormState } from "./entities";
+
 export default defineComponent({
+  components: { ShopModalVue },
   setup() {
     const shopsStore = useShopsStore();
     return { shopsStore };
@@ -127,10 +138,32 @@ export default defineComponent({
   data() {
     return {
       shop: Object as PropType<Shop>,
+      editModalOpened: false,
     };
+  },
+  methods: {
+    toggleEditShopModal(value: boolean) {
+      this.editModalOpened = value;
+    },
+    onChangeShop(values: ShopFormState) {
+      this.shopsStore.changeShop({
+        ...values,
+        id: this.shop.id,
+        status: this.shop.status,
+        totalProducts: this.shop.totalProducts,
+        totalOrders: this.shop.totalOrders,
+        dateOfRegistration: this.shop.dateOfRegistration,
+      });
+
+      this.toggleEditShopModal(false);
+    },
   },
   beforeMount() {
     // TODO fix type
+    this.shop = this.shopsStore?.getShopById(Number(this.$route.params.id));
+  },
+
+  updated() {
     this.shop = this.shopsStore?.getShopById(Number(this.$route.params.id));
   },
 });
