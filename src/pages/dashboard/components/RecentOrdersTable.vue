@@ -1,8 +1,10 @@
 <template>
   <q-table
-    class="q-mb-lg no-shadow table__wrapper"
+    class="no-shadow table__wrapper"
     :rows="rows"
     :columns="columns"
+    hide-pagination
+    v-model:pagination="pagination"
     row-key="name"
     style="border: 1px solid #ffffff; border-radius: 5px"
   >
@@ -75,19 +77,59 @@
       </q-tr>
     </template>
   </q-table>
+  <div class="row justify-end q-pr-sm q-mt-sm q-mb-lg">
+    <q-pagination
+      v-model="pagination.page"
+      color="grey-7"
+      active-design="push"
+      active-color="primary"
+      active-text-color="white"
+      gutter="8px"
+      size="md"
+      direction-links
+      outline
+      push
+      :max="pagesNumber"
+      :max-pages="3"
+      :boundary-numbers="false"
+    />
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { columns, rows, rowsTemp } from "../data";
 
 export default defineComponent({
+  setup() {
+    // const productsStore = useProductsStore();
+    const pagination = ref({
+      sortBy: "desc",
+      descending: false,
+      page: 1,
+      rowsPerPage: 5,
+    });
+
+    return {
+      // columns: productColumns,
+      pagination,
+      // productsStore,
+      // selected: ref<[] | null>(null),
+    };
+  },
+
   data() {
     return {
       columns: columns,
       rows: rows,
       rowsTemp: rowsTemp,
     };
+  },
+
+  computed: {
+    pagesNumber() {
+      return Math.ceil(this.rows.length / this.pagination.rowsPerPage);
+    },
   },
 });
 </script>
