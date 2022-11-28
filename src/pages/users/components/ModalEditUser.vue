@@ -3,7 +3,9 @@
     <div v-if="show" class="modal-mask">
       <div class="modal-wrapper" @click="$emit('close')">
         <div class="modal-container" @click.stop="">
-          <div class="modal-header"></div>
+          <div class="modal-header">
+            <slot name="header"></slot>
+          </div>
 
           <div class="row full-width justify-center">
             <q-avatar size="150px">
@@ -160,9 +162,11 @@ export default defineComponent({
   transition: all 0.3s ease;
 }
 
-.modal-header h3 {
+.modal-header {
   margin-top: 0;
-  color: #42b983;
+  /* color: #42b983; */
+  justify-content: center;
+  display: flex;
 }
 
 .modal-body {

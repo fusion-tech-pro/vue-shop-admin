@@ -15,6 +15,14 @@ export const useProductsStore = defineStore("products", {
   getters: {
     getProducts: (state: ProductStore): Array<Product> =>
       state.products as Product[],
+    getMostPopulars: (state: ProductStore): Array<Product> => {
+      const tempArr = state.products ?? [];
+      return tempArr
+        .sort((a, b) => {
+          return (b.price ?? 0) - (a.price ?? 0);
+        })
+        .slice(0, 8);
+    },
   },
   actions: {
     async fetchProducts() {
