@@ -1,5 +1,3 @@
-// this is just an example of user DTO, it's not requried to do make it the same on the server
-
 export interface Address {
   district: string;
   city: string;

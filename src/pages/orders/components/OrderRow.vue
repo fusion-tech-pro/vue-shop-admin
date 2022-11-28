@@ -33,7 +33,9 @@
     </div>
   </q-td>
   <q-td key="actions" class="text-center">
-    <q-icon name="ion-eye" size="24px" class="current-color cursor-pointer" />
+    <router-link :to="`${$route.path}/${row?.id}`" class="drawer-item">
+      <q-icon name="ion-eye" size="24px" class="current-color cursor-pointer" />
+    </router-link>
   </q-td>
 </template>
 
@@ -90,5 +92,10 @@ tr td {
   font-size: 14px;
   font-weight: 600;
   color: $green;
+}
+
+.drawer-item {
+  color: inherit;
+  text-decoration: none;
 }
 </style>

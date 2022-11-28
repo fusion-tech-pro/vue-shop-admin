@@ -11,6 +11,7 @@
           <SearchInput
             :searchText="searchText"
             @onChangeSearch="onChangeSearchText"
+            @keyup.enter="onSubmitSearchText"
           />
         </div>
         <div class="row col-xs-12 col-sm-auto justify-center">
@@ -27,25 +28,43 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useOrdersStore } from "@/stores/orders";
 import SearchInput from "@/components/SearchInput/SearchInput.vue";
 
 export default defineComponent({
-  props: {
-    searchText: String,
-  },
-  emits: {
-    onChangeSearchText: (value: string) => true,
+  setup() {
+    const ordersStore = useOrdersStore();
+    ordersStore.getOrders();
+    return {
+      ordersStore,
+    };
   },
   components: {
     SearchInput,
   },
 
   data() {
-    return {};
+    return {
+      searchText: (this.$route.query.filter as string) || "",
+    };
   },
   methods: {
     onChangeSearchText(value: string) {
-      this.$emit("onChangeSearchText", value);
+      this.searchText = value;
+    },
+
+    async onSubmitSearchText() {
+      if (this.searchText) {
+        await this.$router.push({
+          path: this.$route.fullPath,
+          query: { ...this.$route.query, filter: this.searchText },
+        });
+      } else {
+        let query = Object.assign({}, this.$route.query);
+        delete query.filter;
+        await this.$router.replace({ query });
+      }
+      this.ordersStore.getOrders();
     },
   },
 });
