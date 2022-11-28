@@ -2,7 +2,7 @@
   <Teleport to="body">
     <ModalEditUser :show="showModal" @close="showModal = false">
       <template #header>
-        <h3>{{ headerModal }}</h3>
+        <h5 class="q-ma-none text-weight-bold">{{ headerModal }}</h5>
       </template>
     </ModalEditUser>
   </Teleport>
@@ -43,7 +43,16 @@
     :filter="filter"
     :filter-method="customFilter"
     row-key="firstName"
+    class="products-table__wrapper"
   >
+    <template v-slot:header="props">
+      <q-tr :props="props">
+        <q-th v-for="col in props.cols" :key="col.name" :props="props">
+          {{ col.label }}
+        </q-th>
+      </q-tr>
+    </template>
+
     <template v-slot:body-cell-firstName="props">
       <q-td key="firstName" :props="props">
         {{ props.row.firstName }}
@@ -63,7 +72,7 @@
 
     <template v-slot:body-cell-email="props">
       <q-td :props="props">
-        <q-badge :label="props.value"></q-badge>
+        <q-badge :label="props.value" class="q-pa-sm" rounded></q-badge>
       </q-td>
     </template>
 
@@ -76,6 +85,7 @@
     <template v-slot:body-cell-actions="props">
       <q-td :props="props">
         <q-btn
+          size="sm"
           color="primary"
           flat
           icon="ion-create"
@@ -84,6 +94,7 @@
         </q-btn>
 
         <q-btn
+          size="sm"
           color="red"
           flat
           icon="ion-trash"
@@ -241,6 +252,18 @@ img {
   justify-content: flex-end;
   @include media-sm {
     flex-direction: row;
+  }
+}
+.products-table__wrapper {
+  .q-table__top,
+  .q-table__bottom,
+  thead tr:first-child th {
+    background-color: rgba(229, 231, 235, 0.3);
+    white-space: nowrap;
+    padding: 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 600;
   }
 }
 </style>
