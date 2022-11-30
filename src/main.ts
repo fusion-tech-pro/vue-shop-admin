@@ -3,6 +3,7 @@ import { Quasar } from "quasar";
 import { createPinia } from "pinia";
 import App from "./App.vue";
 import router from "./core/router";
+import VueMapboxTs from "vue-mapbox-ts";
 
 import "@quasar/extras/material-icons/material-icons.css";
 import "@quasar/extras/ionicons-v4/ionicons-v4.css";
@@ -24,6 +25,7 @@ const app = createApp(App);
 
 const pinia = createPinia();
 app.use(pinia);
+app.use(VueMapboxTs);
 
 useUserStore()
   .initializeUser()
