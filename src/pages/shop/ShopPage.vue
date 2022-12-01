@@ -120,25 +120,57 @@
     @change-visibility="toggleEditShopModal"
     @form-submit="onChangeShop"
   />
+
+  <mapbox-map
+    :accessToken="'pk.eyJ1IjoiaWx5YS1mdXNpb24yIiwiYSI6ImNsYjBnY2R2aTFpeDAzcm1wdndtNWFiMWgifQ.fatqK6RMJUP0PKKWR5tkjw'"
+    map-style="mapbox://styles/mapbox/streets-v11"
+    height="500px"
+    width="100%"
+    :renderWorldCopies="false"
+  >
+    <mapbox-geocoder-control @result="handleResult" :mode="'mapbox.places'" />
+
+    <mapbox-marker :lngLat="defaultMapResult.center">
+      <mapbox-popup>
+        <p class="shop-page__map-result-text">
+          {{ defaultMapResult.place_name }}
+        </p>
+      </mapbox-popup>
+    </mapbox-marker>
+
+    <mapbox-marker
+      v-for="result of results"
+      v-bind:key="result.id"
+      :lngLat="result.center"
+    >
+      <mapbox-popup>
+        <p class="shop-page__map-result-text">{{ result.place_name }}</p>
+      </mapbox-popup>
+    </mapbox-marker>
+  </mapbox-map>
 </template>
 
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
+import { MapboxMap } from "vue-mapbox-ts";
 import { useShopsStore } from "@/stores/shops";
 import type { Shop } from "@/core/models/Shop";
 import ShopModalVue from "./components/ShopModal.vue";
 import type { ShopFormState } from "./entities";
+import { defaultMapResult } from "./assetsData";
 
 export default defineComponent({
-  components: { ShopModalVue },
+  components: { ShopModalVue, MapboxMap },
   setup() {
     const shopsStore = useShopsStore();
-    return { shopsStore };
+
+    return { shopsStore, defaultMapResult };
   },
   data() {
     return {
       shop: Object as PropType<Shop>,
       editModalOpened: false,
+      results: [],
     };
   },
   methods: {
@@ -157,6 +189,9 @@ export default defineComponent({
 
       this.toggleEditShopModal(false);
     },
+    handleResult(res) {
+      this.results.push(res);
+    },
   },
   beforeMount() {
     // TODO fix type
@@ -173,6 +208,7 @@ export default defineComponent({
 .shop-page__wrapper {
   display: grid;
   row-gap: 20px;
+  margin-bottom: 20px;
 
   @include media-lg {
     display: grid;
@@ -368,5 +404,12 @@ export default defineComponent({
   line-height: 1.25rem;
   color: rgb(107, 114, 128);
   margin-bottom: 8px;
+}
+
+.shop-page__map-result-text {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: rgb(0, 0, 0);
+  margin: 0;
 }
 </style>
