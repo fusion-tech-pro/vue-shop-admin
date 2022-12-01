@@ -43,7 +43,7 @@
             {{ props.row.shop }}
           </q-td>
           <q-td key="productType" :props="props">
-            {{ props.row.product_type }}
+            {{ props.row.productType }}
           </q-td>
           <q-td key="price" :props="props"> {{ props.row.price }} $ </q-td>
           <q-td key="quantity" :props="props">
@@ -168,8 +168,8 @@ export default defineComponent({
     onChangeCurrentProduct(changed: ProductFormState) {
       this.productsStore.changeProduct({
         ...changed,
-        updated_at: "",
-        created_at: "",
+        updatedAt: "",
+        createdAt: "",
         id: this.selectedProduct.id,
       });
       this.toggleEditProductModal(false);

@@ -224,7 +224,7 @@ export default defineComponent({
         name: this.$props.changingProduct?.name ?? "",
         group: this.$props.changingProduct?.group ?? "",
         shop: this.$props.changingProduct?.shop ?? "",
-        product_type: this.$props.changingProduct?.product_type ?? "",
+        product_type: this.$props.changingProduct?.productType ?? "",
         price: this.$props.changingProduct?.price ?? 0,
         quantity: this.$props.changingProduct?.quantity ?? 0,
         status: this.$props.changingProduct?.status ?? "",

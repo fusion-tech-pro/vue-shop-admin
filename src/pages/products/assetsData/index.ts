@@ -35,7 +35,7 @@ export const productColumns: QTableProps["columns"] = [
   {
     name: "productType",
     label: "Product Type",
-    field: "product_type",
+    field: "productType",
     align: "center",
   },
   {

@@ -41,7 +41,7 @@ export const useProductsStore = defineStore("products", {
             name: data.name,
             group: data.group,
             shop: data.shop,
-            product_type: data.product_type,
+            productType: data.productType,
             price: data.price,
             quantity: data.quantity,
             status: data.status,
