@@ -71,8 +71,8 @@ export default defineComponent({
     onCreateNewProduct(values: ProductFormState) {
       this.productsStore.addNewProduct({
         ...values,
-        created_at: "n/a",
-        updated_at: "n/a",
+        createdAt: "n/a",
+        updatedAt: "n/a",
         id: Math.floor(Math.random() * 100),
       });
       this.setModalVisibleStatus(false);
