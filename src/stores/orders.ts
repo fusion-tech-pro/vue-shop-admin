@@ -2,11 +2,10 @@ import type { Order } from "@/core/models/Order";
 import type { Pagination } from "@/data/dto/OrdersResponse";
 import { orderSource } from "@/data/orderSource";
 import { defineStore } from "pinia";
-import router from "@/core/router";
 
 interface OrderState {
-  orders: Array<Order> | undefined;
-  order: Order | undefined;
+  orders?: Array<Order>;
+  order?: Order;
   pagination: Pagination;
   loading: boolean;
   error: string | undefined;
@@ -31,33 +30,14 @@ export const useOrdersStore = defineStore("orders", {
   },
   getters: {},
   actions: {
-    async getOrders() {
+    async getOrders(newPagination: Pagination) {
       try {
         this.loading = true;
         this.error = undefined;
-        const pag: Pagination = { ...this.pagination };
-        pag.page = router.currentRoute.value.query.page
-          ? +router.currentRoute.value.query.page
-          : 1;
-        pag.sortBy = router.currentRoute.value.query.sortBy
-          ? router.currentRoute.value.query.sortBy + ""
-          : "";
-        pag.direction = router.currentRoute.value.query.direction
-          ? "DESC"
-          : "ASC";
 
-        if (router.currentRoute.value.query.filter) {
-          pag.filter = router.currentRoute.value.query.filter
-            ? router.currentRoute.value.query.filter + ""
-            : "";
-        }
-
-        const { orders, pagination } = await orderSource.getOrders(pag);
-        if (pag.page !== pagination.page) {
-          const query = Object.assign({}, router.currentRoute.value.query);
-          delete query.page;
-          await router.replace({ query });
-        }
+        const { orders, pagination } = await orderSource.getOrders(
+          newPagination
+        );
         this.orders = orders;
         this.pagination = pagination;
       } catch (err) {

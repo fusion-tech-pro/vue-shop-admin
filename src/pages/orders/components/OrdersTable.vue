@@ -35,13 +35,13 @@
       </template>
 
       <template v-slot:body="props">
-        <OrderBody :props="props"></OrderBody>
+        <OrderBody :bodyProps="props"></OrderBody>
       </template>
     </q-table>
   </div>
   <div class="row justify-end q-mt-lg">
     <q-pagination
-      v-model="pagination.page"
+      v-model="pagination!.page"
       color="grey-7"
       active-design="push"
       active-color="primary"
@@ -60,15 +60,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import { useOrdersStore } from "@/stores/orders";
 import OrderBody from "./OrderBody.vue";
-import { orderColumns } from "../assetsData";
+import { orderColumns, type PaginationParams } from "../assetsData";
+import type { Pagination } from "@/data/dto/OrdersResponse";
 
 export default defineComponent({
+  props: {
+    pagination: Object as PropType<Pagination>,
+  },
+  emits: {
+    onChangePagination: (options: PaginationParams) => true,
+  },
   setup() {
     const ordersStore = useOrdersStore();
-    ordersStore.getOrders();
     return {
       orderColumns,
       ordersStore,
@@ -76,18 +82,8 @@ export default defineComponent({
   },
   components: { OrderBody },
   computed: {
-    pagination() {
-      return {
-        sortBy: (this.$route.query.sortBy as string) || "",
-        direction: (this.$route.query.direction as string) || "ASC",
-        count: this.ordersStore.pagination?.count,
-        page: this.$route.query.page ? +this.$route.query.page : 1,
-        rowsPerPage: this.ordersStore.pagination?.rowsPerPage,
-      };
-    },
-
-    getMaxPages() {
-      return Math.ceil(+this.pagination.count / this.pagination.rowsPerPage);
+    getMaxPages(): number {
+      return Math.ceil(+this.pagination!.count / +this.pagination!.rowsPerPage);
     },
   },
   data() {
@@ -100,21 +96,21 @@ export default defineComponent({
     },
 
     checkSelectedSorting(value: string) {
-      return (this.$route.query.sortBy as string) === value;
+      return this.$route.query.sortBy === value;
     },
 
     async onChangePagination(value: number) {
+      this.$emit("onChangePagination", { key: "page", value: value });
       if (value !== 1) {
         await this.$router.push({
           path: this.$route.fullPath,
           query: { ...this.$route.query, page: value },
         });
       } else {
-        let query = Object.assign({}, this.$route.query);
+        const query = Object.assign({}, this.$route.query);
         delete query.page;
         await this.$router.replace({ query });
       }
-      this.ordersStore.getOrders();
     },
 
     async onChangeSort(value: string) {
@@ -125,20 +121,33 @@ export default defineComponent({
               path: this.$route.fullPath,
               query: { ...this.$route.query, sortBy: value, direction: "DESC" },
             });
+            this.$emit("onChangePagination", { key: "sortBy", value: value });
+            this.$emit("onChangePagination", {
+              key: "direction",
+              value: "DESC",
+            });
           } else {
             let query = Object.assign({}, this.$route.query);
             delete query.sortBy;
             delete query.direction;
             await this.$router.replace({ query });
+            this.$emit("onChangePagination", { key: "sortBy", value: "" });
+            this.$emit("onChangePagination", {
+              key: "direction",
+              value: "ASC",
+            });
           }
         } else {
           let query = Object.assign({}, this.$route.query);
           query.sortBy = value;
           delete query.direction;
           await this.$router.replace({ query });
+          this.$emit("onChangePagination", { key: "sortBy", value: value });
+          this.$emit("onChangePagination", {
+            key: "direction",
+            value: "ASC",
+          });
         }
-
-        this.ordersStore.getOrders();
       }
     },
   },

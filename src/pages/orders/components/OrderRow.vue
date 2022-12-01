@@ -18,7 +18,7 @@
     ${{ row?.totalPrice.toFixed(2) }}
   </q-td>
   <q-td key="orderDate" class="text-center">
-    {{ formattedDate(row?.orderDate) }}
+    {{ formattedDate }}
   </q-td>
   <q-td key="status" class="status-area">
     {{ row?.status }}
@@ -40,14 +40,17 @@
 </template>
 
 <script lang="ts">
-import moment from "moment";
-import { defineComponent } from "vue";
+import type { Order } from "@/core/models/Order";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import { defineComponent, type PropType } from "vue";
+
+dayjs.extend(relativeTime);
 
 export default defineComponent({
   setup() {},
   props: {
-    props: Object,
-    row: Object,
+    row: Object as PropType<Order>,
     expand: Boolean,
   },
   emits: {
@@ -60,9 +63,11 @@ export default defineComponent({
     onChangeExpand() {
       this.$emit("onChangeExpand");
     },
+  },
 
-    formattedDate(value: Date) {
-      return moment(value).fromNow();
+  computed: {
+    formattedDate() {
+      return dayjs(this.row?.orderDate).fromNow();
     },
   },
 });

@@ -1,5 +1,25 @@
 import type { QTableProps } from "quasar";
 
+type CountablePagination = {
+  key: "count" | "page" | "rowsPerPage";
+  value: number;
+};
+
+type UncountablePagination = {
+  key: "filter" | "sortBy";
+  value: string;
+};
+
+type DirectionPagination = {
+  key: "direction";
+  value: "DESC" | "ASC";
+};
+
+export type PaginationParams =
+  | CountablePagination
+  | UncountablePagination
+  | DirectionPagination;
+
 export const orderColumns: QTableProps["columns"] = [
   {
     name: "more",

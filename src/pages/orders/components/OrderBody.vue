@@ -1,8 +1,7 @@
 <template>
-  <q-tr :props="props">
+  <q-tr :props="bodyProps">
     <OrderRow
-      :props="props"
-      :row="props?.row"
+      :row="bodyProps?.row"
       @onChangeExpand="onChangeExpand"
       :expand="expand"
     ></OrderRow>
@@ -10,11 +9,11 @@
   <template v-if="expand">
     <q-tr
       :key="child.trackingNumber"
-      v-for="child in props?.row.children"
-      :props="props"
+      v-for="child in bodyProps?.row.children"
+      :props="bodyProps"
       class="child-row"
     >
-      <OrderRow :props="props" :row="child"></OrderRow>
+      <OrderRow :row="child"></OrderRow>
     </q-tr>
   </template>
 </template>
@@ -24,10 +23,10 @@ import { defineComponent } from "vue";
 import OrderRow from "./OrderRow.vue";
 
 export default defineComponent({
-  inheritAttrs: false,
   setup() {},
   props: {
-    props: Object,
+    // data type not described
+    bodyProps: Object,
   },
   data() {
     return {

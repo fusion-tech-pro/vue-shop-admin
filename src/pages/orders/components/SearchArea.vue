@@ -8,11 +8,7 @@
       </div>
       <div class="col-xs-12 col-md-6 row items-center">
         <div class="col-xs-12 col-sm-grow">
-          <SearchInput
-            :searchText="searchText"
-            @onChangeSearch="onChangeSearchText"
-            @keyup.enter="onSubmitSearchText"
-          />
+          <SearchInput v-model="searchText" @keyup.enter="onSubmitSearchText" />
         </div>
         <div class="row col-xs-12 col-sm-auto justify-center">
           <q-icon
@@ -27,17 +23,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { useOrdersStore } from "@/stores/orders";
+import { defineComponent, type PropType } from "vue";
+import type { Pagination } from "@/data/dto/OrdersResponse";
 import SearchInput from "@/components/SearchInput/SearchInput.vue";
+import type { PaginationParams } from "../assetsData";
 
 export default defineComponent({
-  setup() {
-    const ordersStore = useOrdersStore();
-    ordersStore.getOrders();
-    return {
-      ordersStore,
-    };
+  props: {
+    pagination: Object as PropType<Pagination>,
+  },
+  emits: {
+    onChangePagination: (options: PaginationParams) => true,
   },
   components: {
     SearchInput,
@@ -48,11 +44,8 @@ export default defineComponent({
       searchText: (this.$route.query.filter as string) || "",
     };
   },
-  methods: {
-    onChangeSearchText(value: string) {
-      this.searchText = value;
-    },
 
+  methods: {
     async onSubmitSearchText() {
       if (this.searchText) {
         await this.$router.push({
@@ -64,7 +57,10 @@ export default defineComponent({
         delete query.filter;
         await this.$router.replace({ query });
       }
-      this.ordersStore.getOrders();
+      this.$emit("onChangePagination", {
+        key: "filter",
+        value: this.searchText,
+      });
     },
   },
 });
