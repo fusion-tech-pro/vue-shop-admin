@@ -130,14 +130,6 @@
   >
     <mapbox-geocoder-control @result="handleResult" :mode="'mapbox.places'" />
 
-    <mapbox-marker :lngLat="defaultMapResult.center">
-      <mapbox-popup>
-        <p class="shop-page__map-result-text">
-          {{ defaultMapResult.place_name }}
-        </p>
-      </mapbox-popup>
-    </mapbox-marker>
-
     <mapbox-marker
       v-for="result of results"
       v-bind:key="result.id"
@@ -169,7 +161,7 @@ export default defineComponent({
   data() {
     return {
       editModalOpened: false,
-      results: [{} as Result],
+      results: [defaultMapResult as Result],
     };
   },
   methods: {
