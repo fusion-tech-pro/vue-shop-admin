@@ -151,12 +151,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from "vue";
+import { defineComponent } from "vue";
 import { MapboxMap } from "vue-mapbox-ts";
-import { useShopsStore } from "@/stores/shops";
-import type { Shop } from "@/core/models/Shop";
-import ShopModalVue from "./components/ShopModal.vue";
+import type { Result } from "@mapbox/mapbox-gl-geocoder";
 import type { ShopFormState } from "./entities";
+import { useShopsStore } from "@/stores/shops";
+import ShopModalVue from "./components/ShopModal.vue";
 import { defaultMapResult } from "./assetsData";
 
 export default defineComponent({
@@ -168,9 +168,8 @@ export default defineComponent({
   },
   data() {
     return {
-      shop: Object as PropType<Shop>,
       editModalOpened: false,
-      results: [],
+      results: [{} as Result],
     };
   },
   methods: {
@@ -180,26 +179,24 @@ export default defineComponent({
     onChangeShop(values: ShopFormState) {
       this.shopsStore.changeShop({
         ...values,
-        id: this.shop.id,
-        status: this.shop.status,
-        totalProducts: this.shop.totalProducts,
-        totalOrders: this.shop.totalOrders,
-        dateOfRegistration: this.shop.dateOfRegistration,
+        id: this.shop?.id!,
+        status: this.shop?.status!,
+        totalProducts: this.shop?.totalProducts,
+        totalOrders: this.shop?.totalOrders,
+        dateOfRegistration: this.shop?.dateOfRegistration,
       });
 
       this.toggleEditShopModal(false);
     },
-    handleResult(res) {
-      this.results.push(res);
+    handleResult(res: Result) {
+      this.results.push(res as Result);
     },
   },
-  beforeMount() {
-    // TODO fix type
-    this.shop = this.shopsStore?.getShopById(Number(this.$route.params.id));
-  },
 
-  updated() {
-    this.shop = this.shopsStore?.getShopById(Number(this.$route.params.id));
+  computed: {
+    shop() {
+      return this.shopsStore?.getShopById(Number(this.$route.params.id));
+    },
   },
 });
 </script>
