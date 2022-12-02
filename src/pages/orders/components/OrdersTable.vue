@@ -63,7 +63,7 @@
 import { defineComponent, type PropType } from "vue";
 import { useOrdersStore } from "@/stores/orders";
 import OrderBody from "./OrderBody.vue";
-import { orderColumns, type PaginationParams } from "../assetsData";
+import { orderColumns, type ReturnOptional } from "../assetsData";
 import type { Pagination } from "@/data/dto/OrdersResponse";
 
 export default defineComponent({
@@ -71,7 +71,7 @@ export default defineComponent({
     pagination: Object as PropType<Pagination>,
   },
   emits: {
-    onChangePagination: (options: PaginationParams) => true,
+    onChangePagination: (options: ReturnOptional<Pagination>) => true,
   },
   setup() {
     const ordersStore = useOrdersStore();
@@ -100,55 +100,48 @@ export default defineComponent({
     },
 
     async onChangePagination(value: number) {
-      this.$emit("onChangePagination", { key: "page", value: value });
+      const query = Object.assign({}, this.$route.query);
+      const options: Record<string, number> = {
+        page: value,
+      };
+
       if (value !== 1) {
-        await this.$router.push({
-          path: this.$route.fullPath,
-          query: { ...this.$route.query, page: value },
-        });
+        query.page = value + "";
       } else {
-        const query = Object.assign({}, this.$route.query);
         delete query.page;
-        await this.$router.replace({ query });
       }
+      await this.$router.replace({ query });
+      this.$emit("onChangePagination", options);
     },
 
     async onChangeSort(value: string) {
-      if (["totalPrice", "orderDate", "status"].includes(value)) {
-        if (this.$route.query.sortBy == value) {
-          if (this.$route.query.direction !== "DESC") {
-            await this.$router.push({
-              path: this.$route.fullPath,
-              query: { ...this.$route.query, sortBy: value, direction: "DESC" },
-            });
-            this.$emit("onChangePagination", { key: "sortBy", value: value });
-            this.$emit("onChangePagination", {
-              key: "direction",
-              value: "DESC",
-            });
-          } else {
-            let query = Object.assign({}, this.$route.query);
-            delete query.sortBy;
-            delete query.direction;
-            await this.$router.replace({ query });
-            this.$emit("onChangePagination", { key: "sortBy", value: "" });
-            this.$emit("onChangePagination", {
-              key: "direction",
-              value: "ASC",
-            });
-          }
-        } else {
-          let query = Object.assign({}, this.$route.query);
-          query.sortBy = value;
-          delete query.direction;
-          await this.$router.replace({ query });
-          this.$emit("onChangePagination", { key: "sortBy", value: value });
-          this.$emit("onChangePagination", {
-            key: "direction",
-            value: "ASC",
-          });
-        }
+      if (!["totalPrice", "orderDate", "status"].includes(value)) {
+        return;
       }
+
+      const query = Object.assign({}, this.$route.query);
+      const options: Record<string, string> = {
+        sortBy: value,
+        direction: "ASC",
+      };
+
+      if (this.$route.query.sortBy == value) {
+        if (this.$route.query.direction !== "DESC") {
+          query.sortBy = value;
+          query.direction = "DESC";
+          options.direction = "DESC";
+        } else {
+          delete query.sortBy;
+          delete query.direction;
+          options.sortBy = "";
+        }
+      } else {
+        query.sortBy = value;
+        delete query.direction;
+      }
+
+      await this.$router.replace({ query });
+      this.$emit("onChangePagination", options);
     },
   },
 });

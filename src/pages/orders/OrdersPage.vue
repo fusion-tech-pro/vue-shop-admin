@@ -13,16 +13,16 @@
 
 <script setup lang="ts">
 import router from "@/core/router";
-import { watch, reactive } from "vue";
+import { watch, ref } from "vue";
 import SearchArea from "./components/SearchArea.vue";
 import OrdersTable from "./components/OrdersTable.vue";
 import { useOrdersStore } from "@/stores/orders";
 import type { Pagination } from "@/data/dto/OrdersResponse";
-import type { PaginationParams } from "./assetsData";
+import type { ReturnOptional } from "./assetsData";
 
 const ordersStore = useOrdersStore();
 
-const pagination = reactive<Pagination>({
+const pagination = ref<Pagination>({
   ...ordersStore.pagination,
   page: router.currentRoute.value.query.page
     ? +router.currentRoute.value.query.page
@@ -36,33 +36,20 @@ const pagination = reactive<Pagination>({
     : "",
 });
 
-ordersStore.getOrders(pagination);
+ordersStore.getOrders(pagination.value);
 
-const onChangePagination = (options: PaginationParams) => {
-  switch (options.key) {
-    case "page":
-      pagination.page = options.value;
-      break;
-
-    case "filter":
-      pagination.filter = options.value;
-      break;
-
-    case "sortBy":
-      pagination.sortBy = options.value;
-      break;
-
-    case "direction":
-      pagination.direction = options.value;
-      break;
-  }
+const onChangePagination = (options: ReturnOptional<Pagination>) => {
+  pagination.value = {
+    ...pagination.value,
+    ...options,
+  };
 };
 
 watch(pagination, () => {
-  ordersStore.getOrders(pagination);
+  ordersStore.getOrders(pagination.value);
 
   if (
-    pagination.page == 1 &&
+    pagination.value.page == 1 &&
     router.currentRoute.value.query.page &&
     +router.currentRoute.value.query.page !== 1
   ) {

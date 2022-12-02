@@ -26,14 +26,14 @@
 import { defineComponent, type PropType } from "vue";
 import type { Pagination } from "@/data/dto/OrdersResponse";
 import SearchInput from "@/components/SearchInput/SearchInput.vue";
-import type { PaginationParams } from "../assetsData";
+import type { ReturnOptional } from "../assetsData";
 
 export default defineComponent({
   props: {
     pagination: Object as PropType<Pagination>,
   },
   emits: {
-    onChangePagination: (options: PaginationParams) => true,
+    onChangePagination: (options: ReturnOptional<Pagination>) => true,
   },
   components: {
     SearchInput,
@@ -47,20 +47,17 @@ export default defineComponent({
 
   methods: {
     async onSubmitSearchText() {
+      let query = Object.assign({}, this.$route.query);
+      const options: Record<string, string> = {
+        filter: this.searchText,
+      };
       if (this.searchText) {
-        await this.$router.push({
-          path: this.$route.fullPath,
-          query: { ...this.$route.query, filter: this.searchText },
-        });
+        query.filter = this.searchText;
       } else {
-        let query = Object.assign({}, this.$route.query);
         delete query.filter;
-        await this.$router.replace({ query });
       }
-      this.$emit("onChangePagination", {
-        key: "filter",
-        value: this.searchText,
-      });
+      await this.$router.replace({ query });
+      this.$emit("onChangePagination", options);
     },
   },
 });
