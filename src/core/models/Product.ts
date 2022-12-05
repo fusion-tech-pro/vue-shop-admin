@@ -39,21 +39,19 @@ export class Product {
     this.id = options.id;
   }
 
-  static fromProductDto(ProductsResponse: ProductsResponse[]): Array<Product> {
-    return ProductsResponse.map((product: ProductsResponse) => {
-      return new Product({
-        image: product.image,
-        name: product.name,
-        group: product.group,
-        shop: product.shop,
-        productType: product.product_type,
-        price: product.price,
-        quantity: product.quantity,
-        status: product.status,
-        createdAt: product.created_at,
-        updatedAt: product.updated_at,
-        id: product.id,
-      });
+  static fromProductDto(ProductsResponse: ProductsResponse): Product {
+    return new Product({
+      image: ProductsResponse.image,
+      name: ProductsResponse.name,
+      group: ProductsResponse.group,
+      shop: ProductsResponse.shop,
+      productType: ProductsResponse.product_type,
+      price: ProductsResponse.price,
+      quantity: ProductsResponse.quantity,
+      status: ProductsResponse.status,
+      createdAt: ProductsResponse.created_at,
+      updatedAt: ProductsResponse.updated_at,
+      id: ProductsResponse.id,
     });
   }
 }

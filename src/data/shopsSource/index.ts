@@ -118,7 +118,7 @@ class ShopsSource {
       },
     ];
 
-    return Shop.fromShopDto(response);
+    return response.map((item) => Shop.fromShopDto(item));
   }
 }
 

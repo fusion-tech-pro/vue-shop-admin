@@ -60,28 +60,26 @@ export class Shop {
     this.status = options.status;
   }
 
-  static fromShopDto(ShopsResponse: ShopsResponse[]): Array<Shop> {
-    return ShopsResponse.map((shop) => {
-      return new Shop({
-        logo: shop.logo,
-        coverImage: shop.cover_image,
-        name: shop.name,
-        ownerName: shop.owner_name,
-        webSite: shop.website,
-        socialLink: shop.social_link,
-        description: shop.description,
-        country: shop.country,
-        state: shop.state,
-        city: shop.city,
-        street: shop.street,
-        zipCode: shop.zip_code,
-        telephoneNumber: shop.telephone_number,
-        totalProducts: shop.total_products,
-        totalOrders: shop.total_orders,
-        dateOfRegistration: shop.date_of_registration,
-        id: shop.id,
-        status: shop.status,
-      });
+  static fromShopDto(ShopsResponse: ShopsResponse): Shop {
+    return new Shop({
+      logo: ShopsResponse.logo,
+      coverImage: ShopsResponse.cover_image,
+      name: ShopsResponse.name,
+      ownerName: ShopsResponse.owner_name,
+      webSite: ShopsResponse.website,
+      socialLink: ShopsResponse.social_link,
+      description: ShopsResponse.description,
+      country: ShopsResponse.country,
+      state: ShopsResponse.state,
+      city: ShopsResponse.city,
+      street: ShopsResponse.street,
+      zipCode: ShopsResponse.zip_code,
+      telephoneNumber: ShopsResponse.telephone_number,
+      totalProducts: ShopsResponse.total_products,
+      totalOrders: ShopsResponse.total_orders,
+      dateOfRegistration: ShopsResponse.date_of_registration,
+      id: ShopsResponse.id,
+      status: ShopsResponse.status,
     });
   }
 }

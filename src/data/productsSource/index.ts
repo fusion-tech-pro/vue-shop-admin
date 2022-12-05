@@ -139,7 +139,7 @@ class ProductsSource {
       },
     ];
 
-    return Product.fromProductDto(response);
+    return response.map((item) => Product.fromProductDto(item));
   }
 }
 
